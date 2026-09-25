@@ -17,6 +17,25 @@ import {
 import Dialog from './Dialog.jsx'
 import { detailPath, formatDate } from './content.mjs'
 import { siteOrigin } from '../versions.mjs'
+import { previewAttributes } from './images.mjs'
+
+export function ResponsiveImage({
+  src,
+  sizes,
+  alt,
+  loading = 'lazy',
+  ...props
+}) {
+  return (
+    <img
+      {...previewAttributes(src, sizes)}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      {...props}
+    />
+  )
+}
 
 export function RichText({ html, version }) {
   const element = useRef(null)

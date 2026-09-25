@@ -3,9 +3,9 @@
 A screenshot-led gallery of independently designed personal websites, all powered
 by one canonical content library and shared feature implementations.
 
-The first edition pairs an oversized typographic masthead, warm paper tones,
-an asymmetric project index, and a record-room music section. The gallery is
-a separate dark exhibition space. Neither uses the reference site's presentation.
+Each edition owns its presentation; the content and capabilities are shared.
+The gallery identifies the model behind each edition alongside real automated
+desktop and mobile captures.
 
 - Gallery: https://mithawala.github.io/
 - First edition: https://mithawala.github.io/asif/gpt-6-astra/
@@ -21,6 +21,8 @@ npm run dev
 
 Open the Vite URL printed in the terminal. The root is the gallery; each edition
 uses its registered `/asif/<model-id>/` path.
+The dev and production commands generate responsive WebP cover images from the
+canonical originals automatically. No extra content maintenance is required.
 
 ## Edit Content Once
 
@@ -40,6 +42,8 @@ definitions, routing, external integrations, and the completeness requirements.
 Use [the build-personal-edition skill](.github/skills/build-personal-edition/SKILL.md).
 It starts from content and neutral APIs, not earlier designs. Each edition owns
 its presentation, never its own copy of personal content.
+Its design quality gate incorporates primary accessibility, interaction, and
+performance guidance without prescribing a palette or layout for the next model.
 
 Register the new component in `src/versions.mjs`. Routes, gallery cards,
 screenshots, and cross-edition tests are driven by that registry.

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Github, Monitor, Smartphone } from 'lucide-react'
 import { versions } from '../versions.mjs'
-import { profile } from '../asif/content.mjs'
+import { profile, formatDate } from '../asif/content.mjs'
 import './gallery.css'
 
 export default function Gallery() {
@@ -16,7 +16,7 @@ export default function Gallery() {
         <Link to="/" aria-label="Gallery home" className="gallery-wordmark">
           am<span>.</span>
         </Link>
-        <span className="gallery-nav-label">THE EDITIONS</span>
+        <span className="gallery-nav-label">The editions</span>
         <a href="https://mithawala.com" target="_blank" rel="noreferrer">
           mithawala.com <ArrowUpRight size={17} />
         </a>
@@ -24,66 +24,81 @@ export default function Gallery() {
       <main id="editions">
         <section className="gallery-intro">
           <div className="gallery-index">
-            AN EXPERIMENT IN PERSPECTIVE{' '}
+            A personal website, reimagined.{' '}
             <span>
-              {String(versions.length).padStart(2, '0')} EDITION
-              {versions.length === 1 ? '' : 'S'} & COUNTING
+              {versions.length} edition{versions.length === 1 ? '' : 's'}
             </span>
           </div>
           <h1>
             <span className="gallery-owner">{profile.name}</span>
             One person.
             <br />
-            <em>Many perspectives.</em>
+            New perspectives.
           </h1>
           <div className="gallery-intro-bottom">
             <p>
-              The same story, told through different eyes.
-              <br />
-              <strong>Each frontier model gets a blank canvas.</strong>
+              Every new model starts with the same content and a blank canvas.
+              Explore the different ways it sees {profile.name.split(' ')[0]}.
             </p>
-            <div
-              className="viewport-switch"
-              role="group"
-              aria-label="Preview viewport"
-            >
-              <button
-                title="Desktop preview"
-                aria-label="Desktop preview"
-                aria-pressed={viewport === 'desktop'}
-                onClick={() => setViewport('desktop')}
-              >
-                <Monitor size={20} />
-              </button>
-              <button
-                title="Mobile preview"
-                aria-label="Mobile preview"
-                aria-pressed={viewport === 'mobile'}
-                onClick={() => setViewport('mobile')}
-              >
-                <Smartphone size={20} />
-              </button>
-            </div>
           </div>
         </section>
+        <div className="gallery-collection-header">
+          <h2>The collection</h2>
+          <div
+            className="viewport-switch"
+            role="group"
+            aria-label="Preview viewport"
+          >
+            <button
+              title="Desktop preview"
+              aria-label="Desktop preview"
+              aria-pressed={viewport === 'desktop'}
+              onClick={() => setViewport('desktop')}
+            >
+              <Monitor size={20} />
+              <span>Desktop</span>
+            </button>
+            <button
+              title="Mobile preview"
+              aria-label="Mobile preview"
+              aria-pressed={viewport === 'mobile'}
+              onClick={() => setViewport('mobile')}
+            >
+              <Smartphone size={20} />
+              <span>Mobile</span>
+            </button>
+          </div>
+        </div>
         <div className="edition-list">
           {versions.map((version, index) => (
             <article className="edition" key={version.id}>
+              <div className="edition-info">
+                <span className="edition-number">
+                  Edition {String(index + 1).padStart(2, '0')}
+                </span>
+                <h2>
+                  <Link to={version.path}>{version.model}</Link>
+                </h2>
+                <time dateTime={version.released}>
+                  {formatDate(version.released, {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </time>
+                <Link
+                  to={version.path}
+                  className="edition-visit"
+                  aria-label={`Visit ${version.model}`}
+                >
+                  Open edition <ArrowUpRight size={20} />
+                </Link>
+              </div>
               <Link
                 className={`edition-preview ${viewport}`}
                 to={version.path}
                 aria-label={`Explore ${version.model}`}
-                style={{ '--edition-accent': version.color }}
               >
-                <div className="edition-browser-bar">
-                  <span className="browser-dots">
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                  <span>asif / {version.id}</span>
-                  <ArrowUpRight size={16} />
-                </div>
                 <div className="edition-screenshot">
                   <img
                     src={
@@ -98,28 +113,7 @@ export default function Gallery() {
                     loading={index === 0 ? 'eager' : 'lazy'}
                   />
                 </div>
-                <span className="edition-open">
-                  <ArrowUpRight size={28} />
-                </span>
               </Link>
-              <div className="edition-caption">
-                <span className="edition-number">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <h2>
-                  <Link to={version.path}>{version.model}</Link>
-                </h2>
-                <span className="edition-caption-note">
-                  One model. Its own point of view.
-                </span>
-                <Link
-                  to={version.path}
-                  className="edition-visit"
-                  aria-label={`Visit ${version.model}`}
-                >
-                  <ArrowUpRight size={24} />
-                </Link>
-              </div>
             </article>
           ))}
         </div>

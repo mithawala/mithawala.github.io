@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowUpRight,
@@ -18,10 +18,15 @@ import {
   GraduationCap,
   Code2,
   Dumbbell,
+  Play,
+  Pause,
+  Headphones,
+  BookOpen,
+  Layers,
 } from 'lucide-react'
 import { useAsif } from '../../core.jsx'
 import { detailPath, filterPortfolio, formatDate } from '../../content.mjs'
-import { ContactForm, ImageLightbox } from '../../features.jsx'
+import { ContactForm, ImageLightbox, ResponsiveImage } from '../../features.jsx'
 import MusicPlayer from '../../MusicPlayer.jsx'
 import './theme.css'
 
@@ -32,11 +37,18 @@ const socialIcons = {
   instagram: Instagram,
 }
 const serviceIcons = [Cloud, GraduationCap, Code2, Dumbbell]
+const sectionOrder = [
+  'portfolio',
+  'about',
+  'resume',
+  'blog',
+  'music',
+  'contact',
+]
 
-function SectionHeading({ number, title, subtitle }) {
+function SectionHeading({ title, subtitle }) {
   return (
     <div className="astra-section-heading">
-      <span className="astra-section-number">{number}</span>
       <h2>{title}</h2>
       {subtitle && <span className="astra-section-aside">{subtitle}</span>}
     </div>
@@ -55,43 +67,72 @@ export default function Theme() {
     openSearch,
   } = useAsif()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [active, setActive] = useState('about')
+  const [active, setActive] = useState('')
   const [role, setRole] = useState(0)
+  const [rolesPaused, setRolesPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(
+    () => matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  const menuButton = useRef(null)
   const [category, setCategory] = useState('all')
   const [showAll, setShowAll] = useState(false)
   const [musicImageOpen, setMusicImageOpen] = useState(false)
   const records = filterPortfolio(portfolio, category)
   const visible = showAll ? records : records.slice(0, 6)
+  const navigation = sectionOrder.map((id) =>
+    contract.sections.find((section) => section.id === id),
+  )
 
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const media = matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(media.matches)
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
+  useEffect(() => {
+    if (reducedMotion || rolesPaused) return
     const timer = setInterval(
       () => setRole((current) => (current + 1) % profile.roles.length),
       4200,
     )
     return () => clearInterval(timer)
-  }, [profile.roles.length])
+  }, [profile.roles.length, reducedMotion, rolesPaused])
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id)
-        }),
-      { rootMargin: '-15% 0px -65% 0px' },
-    )
-    contract.sections.forEach(({ id }) => {
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
-    })
-    return () => observer.disconnect()
-  }, [contract])
+    let frame
+    const update = () => {
+      const sections = sectionOrder.map((id) => document.getElementById(id))
+      const current = sections
+        .filter(
+          (element) => element && element.getBoundingClientRect().top <= 150,
+        )
+        .at(-1)
+      setActive(current?.id || '')
+    }
+    const schedule = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
+  }, [])
   useEffect(() => {
+    if (!menuOpen) return
+    document.querySelector('#astra-navigation a')?.focus()
     const close = (event) => {
-      if (event.key === 'Escape') setMenuOpen(false)
+      if (event.key === 'Escape') {
+        setMenuOpen(false)
+        menuButton.current?.focus()
+      }
     }
     window.addEventListener('keydown', close)
     return () => window.removeEventListener('keydown', close)
-  }, [])
+  }, [menuOpen])
 
   return (
     <>
@@ -106,13 +147,24 @@ export default function Theme() {
         >
           a<span>m</span>
         </a>
-        <nav aria-label="Main navigation" className={menuOpen ? 'is-open' : ''}>
-          {contract.sections.map((section) => (
+        <nav
+          id="astra-navigation"
+          aria-label="Main navigation"
+          className={menuOpen ? 'is-open' : ''}
+        >
+          {navigation.map((section) => (
             <a
               key={section.id}
               href={`${version.path}#${section.id}`}
               aria-current={active === section.id ? 'location' : undefined}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false)
+                requestAnimationFrame(() =>
+                  document
+                    .getElementById(section.id)
+                    ?.focus({ preventScroll: true }),
+                )
+              }}
             >
               {section.label}
             </a>
@@ -140,6 +192,8 @@ export default function Theme() {
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
             aria-expanded={menuOpen}
+            aria-controls="astra-navigation"
+            ref={menuButton}
           >
             {menuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
@@ -148,9 +202,9 @@ export default function Theme() {
       <main id="main-content">
         <section className="astra-hero" aria-labelledby="hero-title">
           <div className="astra-hero-top">
-            <span>A personal index of work & life</span>
+            <span>{profile.subtitle}</span>
             <Link to="/">
-              The {version.model} edition <ArrowUpRight size={14} />
+              All editions <ArrowUpRight size={16} />
             </Link>
           </div>
           <h1 id="hero-title">
@@ -163,54 +217,71 @@ export default function Theme() {
           <div className="astra-hero-body">
             <div className="astra-hero-copy">
               <h2>
-                Serious about tech.
-                <br />
-                <em>Curious about everything.</em>
+                A technical mind.
+                <br />A creative instinct.
               </h2>
               <p>{profile.about.headline}</p>
               <a href="#portfolio" className="astra-hero-action">
-                Discover the work{' '}
+                Explore projects{' '}
                 <span>
                   <ArrowDown size={20} />
                 </span>
               </a>
             </div>
-            <div className="astra-signal" aria-hidden="true">
-              <svg viewBox="0 0 200 200" fill="none">
-                {[0, 30, 60, 90, 120, 150].map((angle) => (
-                  <rect
-                    key={angle}
-                    x="89"
-                    y="6"
-                    width="22"
-                    height="188"
-                    rx="11"
-                    fill="currentColor"
-                    transform={`rotate(${angle} 100 100)`}
-                  />
-                ))}
-              </svg>
-              <span>Always in the making</span>
-            </div>
             <figure className="astra-portrait">
               <div className="astra-portrait-frame">
-                <img
+                <ResponsiveImage
                   src={profile.heroPhoto}
+                  sizes="(max-width: 560px) 160px, (max-width: 1000px) 35vw, 380px"
                   alt={profile.name}
                   fetchPriority="high"
+                  loading="eager"
                 />
-                <span className="astra-photo-mark" aria-hidden="true">
-                  AM / 01
-                </span>
               </div>
               <figcaption>
                 <span className="astra-status-dot" />
                 <span className="astra-role" key={role}>
                   {profile.roles[role]}
                 </span>
+                {!reducedMotion && profile.roles.length > 1 && (
+                  <button
+                    className="astra-role-control"
+                    onClick={() => setRolesPaused(!rolesPaused)}
+                    aria-label={
+                      rolesPaused
+                        ? 'Resume role rotation'
+                        : 'Pause role rotation'
+                    }
+                  >
+                    {rolesPaused ? <Play size={14} /> : <Pause size={14} />}
+                  </button>
+                )}
               </figcaption>
             </figure>
           </div>
+          <nav className="astra-hero-index" aria-label="Explore this site">
+            <a href="#portfolio">
+              <Layers size={20} />
+              <span>
+                Projects <small>{portfolio.length} things made</small>
+              </span>
+              <ArrowUpRight size={20} />
+            </a>
+            <a href="#blog">
+              <BookOpen size={20} />
+              <span>
+                Notebook <small>{blog.length} articles to read</small>
+              </span>
+              <ArrowUpRight size={20} />
+            </a>
+            <a href="#music">
+              <Headphones size={20} />
+              <span>
+                Music <small>Original compositions</small>
+              </span>
+              <ArrowUpRight size={20} />
+            </a>
+          </nav>
         </section>
         <div className="astra-current">
           <span className="astra-current-label">Currently at</span>
@@ -223,11 +294,14 @@ export default function Theme() {
           </a>
         </div>
 
-        <section id="portfolio" className="astra-section astra-work">
+        <section
+          id="portfolio"
+          tabIndex={-1}
+          className="astra-section astra-work"
+        >
           <SectionHeading
-            number="01"
-            title="Selected work."
-            subtitle={`${portfolio.length} projects. One restless curiosity.`}
+            title="Things I've made."
+            subtitle={`${portfolio.length} projects across code, cloud, and creativity.`}
           />
           <div
             className="astra-filters"
@@ -249,8 +323,11 @@ export default function Theme() {
               </button>
             ))}
           </div>
+          <p className="astra-results" role="status">
+            Showing {visible.length} of {records.length} projects
+          </p>
           <div className="astra-projects">
-            {visible.map((item, index) => (
+            {visible.map((item) => (
               <article
                 className="astra-project"
                 key={item.id}
@@ -260,12 +337,17 @@ export default function Theme() {
                   to={detailPath(version, 'project', item.slug)}
                   className="astra-project-image"
                 >
-                  <img src={item.image} alt={item.title} loading="lazy" />
-                  <span className="astra-project-index">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                  <ResponsiveImage
+                    src={item.image}
+                    alt={item.title}
+                    sizes="(max-width: 560px) 90vw, 44vw"
+                  />
                   <span className="astra-project-arrow">
-                    <ArrowUpRight size={25} />
+                    {item.type === 'video' ? (
+                      <Play size={23} />
+                    ) : (
+                      <ArrowUpRight size={25} />
+                    )}
                   </span>
                 </Link>
                 <div className="astra-project-meta">
@@ -287,7 +369,16 @@ export default function Theme() {
             <button
               className="astra-text-button astra-more"
               data-action="show-all-projects"
-              onClick={() => setShowAll(!showAll)}
+              onClick={() => {
+                setShowAll(!showAll)
+                if (showAll)
+                  requestAnimationFrame(() => {
+                    const section = document.getElementById('portfolio')
+                    section.scrollIntoView()
+                    section.focus({ preventScroll: true })
+                  })
+              }}
+              aria-expanded={showAll}
             >
               {showAll ? 'Show less' : `View all ${records.length} works`}{' '}
               {showAll ? <ArrowUp size={18} /> : <ArrowDown size={18} />}
@@ -295,15 +386,18 @@ export default function Theme() {
           )}
         </section>
 
-        <section id="about" className="astra-section astra-about">
+        <section id="about" tabIndex={-1} className="astra-section astra-about">
           <SectionHeading
-            number="02"
             title="The human behind it."
             subtitle="Beyond the job title"
           />
           <div className="astra-about-grid">
             <div className="astra-about-photo">
-              <img src={profile.photo} alt={profile.name} loading="lazy" />
+              <ResponsiveImage
+                src={profile.photo}
+                alt={profile.name}
+                sizes="(max-width: 560px) 90vw, 35vw"
+              />
               <div className="astra-socials">
                 {Object.entries(profile.social).map(([name, url]) => {
                   const Icon = socialIcons[name]
@@ -375,9 +469,12 @@ export default function Theme() {
           </div>
         </section>
 
-        <section id="resume" className="astra-section astra-resume">
+        <section
+          id="resume"
+          tabIndex={-1}
+          className="astra-section astra-resume"
+        >
           <SectionHeading
-            number="03"
             title="Never standing still."
             subtitle={`${new Date().getFullYear() - profile.resume.startYear} years of experience`}
           />
@@ -452,9 +549,8 @@ export default function Theme() {
           </div>
         </section>
 
-        <section id="blog" className="astra-section astra-blog">
+        <section id="blog" tabIndex={-1} className="astra-section astra-blog">
           <SectionHeading
-            number="04"
             title="From the notebook."
             subtitle="Writing & reflections"
           />
@@ -465,7 +561,11 @@ export default function Theme() {
                   to={detailPath(version, 'blog', post.slug)}
                   className="astra-article-image"
                 >
-                  <img src={post.image} alt={post.title} loading="lazy" />
+                  <ResponsiveImage
+                    src={post.image}
+                    alt={post.title}
+                    sizes="(max-width: 560px) 90vw, 35vw"
+                  />
                 </Link>
                 <div>
                   <span className="eyebrow">
@@ -488,9 +588,8 @@ export default function Theme() {
           </div>
         </section>
 
-        <section id="music" className="astra-section astra-music">
+        <section id="music" tabIndex={-1} className="astra-section astra-music">
           <SectionHeading
-            number="05"
             title="Off the clock. On record."
             subtitle="Original music"
           />
@@ -510,11 +609,11 @@ export default function Theme() {
             aria-label="Enlarge music artwork"
             onClick={() => setMusicImageOpen(true)}
           >
-            <img
+            <ResponsiveImage
               className="astra-music-banner"
               src={profile.music.image}
               alt="Music"
-              loading="lazy"
+              sizes="90vw"
             />
           </button>
           <MusicPlayer music={profile.music} artist={profile.name} />
@@ -527,9 +626,12 @@ export default function Theme() {
           )}
         </section>
 
-        <section id="contact" className="astra-section astra-contact">
+        <section
+          id="contact"
+          tabIndex={-1}
+          className="astra-section astra-contact"
+        >
           <SectionHeading
-            number="06"
             title="Let's make something matter."
             subtitle="A conversation is a good start."
           />

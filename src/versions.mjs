@@ -6,7 +6,7 @@ export const versions = [
     released: '2026-09-25',
     preview: '/gallery/previews/gpt-6-astra.webp',
     mobilePreview: '/gallery/previews/gpt-6-astra-mobile.webp',
-    color: '#b63d24',
+    color: '#194652',
     load: () => import('./asif/themes/gpt-6-astra/Theme.jsx'),
   },
 ]

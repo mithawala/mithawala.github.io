@@ -8,6 +8,7 @@ import {
   detailPath,
 } from '../../src/asif/content.mjs'
 import { versions } from '../../src/versions.mjs'
+import { previewPath, previewSources } from '../../src/asif/images.mjs'
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/*', (route) =>
@@ -70,6 +71,117 @@ test('gallery is accessible and keyboard navigation enters the edition', async (
     .focus()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(new RegExp(`${versions[0].path}$`))
+})
+
+test('the first model and its preview are visible without scrolling', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await expect(
+    page.getByRole('heading', { name: versions[0].model, exact: true }),
+  ).toBeInViewport()
+  const image = page.getByAltText(`${versions[0].model} personal-site preview`)
+  await expect(image).toBeInViewport()
+  await expect(
+    page.getByRole('link', { name: `Visit ${versions[0].model}`, exact: true }),
+  ).toBeInViewport()
+  const top = await image.evaluate(
+    (element) => element.getBoundingClientRect().top,
+  )
+  expect(top).toBeLessThan((await page.viewportSize()).height - 100)
+})
+
+test('responsive covers are smaller, usable images and full-resolution originals remain available', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/asif/gpt-6-astra/')
+  const hero = page.locator('.astra-portrait img')
+  await expect(hero).toBeVisible()
+  const selected = await hero.evaluate(async (image) => {
+    await image.decode()
+    return image.currentSrc
+  })
+  expect(selected).toContain('/asif/previews/')
+  let originals = 0
+  let previews = 0
+  for (const source of [
+    profile.heroPhoto,
+    ...portfolio.slice(0, 6).map((item) => item.image),
+  ]) {
+    if (!previewSources.includes(source)) continue
+    const original = await request.get(source)
+    const preview = await request.get(previewPath(source, 800))
+    expect(original.status()).toBe(200)
+    expect(preview.status()).toBe(200)
+    expect(preview.headers()['content-type']).toContain('image/webp')
+    originals += (await original.body()).length
+    previews += (await preview.body()).length
+  }
+  expect(previews).toBeLessThan(originals * 0.35)
+})
+
+test('Astra index, active navigation, archive collapse, and readable mobile form work', async ({
+  page,
+}) => {
+  await page.goto('/asif/gpt-6-astra/')
+  await page
+    .getByRole('navigation', { name: 'Explore this site' })
+    .getByRole('link', { name: /Projects/ })
+    .click()
+  await expect(
+    page.locator('#astra-navigation a[href$="#portfolio"]'),
+  ).toHaveAttribute('aria-current', 'location')
+  const reveal = page.locator('[data-action="show-all-projects"]')
+  await reveal.click()
+  await expect(page.locator('[data-project]')).toHaveCount(portfolio.length)
+  await reveal.click()
+  await expect(page.locator('[data-project]')).toHaveCount(
+    Math.min(6, portfolio.length),
+  )
+  await expect(page.locator('#portfolio h2')).toBeInViewport()
+  await page.setViewportSize({ width: 390, height: 844 })
+  const input = page
+    .getByRole('form', { name: 'Contact form' })
+    .getByLabel('Your name', { exact: true })
+  expect(
+    await input.evaluate((element) =>
+      parseFloat(getComputedStyle(element).fontSize),
+    ),
+  ).toBeGreaterThanOrEqual(16)
+  const buttons = page.locator('.astra-nav-tools button')
+  for (const button of await buttons.all()) {
+    const size = await button.boundingBox()
+    expect(size.width).toBeGreaterThanOrEqual(44)
+    expect(size.height).toBeGreaterThanOrEqual(44)
+  }
+})
+
+test('role motion can be paused and reacts to reduced-motion changes', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/asif/gpt-6-astra/')
+  await page.clock.install()
+  await page
+    .getByRole('button', { name: 'Pause role rotation', exact: true })
+    .click()
+  const role = page.locator('.astra-role')
+  const paused = await role.textContent()
+  await page.clock.fastForward(9000)
+  await expect(role).toHaveText(paused)
+  await page
+    .getByRole('button', { name: 'Resume role rotation', exact: true })
+    .click()
+  await page.clock.fastForward(4300)
+  await expect(role).not.toHaveText(paused)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect(
+    page.getByRole('button', { name: 'Pause role rotation', exact: true }),
+  ).toHaveCount(0)
+  const reduced = await role.textContent()
+  await page.clock.fastForward(9000)
+  await expect(role).toHaveText(reduced)
 })
 
 for (const width of [320, 768, 1920])
@@ -315,6 +427,9 @@ for (const version of versions)
         await expect(
           page.getByRole('button', { name: 'Menu', exact: true }),
         ).toHaveAttribute('aria-expanded', 'false')
+        await expect(
+          page.getByRole('button', { name: 'Menu', exact: true }),
+        ).toBeFocused()
       }
       await page.locator('[data-project="voicecom"] a').first().click()
       await expect(page.getByRole('dialog')).toHaveCount(1)

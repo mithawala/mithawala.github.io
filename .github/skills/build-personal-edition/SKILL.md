@@ -21,6 +21,10 @@ copy their CSS, composition, typography, section ordering, or markup. This is a
 fresh design exercise, not a recolor. The original content migration is finished.
 Do not repeat it or depend on a sibling checkout.
 
+When the user explicitly asks to refine an existing edition, inspect and change
+only that edition and directly affected infrastructure. This exception does not
+permit studying previous editions when building a new one.
+
 You may read the shared infrastructure and content files listed below. Those are
 the contract, not a visual reference. Existing editions should remain unchanged.
 
@@ -35,6 +39,34 @@ the contract, not a visual reference. Existing editions should remain unchanged.
    `src/asif/Dialog.jsx`, and `src/asif/MusicPlayer.jsx` for reusable behavior.
 5. `src/versions.mjs` for the small registry format, without opening its theme imports.
 6. `tests/e2e/site.spec.mjs` for the behavioral contract. It runs for every edition.
+
+## Design Quality Gate
+
+Use design guidance as a way to question your choices, not as a style to import:
+
+- Start with what visitors should understand and do. Make the actual work easy
+  to reach; a large introduction should not bury the gallery or its model labels.
+- Let the person's real work, images, and interests lead. Explain the purpose of
+  a motif before adding it. Remove repeated decoration that competes with content.
+- Establish a readable hierarchy and comfortable text measures. Test long
+  paragraphs as carefully as the hero. Do not shrink mobile text to make it fit.
+- Keep primary controls at least 44px in both dimensions and mobile text inputs
+  at least 16px. Keep zoom enabled, focus visible, and menu focus predictable.
+- Motion must have a purpose, stop for reduced-motion preferences, and have a
+  pause control for persistent automatic updates. Never hide content until an
+  animation or observer runs.
+- Use `ResponsiveImage` for canonical cover imagery. The build generates shared
+  WebP candidates; originals remain available for full-resolution viewers.
+- Inspect actual screenshots and interactions before declaring the design done.
+  Check model identity/preview visibility, image crops, readable metadata, loading
+  behavior, keyboard focus, 320px reflow, and both color modes.
+
+Useful primary sources to consult without copying their layouts or skill text:
+[frontend-design principles](https://github.com/anthropics/skills/tree/main/skills/frontend-design),
+[interaction guidance](https://vercel.com/design/guidelines),
+[W3C target sizes](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
+and [image/LCP performance](https://web.dev/articles/optimize-lcp).
+No palette, typeface, layout, or motion library is prescribed for future editions.
 
 ## Procedure
 

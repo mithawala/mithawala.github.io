@@ -1,5 +1,6 @@
 node_modules/
 dist/
+public/asif/previews/
 playwright-report/
 test-results/
 .env

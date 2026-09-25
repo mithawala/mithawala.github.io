@@ -11,6 +11,12 @@ import {
   formatTime,
 } from '../src/asif/content.mjs'
 import { versions } from '../src/versions.mjs'
+import {
+  previewAttributes,
+  previewPath,
+  previewSources,
+  previewWidths,
+} from '../src/asif/images.mjs'
 
 test('all canonical content, assets, and version records are valid', () => {
   assert.equal(validateContent().portfolio, portfolio.length)
@@ -85,4 +91,26 @@ test('content edits flow through consumers rather than a theme-specific copy', (
 test('player timestamps are stable', () => {
   assert.equal(formatTime(65000), '1:05')
   assert.equal(formatTime(-1), '0:00')
+})
+
+test('responsive previews derive from canonical covers and preserve originals', () => {
+  assert.equal(new Set(previewSources).size, previewSources.length)
+  const source = portfolio[0].image
+  const attributes = previewAttributes(source, '50vw')
+  assert.equal(attributes.src, source)
+  assert.equal(attributes.sizes, '50vw')
+  for (const width of previewWidths) {
+    assert.ok(
+      attributes.srcSet.includes(`${previewPath(source, width)} ${width}w`),
+    )
+    assert.ok(previewPath(source, width).startsWith('/asif/previews/'))
+  }
+  assert.throws(() => previewPath(source, 123), /Unsupported image preview/)
+  assert.throws(() => previewAttributes(source), /sizes are required/)
+  for (const original of [
+    'https://example.com/art.png',
+    '/asif/assets/animation.gif',
+    '/asif/assets/logo.svg',
+  ])
+    assert.deepEqual(previewAttributes(original, '50vw'), { src: original })
 })

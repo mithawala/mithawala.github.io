@@ -25,6 +25,17 @@ Shared files are served from `/asif/assets/`, with originals in `public/asif/ass
 Do not put personal assets into a model directory. Theme-only decorative assets may
 live with their theme. Keep original full-resolution media for detail views.
 
+`npm run dev` and `npm run build` generate shared 400/800/1200px WebP previews
+for canonical profile, portfolio, article, and music covers under `/asif/previews/`.
+Use `ResponsiveImage` with the original `src`, meaningful `alt`, and a `sizes`
+value describing its layout width. This is an optional presentation helper, not
+a second content store. External images, animated GIFs, and SVGs retain their
+original URLs. Generated previews are ignored by Git and rebuilt in CI; never
+edit them or replace the original media used in full-resolution detail viewers.
+Restart the dev server after adding or replacing a cover image to refresh its
+generated candidates. Every production build regenerates them from the current
+canonical records.
+
 ## Content Fields
 
 Portfolio fields: `id`, `slug`, `title`, `category`, `categories`, `image`, `type`,
@@ -75,6 +86,8 @@ button or a link-only substitute for the existing interactive experience.
 - `filterPortfolio`, `searchContent`, `detailPath`, `resolveDetail`, `formatDate`,
   and `formatTime` are pure helpers in `src/asif/content.mjs`.
 - `ContactForm` and `useContactForm` preserve the real contact integration.
+- `ResponsiveImage` selects generated cover sizes, with native lazy loading by
+  default; use `loading="eager"` and `fetchPriority="high"` for a hero image.
 - `MusicPlayer` and `useSoundCloud` preserve the live music integration.
 - `Dialog`, `ImageLightbox`, `VideoEmbed`, `DevicePreview`, `ProjectDetails`,
   `BlogDetails`, `ShareLinks`, and `RichText` provide accessible feature rendering.
@@ -138,3 +151,7 @@ fixed desktop/mobile viewports, loaded fonts/images, and no external network.
 They are checked for blank pixels and overflow, converted to WebP, and inserted
 into the same deployment artifact. `--write-public` also updates the local/dev
 preview copies. Screenshots are generated assets, never content sources.
+
+The edition-builder skill also includes a style-neutral design quality gate and
+links to primary design/accessibility guidance. Those are evaluation criteria,
+not a visual template to share between editions.
