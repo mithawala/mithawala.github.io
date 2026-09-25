@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "sections": [
+    { "id": "about", "label": "About" },
+    { "id": "resume", "label": "Resume" },
+    { "id": "portfolio", "label": "Portfolio" },
+    { "id": "blog", "label": "Blog" },
+    { "id": "music", "label": "Music" },
+    { "id": "contact", "label": "Contact" }
+  ],
+  "categories": ["all", "app", "project", "video", "illustration", "event", "media", "cloud", "learning"],
+  "features": [
+    "complete-biography", "all-services", "all-experience", "all-education", "all-skills",
+    "role-rotation", "cv-download", "social-links", "mobile-navigation", "active-section", "back-to-top",
+    "light-dark-system-theme", "portfolio-filtering", "all-portfolio-records", "complete-project-descriptions",
+    "image-lightbox", "keyboard-gallery-navigation", "single-and-multiple-video-embeds", "portrait-video",
+    "device-preview-phone-tablet", "project-technology-tags", "project-links", "project-sharing",
+    "complete-blog-articles", "portfolio-blog-search", "direct-detail-routes", "browser-history",
+    "soundcloud-playlist", "track-selection", "play-pause", "previous-next-track", "seek", "volume-mute",
+    "music-fullscreen", "music-banner-lightbox", "spotify-link", "contact-details", "location-map",
+    "contact-validation", "contact-submit", "contact-loading-success-error"
+  ]
+}

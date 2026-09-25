@@ -1,0 +1,253 @@
+{
+  "name": "Asif Mithawala",
+  "subtitle": "Cloud & AI Leader",
+  "photo": "/asif/assets/images/main/photo.jpg",
+  "heroPhoto": "/asif/assets/images/main/sp_photo.jpg",
+  "roles": [
+    "Cloud & AI Leader",
+    "Solution Engineering Manager",
+    "Cloud Architect",
+    "AI Builder",
+    "Frontend-developer",
+    "IT Consultant",
+    "Home Automation Expert"
+  ],
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/asifmithawala/",
+    "github": "https://github.com/mithawala",
+    "youtube": "https://www.youtube.com/@asif.mithawala",
+    "instagram": "https://www.instagram.com/asif.mithawala/"
+  },
+  "copyright": "© 2026 Asif Mithawala",
+  "about": {
+    "headline": "I'm a Solution Engineering Manager, Cloud & AI @ Microsoft",
+    "intro": "Asif is a Solution Engineering Manager for Cloud & AI Platforms at Microsoft, leading a team of Solution Engineers and driving AI transformation for enterprise customers across the Nordics.\n\nHe holds a B.Sc. in Business Engineering from the Royal Institute of Technology (KTH), with a focus on Management and Enterprise Systems.",
+    "skills": [
+      "AI & Agentic Systems (Azure AI, AI Foundry, Copilot Studio)",
+      "Large Language Models & Prompt Engineering",
+      "Cloud Architecture & DevOps practices",
+      "Infrastructure Automation & Scaling",
+      "Full-Stack Development (Node.js, Vue.js, Python)",
+      "Large-scale Cloud Migrations (On-prem to Cloud, Cross-cloud, Legacy Modernization)",
+      "CI/CD Implementation & Pipeline Optimization",
+      "System Integration & Testing",
+      "IT Infrastructure Management",
+      "Process Optimization & Efficiency",
+      "Security & Compliance in Cloud Environments",
+      "Cost Optimization & Resource Management",
+      "Microservices Architecture",
+      "Container Orchestration (Kubernetes, Docker)",
+      "Infrastructure as Code (Terraform, CloudFormation, ARM)",
+      "Cloud Security & Governance",
+      "Performance Optimization & Monitoring",
+      "Disaster Recovery & Business Continuity"
+    ],
+    "experience": "His diverse industry experience spans Finance, Healthcare, Telecom, Retail, Manufacturing, and Nonprofit sectors, where he has successfully delivered enterprise-scale solutions. As a full-stack developer, Asif combines technical expertise with strong business acumen to drive innovative solutions.\n\nKnown for his analytical mindset and structured approach, Asif consistently delivers high-quality results while maintaining strong relationships with stakeholders. He thrives in challenging environments and excels at identifying value-creation opportunities through detailed analysis and creative problem-solving.\n\nOutside of work, Asif maintains an active lifestyle through gym training. He values work-life balance, dedicating time to both professional development and personal relationships. He regularly participates in tech community events and contributes to open-source projects.",
+    "cvLink": "/asif/assets/cv.pdf",
+    "email": "asif@mithawala.com"
+  },
+  "services": [
+    {
+      "icon": "lnr lnr-cloud",
+      "title": "Cloud Consulting",
+      "description": "I can help transforming your IT infrastructure with hybrid or public cloud, from strategy to implementation"
+    },
+    {
+      "icon": "lnr lnr-graduation-hat",
+      "title": "Training & Advisory",
+      "description": "I can offer training sessions or provide ad-hoc advisory work on Cloud, Automation, Serverless Architecture, DevOps etc."
+    },
+    {
+      "icon": "lnr lnr-code",
+      "title": "Coding & Web Development",
+      "description": "For short-term coding projects using Python, PowerShell, Javascript, Front-end/back-end development etc."
+    },
+    {
+      "icon": "pe-7s-gym",
+      "title": "Personal Training",
+      "description": "Working out can be intimidating. It's normal to have goals and be unsure how to achieve them, and it's completely normal to lack motivation at times. I can help you overcome your obstacles and take you to new heights on your fitness journey"
+    }
+  ],
+  "resume": {
+    "education": [
+      {
+        "period": "2009 – 2014",
+        "company": "KTH Royal Institute of Technology",
+        "title": "B.Sc. Business Engineering",
+        "description": "Computer science and Industrial economics and management",
+        "logo": "/asif/assets/images/logos/kth.png"
+      },
+      {
+        "period": "2011",
+        "company": "Swedish Police Academy",
+        "title": "Security Guard (Ordningsvakt)",
+        "description": "Legal, conflict management, self-protection, fire & emergency care",
+        "logo": "/asif/assets/images/logos/police.png"
+      },
+      {
+        "period": "2005 - 2008",
+        "company": "Arlandagymnasiet",
+        "title": "High School",
+        "description": "Natural Science Programme",
+        "logo": "/asif/assets/images/logos/arlanda.png"
+      }
+    ],
+    "experience": [
+      {
+        "period": "Mar 2026 - Current",
+        "company": "Microsoft",
+        "title": "Solution Engineering Manager, Cloud & AI",
+        "description": "Cloud & AI Platforms – Microsoft Sweden\n\n· Lead a team of Solution Engineers covering Infrastructure, Applications, Data, and AI solutions for enterprise customers.\n· Drive AI transformation initiatives, guiding customers through adoption of Azure AI, AI Foundry, and agentic AI systems.\n· Architect and demonstrate cloud & AI solutions across Azure Infrastructure, Databases, Analytics, and Applications.\n· Coach and develop technical team expertise to Level 400 in solution knowledge across cloud migration, AI Foundry, GitHub, and cloud-native development.\n· Collaborate with cross-functional sales, engineering, and partner teams to accelerate Azure wins and remove technical blockers.\n· Engage with senior technical decision-makers, translating complex AI and cloud solutions into clear business value.",
+        "logo": "/asif/assets/images/logos/microsoft.png"
+      },
+      {
+        "period": "Oct 2021 - Mar 2026",
+        "company": "Amazon Web Services",
+        "title": "Senior Cloud Infrastructure Architect",
+        "description": "AWS Professional Services\n\n· Architect and evaluate highly innovative cloud-based solutions that are scalable and reliable.\n· Review implementations and provide feedback on improvements in areas such as security, reliability and scalability.\n· Lead customer workshops with technical leaders to gather requirements and to educate and demonstrate how various AWS services can be leveraged in their environment.\n· Provide assistance building out cloud infrastructure, including scripting and delivering infrastructure as code solutions.\n· Educate customers and colleagues on how to develop high-quality architectures and innovate using the latest (cloud) technologies and best practices.\n· Solve deep technical issues and develop solutions that extend service capabilities to meet customer needs. While at the same time, being in contact with the service teams to align the customer needs with the service development roadmap.",
+        "logo": "/asif/assets/images/logos/aws.png"
+      },
+      {
+        "period": "Apr 2014 - Oct 2021",
+        "company": "Accenture",
+        "title": "Cloud Transformation & Migration Innovation Principal",
+        "description": "IT Management consultancy / Cloud practice",
+        "logo": "/asif/assets/images/logos/accenture.png"
+      },
+      {
+        "period": "Jun 2020 - Sep 2021",
+        "company": "Nordic Wellness",
+        "title": "Group Exercise Instructor",
+        "description": "Group Exercise Instructor",
+        "logo": "/asif/assets/images/logos/nordic-wellness.png"
+      },
+      {
+        "period": "Feb 2009 - Feb 2021",
+        "company": "FedEx",
+        "title": "Heavy-truck driver",
+        "description": "Unloading of containers from cargo planes with various different trucks and plan the work so that the remaining staff can complete their work in the terminal (sorting, transshipment, etc.)",
+        "logo": "/asif/assets/images/logos/fedex.png"
+      },
+      {
+        "period": "Jan 2020 - Apr 2020",
+        "company": "Sats",
+        "title": "Group Exercise Instructor",
+        "description": "Group Exercise Instructor in Pure Strength & Cross Training",
+        "logo": "/asif/assets/images/logos/sats.png"
+      },
+      {
+        "period": "Nov 2008 - July 2013",
+        "company": "Swedish Red Cross",
+        "title": "IT Technician",
+        "description": "Technician in the IT department. Main focus on Infrastructure and the Microsoft stack",
+        "logo": "/asif/assets/images/logos/redcross.png"
+      },
+      {
+        "period": "Nov 2011 - March 2012",
+        "company": "Stockholm University",
+        "title": "Tutor",
+        "description": "Helped students with their assignments in the courses \"ERP Systems and Service-Oriented Architectures\" and \"ERP systems, configuration and customization.\"",
+        "logo": "/asif/assets/images/logos/su.png"
+      },
+      {
+        "period": "Aug 2011 - Feb 2012",
+        "company": "System Verification",
+        "title": "System tester",
+        "description": "Worked with system testing and quality assurance of mobile applications in div. platforms such as iOS (iPhone)",
+        "logo": "/asif/assets/images/logos/systemverification.png"
+      },
+      {
+        "period": "Nov 2008 - Aug 2009",
+        "company": "PEAK-IT",
+        "title": "IT Consultant",
+        "description": "2nd and 3rd line support",
+        "logo": "/asif/assets/images/logos/peakit.png"
+      }
+    ],
+    "functionalSkills": [
+      {
+        "name": "Azure, GCP, AWS",
+        "value": 95
+      },
+      {
+        "name": "Solution Architecture",
+        "value": 90
+      },
+      {
+        "name": "Infrastructure",
+        "value": 90
+      },
+      {
+        "name": "DevOps",
+        "value": 95
+      },
+      {
+        "name": "Cloud Automation / Deployment",
+        "value": 95
+      },
+      {
+        "name": "AI / Agentic Systems / ML",
+        "value": 85
+      }
+    ],
+    "codingSkills": [
+      {
+        "name": "JavaScript",
+        "value": 90
+      },
+      {
+        "name": "Python",
+        "value": 90
+      },
+      {
+        "name": "Powershell",
+        "value": 90
+      },
+      {
+        "name": "Bash",
+        "value": 85
+      },
+      {
+        "name": "HTML / CSS / React / Vue",
+        "value": 100
+      },
+      {
+        "name": "C# / .NET",
+        "value": 40
+      }
+    ],
+    "startYear": 2008
+  },
+  "contact": {
+    "info": [
+      {
+        "icon": "lnr lnr-phone-handset",
+        "value": "+4676 584 00 84",
+        "link": "tel:+46765840084"
+      },
+      {
+        "icon": "lnr lnr-map-marker",
+        "value": "Stockholm",
+        "link": null
+      },
+      {
+        "icon": "lnr lnr-envelope",
+        "value": "asif@mithawala.com",
+        "link": "mailto:asif@mithawala.com"
+      },
+      {
+        "icon": "lnr lnr-checkmark-circle",
+        "value": "Freelance Available",
+        "link": null
+      }
+    ],
+    "endpoint": "https://formsubmit.co/ajax/asif@mithawala.com",
+    "mapUrl": "https://www.google.com/maps?q=T-Centralen,Stockholm,Sweden&z=15&output=embed"
+  },
+  "music": {
+    "playlistUrl": "https://soundcloud.com/asifmithawala/sets/asif-mithawala",
+    "spotifyUrl": "https://open.spotify.com/artist/7rRCrE7Boh4en52XqHWZmr",
+    "image": "/asif/assets/images/music/music-header.png",
+    "intro": "Music has always been a creative outlet for me. Here you'll find my original compositions and productions. Hit play and enjoy!"
+  }
+}

@@ -1,0 +1,1521 @@
+[
+  {
+    "id": 52,
+    "slug": "voicecom",
+    "title": "📞 VoiceCom: I Vibe-Coded a Forgotten Wall Panel into a Home Intercom",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/voicecom/poster-merge-blue.png",
+    "type": "project",
+    "descriptionHtml": "<p>A year ago I bought a Sonoff NSPanel Pro because, honestly, it just looked cool.</p>\n<p>It's basically a little Android touchscreen for your wall. You can run Home Assistant on it, dim your Philips Hue lights, pick which Spotify playlist plays in which room… all very neat.</p>\n<p>And I used almost none of it. Because — let's be real — it's always easier to just grab your phone. So the panel sat there on the wall. Looking cool. Doing nothing.</p>\n<p>Then one evening I tried to reach home. Nobody picked up their phone. (And a landline? Yeah… not really a thing anymore. 😅)</p>\n<p>And it hit me: there's a device on that wall with a speaker, a microphone, and WiFi, powered on 24/7. That's not a forgotten gadget. That's an intercom waiting to happen.</p>\n<p>So I opened an AI coding agent and just… described what I wanted: \"A call-home button. Video and voice. The panel answers all by itself.\"</p>\n<p>About 15 minutes later, I was talking to my living room. 🏠</p>\n<p>Now the honest part — because I think it matters: the first working version took 15 minutes. The last 10% (killing the echo, taming a cheap microphone, making it actually feel good) took longer. And that's the part I love, because that's where the real engineering still lives.</p>\n<p>But the lesson stuck with me.</p>\n<p>Karpathy says the hottest new programming language is English. Collins made \"vibe coding\" its word of the year. And underneath all the noise about AI writing slop, it's easy to miss the quiet, real thing that's happening:</p>\n<p><strong>The distance between \"I wish this existed\" and \"it exists\" has basically collapsed.</strong></p>\n<p>The best device in your home might be the one you already own and forgot about. And the best moment to finally build the thing you keep wishing for is right now — because now, you actually can.</p>\n<p>Now if you'll excuse me… I have a wall to talk to.</p>",
+    "technologies": [
+      "VibeCoding",
+      "AgenticAI",
+      "SmartHome",
+      "WebRTC",
+      "AICoding",
+      "HomeAssistant",
+      "NSPanelPro"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/voicecom/poster-merge-blue.png"
+    ],
+    "date": "2026-07-08"
+  },
+  {
+    "id": 51,
+    "slug": "bookmark-manager",
+    "title": "🔖 Bookmark Manager: AI-Enriched Chrome Bookmarks Dashboard",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/bookmark-manager/bm1.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://bookmark-manager.mithawala.com/",
+      "device": "ipad"
+    },
+    "descriptionHtml": "<p>Your Chrome bookmarks are a mess. Mine were too — 100+ links with cryptic names like \"Kommunikationswebbplats - Home\" and no way to remember what they were for.</p>\n<p>So I built a system that turns a flat list of Chrome bookmarks into a rich, searchable, visual dashboard — powered by AI and browser automation.</p>\n<p><strong>How it works:</strong></p>\n<ul>\n<li>🔄 Say \"sync my bookmarks\" in VS Code — a Copilot Agent Skill reads your Chrome bookmarks file</li>\n<li>🌐 Chrome DevTools MCP navigates to each URL using your real browser session (SSO just works)</li>\n<li>📸 Takes a screenshot and reads the page's accessibility tree</li>\n<li>🤖 AI generates a rich title, 3-5 sentence description, tags, and category for each bookmark</li>\n<li>🖥️ Everything renders in a searchable dashboard with themes, filters, and a command palette</li>\n</ul>\n<p><strong>Key features:</strong></p>\n<ul>\n<li>📋 Command palette (press <code>/</code>) for instant Spotlight-style search</li>\n<li>🎨 4 themes: Light, Dark, Cyberpunk, Sunset</li>\n<li>🏷️ Tag filtering with auto-generated tags from page content, domain, and folder structure</li>\n<li>📁 Collapsible category groups with grid and list views</li>\n<li>🔍 Screenshot lightbox for full-size previews</li>\n<li>📄 Standalone HTML — <code>dist/index.html</code> works from <code>file://</code> with no server</li>\n<li>🔒 Personal data never leaves your machine — gitignored by design</li>\n</ul>\n<p><strong>The real innovation is the Agent Skill.</strong> It's a markdown file that teaches GitHub Copilot the entire sync workflow — detecting browsers, diffing bookmarks, navigating pages, capturing screenshots, and generating metadata. One prompt does everything.</p>\n<p>Built with Chrome DevTools MCP for browser automation (3 tool calls per bookmark instead of 5 with Playwright), and vite-plugin-singlefile for a self-contained HTML output.</p>",
+    "technologies": [
+      "AI",
+      "CopilotAgentSkill",
+      "MCP",
+      "ChromeDevTools",
+      "React",
+      "TypeScript",
+      "Vite",
+      "TailwindCSS",
+      "BrowserAutomation",
+      "OpenSource"
+    ],
+    "links": [
+      {
+        "label": "Live Demo",
+        "url": "https://bookmark-manager.mithawala.com/"
+      },
+      {
+        "label": "GitHub Repository",
+        "url": "https://github.com/mithawala/bookmark-manager"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/bookmark-manager/bm1.png",
+      "/asif/assets/images/portfolio/bookmark-manager/bm2.png",
+      "/asif/assets/images/portfolio/bookmark-manager/bm3.png",
+      "/asif/assets/images/portfolio/bookmark-manager/bm4.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-04-01"
+  },
+  {
+    "id": 50,
+    "slug": "savr-avgiftsjakten",
+    "title": "💰 SAVR Avgiftsjakten: AI-Powered Fund Fee Comparison",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/savr-avgiftsjakten/savr1.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://savr-avgiftsjakten.mithawala.com/",
+      "device": "ipad"
+    },
+    "embedVideos": [
+      {
+        "url": "https://www.youtube.com/embed/tVLZlMsTr-c",
+        "title": "SAVR Avgiftsjakten (Short)"
+      },
+      {
+        "url": "https://www.youtube.com/embed/HGUWBV33jjo?controls=1&rel=0",
+        "title": "SAVR Avgiftsjakten Demo"
+      }
+    ],
+    "descriptionHtml": "<p>What if switching funds could be as easy as taking a screenshot?</p>\n<p>The biggest challenge in getting new customers to <a href=\"https://savr.se\" target=\"_blank\">SAVR</a> isn't convincing them to lower their fees — it's convincing them to go through the manual, tedious work of comparing their current funds with SAVR's offering. Logging into your old bank, writing down fund names, switching tabs and searching through lists… it's a friction-filled process that puts people off.</p>\n<p>That's why I built <strong>Avgiftsjakten</strong> (The Fee Hunt).</p>\n<p>Avgiftsjakten transforms a complicated comparison into a quick, visual \"Aha moment\". Instead of clunky bank integrations or manual data entry, the user simply takes a screenshot of their portfolio.</p>\n<p><strong>How it works:</strong></p>\n<ul>\n<li>📸 Upload a screenshot of your fund portfolio from any Swedish broker</li>\n<li>🤖 Gemini 3.1 Flash Lite scans the image in real time, extracting fund names and market values</li>\n<li>🔍 Fuzzy matching maps extracted funds against SAVR's discounted prices</li>\n<li>📊 Compound interest projections show long-term savings with interactive sliders</li>\n</ul>\n<p>We make the invisible visible, and make the choice to switch to SAVR a no-brainer.</p>\n<p><strong>This isn't just a calculator — it's the future of onboarding.</strong></p>\n<p><strong>Tech Stack:</strong> React 19, TypeScript, Vite, Tailwind CSS v4, Motion (Framer Motion), Google Gemini AI (vision model)</p>",
+    "technologies": [
+      "AI",
+      "GenerativeAI",
+      "Gemini",
+      "React",
+      "TypeScript",
+      "Vite",
+      "TailwindCSS",
+      "Vercel",
+      "EdgeFunctions",
+      "FinTech"
+    ],
+    "links": [
+      {
+        "label": "Try Avgiftsjakten",
+        "url": "https://savr-avgiftsjakten.mithawala.com/"
+      },
+      {
+        "label": "SAVR Vibe Coding Contest",
+        "url": "https://savr.com/sv/nyheter/vinn-20-000-kr-vibekoda-en-funktion-du-saknar-pa-savr"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/savr-avgiftsjakten/savr1.png",
+      "/asif/assets/images/portfolio/savr-avgiftsjakten/savr2.png",
+      "/asif/assets/images/portfolio/savr-avgiftsjakten/savr3.png",
+      "/asif/assets/images/portfolio/savr-avgiftsjakten/savr4.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-03-13"
+  },
+  {
+    "id": 49,
+    "slug": "spritecut",
+    "title": "✂️ SpriteCut: Browser-Based Audio Sprite Editor",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/spritecut/spritecut1.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://spritecut.mithawala.com/",
+      "device": "ipad"
+    },
+    "descriptionHtml": "<p>✂️ One HTML file. No install. Full audio sprite editing in the browser.</p>\n<p>SpriteCut is a zero-dependency tool for building and maintaining <a href=\"https://howlerjs.com/\" target=\"_blank\">Howler.js</a> audio sprite JSON files — the format that packs dozens of sounds into a single MP3 for fast, efficient audio in web apps.</p>\n<p><strong>Why?</strong></p>\n<p>Building educational apps like Lär med Nadira means managing hundreds of short audio clips — words, phrases, feedback sounds. Manually writing sprite JSON is tedious and error-prone. No existing tool handled iterative sprite builds well, so I built one.</p>\n<p><strong>Features:</strong></p>\n<ul>\n<li>🎵 Drag & drop MP3 loading with virtual waveform rendering (no canvas size limits)</li>\n<li>🔍 Auto silence-detection with adjustable threshold, gap, and duration settings</li>\n<li>📥 Import existing sprite JSON and detect only new sounds appended to the audio</li>\n<li>✂️ Split, merge, rename, lock/unlock segments directly on the waveform</li>\n<li>🔎 Zoom from 20px/sec to 800px/sec — works on files of any length</li>\n<li>↔️ Resizable segment panel with drag-to-resize handles on every segment</li>\n<li>📤 Export Howler.js-compatible JSON with one click</li>\n<li>🚫 No server, no dependencies, no install — just open the HTML file</li>\n</ul>\n<p><strong>Open Source</strong></p>\n<p>Built for anyone working with web audio — game devs, edtech builders, interactive storytellers. If you're loading sounds in the browser, you probably need this.</p>\n<p>🔗 Try it: <a href=\"https://spritecut.mithawala.com/\" target=\"_blank\">spritecut.mithawala.com</a><br>\n💻 GitHub: <a href=\"https://github.com/mithawala/spritecut\" target=\"_blank\">github.com/mithawala/spritecut</a></p>",
+    "technologies": [
+      "HTML",
+      "Canvas API",
+      "Web Audio API",
+      "JavaScript",
+      "Howler.js",
+      "OpenSource",
+      "DevTools"
+    ],
+    "links": [
+      {
+        "label": "Open SpriteCut",
+        "url": "https://spritecut.mithawala.com/"
+      },
+      {
+        "label": "GitHub Repository",
+        "url": "https://github.com/mithawala/spritecut"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/spritecut/spritecut1.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-03-02"
+  },
+  {
+    "id": 48,
+    "slug": "lar-med-nadira",
+    "title": "📚 Lär med Nadira: Free Learning App for Kids",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/lar-med-nadira/nadira1.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://nadira.mithawala.com/",
+      "device": "ipad"
+    },
+    "descriptionHtml": "<p>📚 Learning should be free. Always.</p>\n<p>I just launched \"Lär med Nadira\" — a completely free, ad-free learning app for kids. No data collection. No in-app purchases. Just pure learning through play.</p>\n<p><strong>Why?</strong></p>\n<p>Because too many \"free\" educational apps aren't really free. They're filled with ads, paywalls, and data harvesting. That's not what our kids deserve.</p>\n<p><strong>Features:</strong></p>\n<ul>\n<li>🎮 Interactive games: ABC-Äventyr, Matte-Magi, Minnes-Mästaren</li>\n<li>⭐ Star system and progress tracking</li>\n<li>🎨 Two magical themes: Unicorn World & Hero World</li>\n<li>👤 Multiple child profiles</li>\n<li>🔒 No data collection, no ads, 100% free</li>\n<li>📱 Works offline</li>\n</ul>\n<p><strong>Open Source</strong></p>\n<p>Now I'm calling out to all the vibe coders out there. The parents who code on weekends, teachers who understand what kids actually need, designers who care about making learning beautiful, and developers who want their skills to matter.</p>\n<p>The project is open source. Add a game. Improve word lists. Design themes. Every contribution counts.</p>\n<p>Let's make learning accessible — one game at a time.</p>\n<p>🔗 Try it: <a href=\"https://nadira.mithawala.com/\" target=\"_blank\">nadira.mithawala.com</a><br>\n💻 Contribute: <a href=\"https://github.com/mithawala/lar-med-nadira\" target=\"_blank\">github.com/mithawala/lar-med-nadira</a></p>",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "TailwindCSS",
+      "Vite",
+      "PWA",
+      "EdTech",
+      "OpenSource",
+      "VibeCoding"
+    ],
+    "links": [
+      {
+        "label": "Try Lär med Nadira",
+        "url": "https://nadira.mithawala.com/"
+      },
+      {
+        "label": "GitHub Repository",
+        "url": "https://github.com/mithawala/lar-med-nadira"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/lar-med-nadira/nadira1.png",
+      "/asif/assets/images/portfolio/lar-med-nadira/nadira2.png",
+      "/asif/assets/images/portfolio/lar-med-nadira/nadira3.png",
+      "/asif/assets/images/portfolio/lar-med-nadira/nadira4.png",
+      "/asif/assets/images/portfolio/lar-med-nadira/nadira5.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-02-24"
+  },
+  {
+    "id": 47,
+    "slug": "ai-showdown",
+    "title": "🏆 AI Showdown: Where AI Models Battle It Out",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/ai-showdown/aishowdown2.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://aishowdown.mithawala.com/",
+      "device": "ipad"
+    },
+    "embedVideo": "https://www.youtube.com/embed/X2nePJ8UYzc?controls=1&rel=0",
+    "descriptionHtml": "<p>What if AI models could debate each other?</p>\n<p>Back in 2022, I had an idea: put AI models head-to-head in a real debate — and let a third AI judge the winner.</p>\n<p>Now it's live. Introducing <strong>AI Showdown</strong> 🏆</p>\n<ul>\n<li>🤖 Choose any two AI models (GPT, Claude, Gemini, Llama…)</li>\n<li>💬 Give them a debate topic</li>\n<li>⚡ Watch them argue in real time</li>\n<li>⚖️ Let another AI objectively decide the winner</li>\n</ul>\n<p>The battle for intelligence has begun. ⚔️</p>\n<p><strong>Features:</strong></p>\n<ul>\n<li>Multi-model comparison</li>\n<li>Battle history with leaderboards</li>\n<li>Multi-language support</li>\n<li>Responsive dark/light theme UI</li>\n</ul>\n<p>🔗 Try it: <a href=\"https://aishowdown.mithawala.com\" target=\"_blank\">aishowdown.mithawala.com</a></p>",
+    "technologies": [
+      "AI",
+      "GenerativeAI",
+      "LLM",
+      "React",
+      "Vite",
+      "TailwindCSS",
+      "Puter.js"
+    ],
+    "links": [
+      {
+        "label": "Try AI Showdown",
+        "url": "https://aishowdown.mithawala.com"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown1.png",
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown2.png",
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown3.png",
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown4.png",
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown5.png",
+      "/asif/assets/images/portfolio/ai-showdown/aishowdown6.png"
+    ],
+    "date": "2026-01-20"
+  },
+  {
+    "id": 46,
+    "slug": "exampro-ai-exam-simulator",
+    "title": "🚀 ExamPro: AI-Powered Exam Simulator",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/exampro/Exampro1.png",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://exampro.mithawala.com/",
+      "device": "ipad"
+    },
+    "embedVideo": "https://www.youtube.com/embed/kK5h0-uT8C4?controls=1&rel=0",
+    "descriptionHtml": "<p>🚀 I built an AI-powered exam simulator!</p>\n<p>Tired of searching for practice questions? ExamPro generates unlimited quizzes on ANY topic in seconds using AI.</p>\n<p><strong>✨ What it does:</strong></p>\n<ul>\n<li>→ Pick a topic, difficulty & question count</li>\n<li>→ AI generates questions instantly</li>\n<li>→ Get detailed explanations for wrong answers</li>\n<li>→ Flag questions to revisit later</li>\n<li>→ Track your progress over time</li>\n</ul>\n<p>Whether you're prepping for certifications or just want to test yourself on random trivia... ExamPro has you covered.</p>\n<p>🔗 Try it free: <a href=\"https://exampro.mithawala.com\" target=\"_blank\">exampro.mithawala.com</a></p>",
+    "technologies": [
+      "AI",
+      "EdTech",
+      "LLM",
+      "CloudComputing",
+      "React",
+      "ExamPrep"
+    ],
+    "links": [
+      {
+        "label": "Try ExamPro",
+        "url": "https://exampro.mithawala.com"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/exampro/Exampro1.png",
+      "/asif/assets/images/portfolio/exampro/Exampro2.png",
+      "/asif/assets/images/portfolio/exampro/Exampro3.png",
+      "/asif/assets/images/portfolio/exampro/Exampro4.png",
+      "/asif/assets/images/portfolio/exampro/Exampro5.png",
+      "/asif/assets/images/portfolio/exampro/Exampro6.png",
+      "/asif/assets/images/portfolio/exampro/Exampro7.png",
+      "/asif/assets/images/portfolio/exampro/Exampro8.png"
+    ],
+    "date": "2026-01-15"
+  },
+  {
+    "id": 45,
+    "slug": "ai-robot-barista",
+    "title": "AI Robot Barista Makes My Perfect Coffee ☕️🤖",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/ai-robot-barista/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://player.vimeo.com/video/1143116156",
+    "portrait": true,
+    "date": "2025-12-03"
+  },
+  {
+    "id": 44,
+    "slug": "ai-lambda-error-agent",
+    "title": "🤖 AI-Powered Lambda Error Analysis Agent",
+    "category": "Cloud, Learning, Project",
+    "categories": [
+      "all",
+      "cloud",
+      "learning",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/ai-lambda-error-agent/thumbnail.jpg",
+    "images": [
+      "/asif/assets/images/portfolio/ai-lambda-error-agent/thumbnail.jpg",
+      "/asif/assets/images/portfolio/ai-lambda-error-agent/architecture.png",
+      "/asif/assets/images/portfolio/ai-lambda-error-agent/screenshot-1.png",
+      "/asif/assets/images/portfolio/ai-lambda-error-agent/screenshot-2.png"
+    ],
+    "type": "project",
+    "links": [
+      {
+        "label": "View Sample Code",
+        "url": "https://github.com/strands-agents/samples/tree/main/02-samples/16-lambda-error-analysis-agent"
+      },
+      {
+        "label": "Strands Agents",
+        "url": "https://strandsagents.com/"
+      }
+    ],
+    "descriptionHtml": "<p>I built an intelligent error analysis system that automatically investigates AWS Lambda failures using AI agents. When a Lambda function fails, the system autonomously gathers source code, execution logs, and searches documentation to provide root cause analysis and specific fix recommendations—typically in under a minute. ⚡</p>\n<p><strong>What are Strands Agents?</strong></p>\n<p>🧠 They're a framework for building production-ready AI agents that can use tools, reason through complex problems, and take autonomous actions. Think of them as AI assistants that can actually do things—not just chat. They leverage Amazon Bedrock's foundation models (like Claude Sonnet 4) with built-in orchestration, memory, and tool integration.</p>\n<p><strong>What it does:</strong></p>\n<p>📦 Automatically retrieves source code from S3 or Lambda deployment packages<br>\n📊 Analyzes CloudWatch logs filtered by execution context<br>\n🔍 Searches a knowledge base for error patterns and best practices<br>\n� Provitdes confidence scoring based on evidence quality<br>\n⚙️ Runs event-driven using EventBridge—no manual intervention needed</p>\n<p><strong>Tech Stack:</strong> AWS Strands SDK, Claude Sonnet 4, Amazon Bedrock, EventBridge, Lambda, DynamoDB, CDK</p>\n<p>This sample is now part of the official Strands Agents repository, helping developers understand how to build autonomous AI systems.</p>",
+    "technologies": [
+      "AIAgents",
+      "AWS",
+      "Bedrock",
+      "StrandsSDK",
+      "Serverless"
+    ],
+    "date": "2025-10-23"
+  },
+  {
+    "id": 43,
+    "slug": "kiro-birthday-game",
+    "title": "I Built a Birthday Game in 20 Minutes using AWS Kiro AI 🎮",
+    "category": "Project, Video",
+    "categories": [
+      "all",
+      "project",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/kiro-birthday-game/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/k01IWvS4UoI?controls=1&rel=0",
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://youtube.com/shorts/GE3sb1MBEVg"
+      }
+    ],
+    "descriptionHtml": "<p>🎮 Turning Code into Magic: My 20-Minute Adventure with AWS Kiro!</p>\n<p>🚀 Just created something incredible with AWS's new AI-powered IDE, Kiro</p>\n<p>Kiro isn't just another IDE - it's your coding buddy with a unique twist:<br>\n- \"Vibe Coding\" for quick experimental builds<br>\n- \"Spec-driven development\" that helps plan, document, and implement complex projects with your team.</p>\n<p>What impressed me most? How Kiro guides you through requirements and system design before writing any code. Game changer!</p>\n<p>🎥 Check out the video and see what I built in Kiro in just 20 minutes - from idea to fully working application!</p>\n<p>💡 Curious to hear: What's the first thing you'd create with Kiro?<br>\nLet me know in the comments!</p>\n<p>✨ Try Kiro here: <a href=\"https://kiro.dev/\" target=\"_blank\">https://kiro.dev/</a></p>",
+    "technologies": [
+      "AWS",
+      "KIRO",
+      "VibeCoding",
+      "GenerativeAI",
+      "Claude",
+      "CodeGeneration",
+      "FutureOfCoding"
+    ],
+    "date": "2025-08-03"
+  },
+  {
+    "id": 42,
+    "slug": "aws-cloud-quest",
+    "title": "Learn Generative AI on AWS by Playing a Game! | Cloud Quest Walkthrough",
+    "category": "Learning, Video",
+    "categories": [
+      "all",
+      "learning",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/aws-cloud-quest/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/4vxsiuVEu6c?controls=1&rel=0",
+    "links": [
+      {
+        "label": "Cloud Quest Walkthrough",
+        "url": "https://www.youtube.com/watch?v=4vxsiuVEu6c"
+      }
+    ],
+    "descriptionHtml": "<p>🚀 Just completed one of the challenges in AWS Cloud Quest: Generative AI Practitioner — and wow, learning Gen AI has never been this fun! 🎮🤖</p>\n<p>🧠 No prior AI experience? No problem.<br>\n🆓 It's 100% free.<br>\n🔥 You get to build real-world Gen AI solutions in a gamified 3D world, using actual AWS services like Amazon Bedrock, Amazon Q Developer, and Amazon SageMaker.</p>\n<p>In this challenge, I:<br>\n✅ Enabled a foundation model in Bedrock<br>\n✅ Generated a webpage with AI<br>\n✅ Updated a running app on EC2 — all in a few minutes!</p>\n<p>💻 It's hands-on, fast-paced, and surprisingly addictive. And once you complete all 10 assignments, you earn the AWS Cloud Quest: Generative AI Practitioner badge 🎖️</p>\n<p>If you want to play and learn yourself, start today:<br>\n👉 <a href=\"https://aws.amazon.com/training/digital/aws-cloud-quest/\" target=\"_blank\">https://aws.amazon.com/training/digital/aws-cloud-quest/</a></p>",
+    "technologies": [
+      "AWS",
+      "GenerativeAI",
+      "AWSCloudQuest",
+      "Bedrock",
+      "AI",
+      "AWSLearning",
+      "CloudComputing"
+    ],
+    "date": "2025-08-02"
+  },
+  {
+    "id": 41,
+    "slug": "chatgpt-diy-shelf",
+    "title": "ChatGPT-inspired DIY: Transforming a Boring Shelf into a Laundry Room Masterpiece!",
+    "category": "Illustration, Project, Video",
+    "categories": [
+      "all",
+      "illustration",
+      "project",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/chatgpt-diy-shelf/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/uLbd3VnAQ4E?controls=1&rel=0",
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.youtube.com/watch?v=uLbd3VnAQ4E"
+      }
+    ],
+    "descriptionHtml": "<p>Ever looked at a space in your home and thought, \"This could look so much better…\" but didn't know where to start? 🤷🏽‍♂️</p>\n<p>I decided to ask ChatGPT for help with a boring shelf in my laundry room 🧺</p>\n<p>Within a minute, it gave me a simple idea, a visual concept, and even the confidence to pull off a quick DIY project 💡🛠️<br>\nSome self-adhesive wallpaper and a pair of handles from IKEA 🛒 later—and voilà! ✨</p>\n<p>This tiny upgrade reminded me how AI isn't just for code or content 💻✍🏽</p>\n<p>Sometimes it's the perfect creative co-pilot for everyday things too.</p>\n<p>Check out the video to see the transformation!</p>",
+    "technologies": [
+      "AI",
+      "GenerativeAI",
+      "Ikea",
+      "DIY"
+    ],
+    "date": "2025-08-01"
+  },
+  {
+    "id": 40,
+    "slug": "ai-generated-video",
+    "title": "🚀 Exploring AI-Generated Video 🎬",
+    "category": "Illustration, Video",
+    "categories": [
+      "all",
+      "illustration",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/ai-generated-video/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/CbH-4SIADiw?controls=1&rel=0",
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.youtube.com/watch?v=CbH-4SIADiw"
+      }
+    ],
+    "descriptionHtml": "<p>🚀 Exploring AI-Generated Video 🎬</p>\n<p>The evolution of Text-to-Video is moving fast. I've been testing some of the latest models, combining image input with text-driven generation to see how they perform. The result? A short action sequence starring… me. (Check out the video!)</p>\n<p>For this, I experimented with Kling 1.6 and S2V-01 from MiniMax, looking at how they handle motion coherence, character consistency, and scene composition. The improvements in AI-generated video are noticeable, and it's interesting to see how different models approach the challenge.</p>\n<p>At this rate, we might not be too far from being able to generate entire movies with just text prompts. Curious to see where this will go in the next few years.</p>",
+    "technologies": [
+      "AI",
+      "GenerativeAI",
+      "TextToVideo",
+      "VideoGeneration"
+    ],
+    "date": "2025-02-20"
+  },
+  {
+    "id": 39,
+    "slug": "meet-asif-aws",
+    "title": "Meet Asif @ AWS",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/meet-asif-aws/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/SuZTnDAiqwk",
+    "date": "2024-10-18"
+  },
+  {
+    "id": 38,
+    "slug": "cloud-gaming-ec2",
+    "title": "Game On-Demand: Unlocking Cost-Efficient Cloud Gaming with Amazon EC2's Pay-as-You-Go Model using Steam",
+    "category": "Project, Video",
+    "categories": [
+      "all",
+      "project",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/cloud-gaming-ec2/thumbnail.jpg",
+    "images": [
+      "/asif/assets/images/portfolio/cloud-gaming-ec2/architecture.jpg"
+    ],
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/_X1peLetOAU?controls=1&rel=0",
+    "links": [
+      {
+        "label": "AWS for Games Blog",
+        "url": "https://aws.amazon.com/blogs/gametech/game-on-demand-unlocking-cost-efficient-cloud-gaming-with-amazon-ec2s-pay-as-you-go-model-using-steam/"
+      },
+      {
+        "label": "aws-samples / cloud-gaming-on-ec2-using-steam",
+        "url": "https://github.com/aws-samples/cloud-gaming-on-ec2-using-steam"
+      }
+    ],
+    "descriptionHtml": "<h3>Introduction</h3>\n<p>In today's gaming landscape, the concept of cloud gaming is gaining momentum, offering a compelling alternative to traditional gaming setups. With the rise of cloud computing, cloud services providers like <a href=\"https://aws.amazon.com/\" target=\"_blank\">Amazon Web Services</a> present an opportunity to explore cost-efficient gaming solutions with pay-as-you-go pricing. In this blog post, we'll demonstrate how <a href=\"https://aws.amazon.com/ec2\" target=\"_blank\">Amazon Elastic Compute Cloud (Amazon EC2)</a> instances can transform your gaming experience without the need for substantial investments in personal gaming hardware.</p>\n<p>Our <a href=\"https://aws.amazon.com/cloudformation/\" target=\"_blank\">AWS CloudFormation</a> template automates the installation and configuration of Steam, providing a seamless gaming experience accessible from any device. Whether you're a seasoned gamer or new to cloud gaming, our user-friendly guide simplifies the deployment of your own cloud gaming setup and allows you to start playing your favorite games in no time.</p>\n<p>Read the full blog post <a href=\"https://aws.amazon.com/blogs/gametech/game-on-demand-unlocking-cost-efficient-cloud-gaming-with-amazon-ec2s-pay-as-you-go-model-using-steam/\" target=\"_blank\">here</a></p>",
+    "technologies": [
+      "CloudGaming",
+      "EC2",
+      "G5Instances",
+      "GameStreaming",
+      "AWSForGames",
+      "AWSCloud"
+    ],
+    "date": "2024-08-27"
+  },
+  {
+    "id": 37,
+    "slug": "drone-footage-part2",
+    "title": "Drone Footage: Aerial Overview of My Home – Part 2",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/drone-footage-part2/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/ecS64rLP4rA",
+    "date": "2024-08-27"
+  },
+  {
+    "id": 36,
+    "slug": "drone-footage-part1",
+    "title": "Drone Footage: Aerial Overview of My Home – Part 1",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/drone-footage-part1/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/rAGPxu5u0P0",
+    "date": "2024-08-27"
+  },
+  {
+    "id": 35,
+    "slug": "kitchen-transformation",
+    "title": "Exciting Kitchen Transformation Journey!",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/kitchen-transformation/thumbnail.jpg",
+    "type": "project",
+    "description": "🚀 Exciting Kitchen Transformation Journey! 🚀\n\nLast year, I embarked on a kitchen renovation adventure, and one key player in bringing my vision to life was Ikea's amazing kitchen planner tool! 🛠️💡\n\nBeing able to visualize and experiment with ideas directly in my browser made the decision process a breeze. I was pleasantly surprised when the final result mirrored the design I crafted in the tool. It's incredible how technology enhances our ability to turn ideas into reality!\n\nOh, and by the way, the planner is running on AWS Cloud! ☁️",
+    "technologies": [
+      "IKEA",
+      "Home Renovation",
+      "Interior Design",
+      "AWS Cloud"
+    ],
+    "links": [
+      {
+        "label": "Ikea Kitchen Planner",
+        "url": "https://www.ikea.com/gb/en/planners/kitchen-planner/"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/kitchen-transformation/kitchen-planner-ikea.jpg",
+      "/asif/assets/images/portfolio/kitchen-transformation/IMG_52966.jpg",
+      "/asif/assets/images/portfolio/kitchen-transformation/IMG_5300.jpeg"
+    ],
+    "date": "2024-02-28"
+  },
+  {
+    "id": 34,
+    "slug": "photo-session",
+    "title": "Photo Session",
+    "category": "Illustration",
+    "categories": [
+      "all",
+      "illustration"
+    ],
+    "image": "/asif/assets/images/portfolio/photo-session/thumbnail.jpg",
+    "type": "project",
+    "description": "I had the pleasure of being photographed by a former colleague who has a passion for photography. A distinguished hobbyist, she not only won the Swedish Championship in Photography in 2023 but also earned recognition in various international competitions. The experience of being her subject was both enjoyable and memorable. Below are a few snapshots she captured during our photo session.",
+    "links": [
+      {
+        "label": "smfotografi.se",
+        "url": "https://www.smfotografi.se/2023"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/photo-session/The-Scholar.jpg",
+      "/asif/assets/images/portfolio/photo-session/Genie-in-a-Bottle.jpg",
+      "/asif/assets/images/portfolio/photo-session/IMG_6920.jpeg",
+      "/asif/assets/images/portfolio/photo-session/Asif1_webb.jpg",
+      "/asif/assets/images/portfolio/photo-session/Asif2_webb.jpg",
+      "/asif/assets/images/portfolio/photo-session/Asif3_webb.jpg",
+      "/asif/assets/images/portfolio/photo-session/IMG_7592.jpeg",
+      "/asif/assets/images/portfolio/photo-session/IMG_7595.jpeg"
+    ],
+    "galleryMasonry": true,
+    "date": "2024-02-26"
+  },
+  {
+    "id": 33,
+    "slug": "addweekly",
+    "title": "AddWeekly: Streamlining Your Shopping Experience with Weekly Ads",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/addweekly/thumbnail.jpg",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://reklam.mithawala.com",
+      "device": "iphone"
+    },
+    "description": "AddWeekly is a revolutionary application designed to simplify your weekly grocery planning by aggregating the latest leaflets from across the internet into one user-friendly interface. This dynamic app employs web crawling technology to fetch the most recent ads, allowing users to effortlessly browse and sort through weekly campaigns based on their city preferences. With AddWeekly, planning your grocery list becomes a breeze, ensuring you never miss out on the best deals in your area. Experience the convenience of a centralized hub for all your weekly ads and make informed decisions for a smarter and more economical shopping experience.",
+    "technologies": [
+      "Mobile App",
+      "Web Crawling",
+      "React"
+    ],
+    "links": [
+      {
+        "label": "reklam.mithawala.com",
+        "url": "https://reklam.mithawala.com/"
+      }
+    ],
+    "date": "2024-02-08"
+  },
+  {
+    "id": 32,
+    "slug": "chatgpt-alexa",
+    "title": "ChatGPT-3 with Alexa",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/chatgpt-alexa/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/8MMLdI2_-xw",
+    "descriptionHtml": "<p>You have just witnessed a custom Alexa skill that I developed, which harnesses the power of OpenAI's GPT-3 model.</p>\n<p>Here's how it works: When you ask a question, Alexa sends it to a Lambda function that uses the OpenAI API to generate a response. The response is then sent to Amazon Polly, which provides a natural-sounding voice that makes it feel like you're talking to a real person!</p>\n<p>Have you ever thought about developing your own Alexa skill? Well, let me tell you, it's easier and more fun than you might think! And the best part? It's free to get started with an Alexa-hosted skill!</p>\n<p>All you need is an idea and a willingness to learn. And don't worry if you're not a programming expert - Amazon provides a range of useful workshops that can help you get up to speed quickly. The workshops cover everything you need to know, from basic skills like setting up your developer account and creating an Alexa skill to more advanced topics like using AWS services and integrating with third-party APIs.</p>\n<p>The best part? You get to experiment and have fun with cutting-edge AI technology! With Alexa, you can build skills that respond to voice commands, provide information, play games, and so much more. Imagine the possibilities! You could create a skill that helps you manage your daily tasks, one that provides trivia and fun facts, or even one that tells you jokes and stories to brighten up your day.</p>\n<p>And once you've developed your skill, you can share it with the world!</p>\n<p>So what are you waiting for? Dive into the world of Alexa development and see where your imagination takes you. To get started, check out the workshops at: <a href=\"https://developer.amazon.com/en-US/alexa/trainings_and_workshops\" target=\"_blank\">https://developer.amazon.com/en-US/alexa/trainings_and_workshops</a></p>",
+    "technologies": [
+      "ChatGPT",
+      "OpenAI",
+      "Alexa",
+      "AWS Lambda",
+      "Amazon Polly",
+      "Voice AI"
+    ],
+    "date": "2023-03-21"
+  },
+  {
+    "id": 31,
+    "slug": "my-crib",
+    "title": "My Crib",
+    "category": "Media",
+    "categories": [
+      "all",
+      "media"
+    ],
+    "image": "/asif/assets/images/portfolio/my-crib/thumbnail.jpg",
+    "type": "project",
+    "embedVideos": [
+      {
+        "url": "https://www.youtube.com/embed/8PQ7gQsqXQ8",
+        "title": "Svarvargatan 7"
+      },
+      {
+        "url": "https://www.youtube.com/embed/oCZZWzl8DB4",
+        "title": "Svarvargatan 7 (Reel)"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/my-crib/1083-1.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-27.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-26.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-25.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-24.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-23.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-22.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-21.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-20.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-19.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-18.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-17.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-16.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-15.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-14.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-13.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-12.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-11.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-10.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-9.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-8.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-7.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-5.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-4.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-3.jpeg",
+      "/asif/assets/images/portfolio/my-crib/1083-2.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00005.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00006.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00007.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00008.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00009.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00010.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00011.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00012.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00013.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00014.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00015.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00016.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00017.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00018.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00019.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00020.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00021.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00022.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00023.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00024.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00025.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00026.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00027.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00028.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00029.jpeg",
+      "/asif/assets/images/portfolio/my-crib/image00030.jpeg"
+    ],
+    "galleryMasonry": true,
+    "date": "2022-11-24"
+  },
+  {
+    "id": 30,
+    "slug": "lac-tower",
+    "title": "lac-tower.ch",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/lac-tower/thumbnail.jpg",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://lac-tower.ch/",
+      "device": "iphone"
+    },
+    "descriptionHtml": "<p>Developed this page for a Real Estate Constructor based in Geneva, Switzerland.</p>\n<p>Landing page includes:</p>\n<ul>\n<li>Prospect information</li>\n<li>Property listing</li>\n<li>Gallery</li>\n<li>Floor plans</li>\n<li>Contact information</li>\n</ul>\n<p>Check it out: <a href=\"https://lac-tower.ch/\" target=\"_blank\">https://lac-tower.ch/</a></p>",
+    "technologies": [
+      "Web Development",
+      "Frontend",
+      "Real Estate"
+    ],
+    "links": [
+      {
+        "label": "lac-tower.ch",
+        "url": "https://lac-tower.ch/"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/lac-tower/presentation-1.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-2.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-3.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-4.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-5.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-6.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-7.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-8.jpg",
+      "/asif/assets/images/portfolio/lac-tower/presentation-9.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2022-08-31"
+  },
+  {
+    "id": 29,
+    "slug": "gym-session",
+    "title": "Gym Session",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/gym-session/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://player.vimeo.com/video/698348653?h=176a21613a",
+    "date": "2022-02-07"
+  },
+  {
+    "id": 28,
+    "slug": "accenture-consultant",
+    "title": "A day in my life as consultant @ Accenture",
+    "category": "Illustration",
+    "categories": [
+      "all",
+      "illustration"
+    ],
+    "image": "/asif/assets/images/portfolio/accenture-consultant/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<h3>How I put change in motion</h3>\n<p>As a <a href=\"https://www.accenture.com/se-en/careers/explore-careers/area-of-interest/cloud-careers\" target=\"_blank\">Cloud Consultant in Accenture Technology</a>, I develop and deliver cloud architecture solutions to meet today's growing demand for agile and cost-effective computing.</p>\n<p>I help our clients identify and translate business and functional requirements and present how various technologies can be deployed to deliver cloud transformations. I also work with implementing solutions within various domains in the cloud. This often means that I need to have a solid and deep understanding of all services cloud providers can offer.</p>\n<p>The most exciting project I have worked on at Accenture is a large global e-commerce migration to the cloud. This project had all the components to make it fun, challenging, and interesting. The project was diverse with various teams working together across the globe.</p>\n\n<h3>A day in my life</h3>\n<p>A typical day at Accenture starts with a brief with my team. We discuss how things are progressing and plan the day's work. This is also the time where potential concerns are raised. Then I continue with the tasks that I have in my backlog for the current sprint. A sprint is usually two weeks where we aim at accomplishing the target for that sprint. Throughout the day, I also have some meetings with different stakeholders and teams.</p>\n<p>I usually split my work hours throughout the day and work out at the gym during lunchtime. Leaving the work to exercise ensures that I have a break from work and a chance to recharge during the day.</p>\n<p>I also make sure to allocate time to work with new technologies, tasks that requires more effort such as programming or implementing new features. This often happens in the evening when I am at my sharpest. Yes, I am a night owl.</p>\n<p>What I like the most about working at Accenture is the work we do. It is a global company with diverse people that are highly motivated and 100% committed to their work.</p>\n<p>I feel that I am working in a dynamic environment where I have the chance to take advantage of various opportunities to shape my career, so I definitely think that Accenture is a great place to kick off your career. If I look back at 2014 when I start my career at Accenture and compare it to now, I can definitely say that I've achieved a lot professionally and as a person.</p>\n<p>In my spare time, I exercise a lot. Physical exercise is important for both my physical and mental health. This has helped me to stay disciplined and handle stress in a better way. I am also a big fan of technology and often have some projects going on. Everything from Smart Home Automations to 3D-printing. I also enjoy lying on the couch, listening to a good podcast, or watching a movie.</p>\n\n<blockquote><em>\"I feel that I'm working in a dynamic environment where I have the chance to take advantage of various opportunities to shape my career.\"</em></blockquote>\n\n<h3>My advice</h3>\n<p>During your first few years of consulting, you will probably be floating between industries, areas, and clients. Therefore, I highly recommend that you start developing skills that allow you to differentiate yourself from all your peers – be the \"go-to-guy\".</p>\n<p>Focus on what you like the most, and make sure that you get the chance to work with that. If you are passionate about technology, combine it with some private projects that are fun! Maybe you have an idea about an app that you always wanted to build? Do it! You will benefit from it in your profession.</p>\n<p>Keep attention to the detail, this is how you build trust with clients and colleagues.</p>\n<p>And lastly, do not be afraid to ask. Asking questions is at the core of how a consultant works. Questions help to ensure that you understand what you are being asked to do and the issues your client is facing.</p>",
+    "links": [
+      {
+        "label": "Meet Asif @ Accenture",
+        "url": "https://www.accenture.com/se-en/careers/life-at-accenture/people-profile/people-asif-mithawala"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/accenture-consultant/accenture-profile-1.jpg",
+      "/asif/assets/images/portfolio/accenture-consultant/accenture-profile-2.jpg",
+      "/asif/assets/images/portfolio/accenture-consultant/accenture-profile-3.jpg"
+    ],
+    "date": "2021-09-21"
+  },
+  {
+    "id": 27,
+    "slug": "azure-speech-translation",
+    "title": "Real-time Speech-to-Text and Translation with Azure Cognitive Services",
+    "category": "Illustration, Project",
+    "categories": [
+      "all",
+      "illustration",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/azure-speech-translation/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/bCl2wISUjZg",
+    "date": "2021-05-19"
+  },
+  {
+    "id": 26,
+    "slug": "smart-home-dashboard",
+    "title": "My Smart Home Dashboard",
+    "category": "Illustration, Project",
+    "categories": [
+      "all",
+      "illustration",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/smart-home-dashboard/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<p>It was a while ago since I updated my Smart Home Dashboard.</p>\n<p>If you already have some Smart devices setup in your home, you have probably already been thinking of how you could integrate these into one single Eco-system.</p>\n<p>The problem with most of the smart devices is that they come with their own platform with the lack of integration possibilities.</p>\n<p>You might have a smart speaker from Sonos that you want to interact with your smart temperature sensor from Xiaomi, along with your smart light from Ikea?</p>\n<p>It's possible and it's very easy to get started!</p>\n<p>The Answer is <a href=\"https://www.home-assistant.io/\" target=\"_blank\">Home Assistant</a></p>\n<p><a href=\"https://www.home-assistant.io/\" target=\"_blank\">Home Assistant</a> is an Open source home automation that puts local control and privacy first.</p>\n<p>Powered by a worldwide community of tinkerers and DIY enthusiasts. Perfect to run on a Raspberry Pi or a local server.</p>\n<p>Control all your devices from a single, mobile-friendly, interface.</p>\n<p>Set up advanced rules to control devices and bring your home alive.</p>\n<p>Do you want to…</p>\n<ul>\n<li>have the lights turn on when the sun sets and you are home?</li>\n<li>have the lights turn on when anyone comes home and it is dark?</li>\n<li>dim the lights when you start watching a movie on your Chromecast?</li>\n<li>receive a message when the lights turn on while you are not at home?</li>\n</ul>\n<p>Home Assistant got you <a href=\"https://www.home-assistant.io/getting-started/automation/\" target=\"_blank\">covered</a> and supports more than <a href=\"https://www.home-assistant.io/integrations/\" target=\"_blank\">+1700 integrations</a></p>",
+    "technologies": [
+      "Home Assistant",
+      "Smart Home",
+      "IoT",
+      "Dashboard",
+      "Raspberry Pi"
+    ],
+    "links": [
+      {
+        "label": "Home Assistant",
+        "url": "https://www.home-assistant.io/"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/smart-home-dashboard/home-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/lights-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/media-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/security-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/asif-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/system-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/traffic-hass.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/lights-hass-mobile.jpg",
+      "/asif/assets/images/portfolio/smart-home-dashboard/lights-hass-mobile-dim.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2021-05-04"
+  },
+  {
+    "id": 25,
+    "slug": "ish-linux-iphone",
+    "title": "ISH – Run a Linux Shell on your iPhone",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/ish-linux-iphone/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<p>Do you have an old iPhone collecting dust in a drawer? <em><strong>You are</strong></em> certainly not alone.</p>\n<p>Now is the time to bring it back to life and give it a purpose.</p>\n<p>You can run Linux Alpine on your iPhone, without having to Jailbreak it.</p>\n<p>Just download ISH from Appstore and get started!</p>\n<p>ISH is a project to get a Linux shell environment running locally on your iOS device, using a usermode x86 emulator.</p>\n<p>As one of my motto in life is, \"seeing is believing\", I have hosted a tiny Python web-server on it.</p>\n<p>Jump right into my iPhone live and play some PAC-MAN now!</p>\n<p><a href=\"https://pacman-on-iphone.mithawala.com/\" target=\"_blank\">https://pacman-on-iphone.mithawala.com/</a></p>\n<p>Want to try it yourself? Download <a href=\"https://apps.apple.com/us/app/ish-shell/id1436902243\" target=\"_blank\">ISH from Appstore</a> and start with setting up an SSH Server</p>\n<p>Here's a quick step by step guide for running an SSH server:</p>\n<ol>\n<li><code>$ apk add openssh</code> — install the ssh tools and the ssh server.</li>\n<li><code>$ ssh-keygen -A</code> — create the host keys.</li>\n<li><code>$ passwd</code> — Set a password for root to protect your iOS device</li>\n<li><code>$ echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config</code></li>\n<li><code>$ /usr/sbin/sshd</code></li>\n</ol>\n<p>You should now be able to ssh to your device with username root and the password you typed.</p>",
+    "technologies": [
+      "Linux",
+      "iOS",
+      "Shell",
+      "Mobile",
+      "Alpine",
+      "Python"
+    ],
+    "links": [
+      {
+        "label": "Pacman on iPhone",
+        "url": "https://pacman-on-iphone.mithawala.com/"
+      },
+      {
+        "label": "ISH on App Store",
+        "url": "https://apps.apple.com/us/app/ish-shell/id1436902243"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/ish-linux-iphone/pacman.jpg",
+      "/asif/assets/images/portfolio/ish-linux-iphone/iphone_ish_webserver.jpg",
+      "/asif/assets/images/portfolio/ish-linux-iphone/ish_iphone.jpg"
+    ],
+    "date": "2021-04-23"
+  },
+  {
+    "id": 24,
+    "slug": "pi-cluster-kubernetes",
+    "title": "Pi Cluster running Kubernetes",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/pi-cluster-kubernetes/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<p><a href=\"https://kubernetes.io/\" target=\"_blank\">Kubernetes</a> is a portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.</p>\n<p>And yes, you can run your own Kubernetes cluster on Raspberry Pi's. This is a super good opportunity to elaborate with container technologies and at the same time self-host your own applications and workloads.</p>\n<p>It's not hard to deploy this to one or several hosts. There is a maintained Ansible Playbook that will install everything <u>automatically for you</u>.</p>\n<p>You can find a detailed step-by-step guide <a href=\"https://www.jeffgeerling.com/blog/2020/installing-k3s-kubernetes-on-turing-pi-raspberry-pi-cluster-episode-3\" target=\"_blank\">here</a>.</p>\n<p>Here are some examples on applications that you can host:</p>\n<p><a href=\"https://nextcloud.com/\" target=\"_blank\"><strong>Nextcloud</strong></a> - an open-source software, first developed in 2016, that allows you to run a personal cloud storage service. It has features that are comparable to other services such as Dropbox.</p>\n<p><a href=\"https://www.plex.tv/\" target=\"_blank\"><strong>Plex</strong></a> - gives you one place to find and access all the media that matters to you. From personal media on your own server, to free and on-demand Movies & Shows, live TV, podcasts, and web shows, to streaming music, you can enjoy it all in one app, on any device.</p>\n<p><a href=\"https://radarr.video/\" target=\"_blank\"><strong>Radarr</strong></a> - is a movie collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new movies and will interface with clients and indexers to grab, sort, and rename them.</p>\n<p><a href=\"https://bitwarden.com/\" target=\"_blank\"><strong>Bitwarden</strong></a> - Password manager with web-app, browser extension, and mobile app.</p>\n<p>A list of awesome self-hosted applications <a href=\"https://github.com/awesome-selfhosted/awesome-selfhosted\" target=\"_blank\">here</a></p>\n<p>By now, I hope you are very eager to get started. There is a very good tutorial <a href=\"https://greg.jeanmart.me/2020/04/13/self-host-your-media-center-on-kubernetes-wi/\" target=\"_blank\">guide here</a></p>\n<p>Best of luck!!!</p>",
+    "technologies": [
+      "Raspberry Pi",
+      "Kubernetes",
+      "Docker",
+      "Home Lab",
+      "K3s",
+      "Self-Hosting"
+    ],
+    "links": [
+      {
+        "label": "Kubernetes",
+        "url": "https://kubernetes.io/"
+      },
+      {
+        "label": "Awesome Self-Hosted",
+        "url": "https://github.com/awesome-selfhosted/awesome-selfhosted"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/pi-cluster-kubernetes/IMG_3318.jpg",
+      "/asif/assets/images/portfolio/pi-cluster-kubernetes/IMG_3306_blur.jpg",
+      "/asif/assets/images/portfolio/pi-cluster-kubernetes/kubeclusters-architecture.jpg"
+    ],
+    "date": "2021-04-04"
+  },
+  {
+    "id": 23,
+    "slug": "tv-activity-automation",
+    "title": "Turn of TV if no activity detected on couch for 20 min",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/tv-activity-automation/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<p>Do you have these use-cases that you have thinking of automating for a while now, but don't know how to get started? Whether it's business or personal use cases.</p>\n<p>If so, I would recommend you check out: <a href=\"https://nodered.org/\" target=\"_blank\">https://nodered.org/</a></p>\n<p>Node-RED is a programming tool (open-source) for wiring together hardware devices, APIs and online services in new and interesting ways.</p>\n<p>It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.</p>\n<p>E.g. one of my favorite use-cases is: \"Turn of TV if no activity detected on couch for 20 min\"</p>\n<p>Short detail on how this automation works for inspiration:</p>\n<ul>\n<li>Small IoT Vibration Sensor placed under the couch</li>\n<li>If vibration is detected -> Turn on a timer for 20 min</li>\n<li>If Timer ends -> No vibration activity has been detected -> No one is watching TV</li>\n<li>Notify me with an Actionable Push-notification on my iPhone</li>\n<li>Actionable Push-notification allows me to turn off the TV with a single click</li>\n</ul>",
+    "technologies": [
+      "Home Automation",
+      "IoT",
+      "Sensors",
+      "Node-RED"
+    ],
+    "links": [
+      {
+        "label": "Node-RED",
+        "url": "https://nodered.org/"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/tv-activity-automation/couch-1.jpg",
+      "/asif/assets/images/portfolio/tv-activity-automation/couch-2.jpg",
+      "/asif/assets/images/portfolio/tv-activity-automation/couch-3.jpg"
+    ],
+    "date": "2021-03-21"
+  },
+  {
+    "id": 22,
+    "slug": "home-office",
+    "title": "Home Office 2.0",
+    "category": "Illustration, Project",
+    "categories": [
+      "all",
+      "illustration",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/home-office/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/jDqqp60_QcY",
+    "descriptionHtml": "<p>The COVID-19 pandemic has completely changed the way we work, forcing many of us to hastily set up home offices so we can do our jobs remotely.</p>\n<p>A long-term home office should ideally be a separate space in your home that is properly outfitted for work.</p>\n<p>And this was the result!!! I really enjoy my new home office and I like spending time here.</p>\n<p><strong>Don't forget to check out the video!!!</strong></p>",
+    "technologies": [
+      "Home Office",
+      "Remote Work",
+      "Interior Design"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/home-office/home_office.jpg"
+    ],
+    "date": "2021-01-21"
+  },
+  {
+    "id": 21,
+    "slug": "buyn-se",
+    "title": "Buyn.se",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/buyn-se/thumbnail.jpg",
+    "type": "project",
+    "descriptionHtml": "<p>Developed this site for an IT Agency based in Stockholm. It's a Single page site. Keep it clean and simple :)</p>\n<p>Check it out on: <a href=\"https://buyn.se\" target=\"_blank\"><strong>https://buyn.se</strong></a></p>",
+    "technologies": [
+      "E-commerce",
+      "Web Development",
+      "Single Page"
+    ],
+    "links": [
+      {
+        "label": "Buyn.se",
+        "url": "https://buyn.se"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/buyn-se/buyn_front.jpg",
+      "/asif/assets/images/portfolio/buyn-se/buyn1.jpg",
+      "/asif/assets/images/portfolio/buyn-se/buyn2.jpg",
+      "/asif/assets/images/portfolio/buyn-se/buyn3.jpg",
+      "/asif/assets/images/portfolio/buyn-se/buyn4.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2021-01-20"
+  },
+  {
+    "id": 20,
+    "slug": "weighted-chins",
+    "title": "Weighted Chins",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/weighted-chins/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/3aOYbg15uSo",
+    "date": "2021-01-10"
+  },
+  {
+    "id": 19,
+    "slug": "hiit-workout",
+    "title": "HIIT Workout!",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/hiit-workout/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/aILMPZ_5ez4",
+    "date": "2020-11-13"
+  },
+  {
+    "id": 18,
+    "slug": "one-100-palm-dubai",
+    "title": "One 100 Palm – The Most Extravagant Mansion In Dubai",
+    "category": "Project, Video",
+    "categories": [
+      "all",
+      "project",
+      "video",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/one-100-palm-dubai/thumbnail.jpg",
+    "type": "project",
+    "deviceMockup": {
+      "url": "https://one100palm.com",
+      "device": "iphone"
+    },
+    "embedVideos": [
+      {
+        "url": "https://www.youtube.com/embed/Upp0H-KnnXM",
+        "title": "One 100 Palm Tour"
+      },
+      {
+        "url": "https://www.youtube.com/embed/c03dotNJTPg",
+        "title": "One 100 Palm Showcase"
+      }
+    ],
+    "descriptionHtml": "<p>Site developed by me for my cousin who is selling his Mansion in Dubai. Super clean Real Estate Page with some serious focus on the UX.</p>\n<p>Checkout the site: <a href=\"https://one100palm.com\" target=\"_blank\">https://one100palm.com</a></p>",
+    "technologies": [
+      "Real Estate",
+      "Luxury",
+      "Dubai",
+      "Web Development",
+      "UX"
+    ],
+    "links": [
+      {
+        "label": "one100palm.com",
+        "url": "https://one100palm.com"
+      }
+    ],
+    "date": "2020-07-29"
+  },
+  {
+    "id": 16,
+    "slug": "mithawala-touch-table",
+    "title": "Mithawala Touch-Table",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/mithawala-touch-table/thumbnail.jpg",
+    "type": "project",
+    "embedVideos": [
+      {
+        "url": "https://www.youtube.com/embed/RnCC12YBFpU",
+        "title": "Mithawala Touch-Table Demo"
+      },
+      {
+        "url": "https://www.youtube.com/embed/lCSZThJHQSM",
+        "title": "Mithawala Touch-Table Showcase"
+      }
+    ],
+    "description": "With its distinctive, ultra-contemporary design and everyday function, the Mithawala Touch Table is the perfect centerpiece for any elegant, modern living space. Combining clean lines with a mid-century look this modern coffee table features unique, functional design. Have your own 27-inch tablet integrated in your coffee table. But wait, there's more! Fold the table and turn the screen 90° whenever you want to watch something. This sleek, Scandinavian design complements any home environment!",
+    "technologies": [
+      "Smart Home",
+      "Touch Screen",
+      "DIY",
+      "Interactive",
+      "3D Design"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/mithawala-touch-table/render-1.png",
+      "/asif/assets/images/portfolio/mithawala-touch-table/render-2.png",
+      "/asif/assets/images/portfolio/mithawala-touch-table/full1.jpg",
+      "/asif/assets/images/portfolio/mithawala-touch-table/render-3.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2019-09-22"
+  },
+  {
+    "id": 15,
+    "slug": "meet-asif",
+    "title": "Meet Asif",
+    "category": "Video",
+    "categories": [
+      "all",
+      "video"
+    ],
+    "image": "/asif/assets/images/portfolio/meet-asif/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/GMO7qVWDWoo",
+    "date": "2019-09-21"
+  },
+  {
+    "id": 14,
+    "slug": "smart-home",
+    "title": "Smart Home",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/smart-home/thumbnail.jpg",
+    "type": "project",
+    "description": "Smart Home system running on Raspberry Pi 4. Custom 3D-printed chassis and wall mount for tablet :)",
+    "technologies": [
+      "Smart Home",
+      "IoT",
+      "Home Assistant",
+      "Raspberry Pi",
+      "3D Printing"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/smart-home/IMG_8811.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8935.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8936.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8938.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8939.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8965.jpg",
+      "/asif/assets/images/portfolio/smart-home/IMG_8966.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2019-09-21"
+  },
+  {
+    "id": 13,
+    "slug": "mixy-cocktail-robot",
+    "title": "Mixy – Cocktail Robot",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/mixy-cocktail-robot/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/sYeNhgYlLAg",
+    "descriptionHtml": "<p><em>Mixy</em> is controlled via Google Home Voice Assistant, and will serve you an alcohol-free drink based on your choice from the menu on the right hand side.</p>\n<p><em>Mixy</em> is integrated with Google Assistant (portrayed on your left), which will make her ask questions to determine what drink you desire (or if you would like her to surprise you and decide for herself), and keep you entertained meanwhile the drink is prepared.</p>\n<p><em>Mixy</em> is equipped with eight bottles, containing different ingredients to make your drink.</p>\n<p>Depending on your drink of choice, <em>Mixy</em> will use her eight pumps to distribute the different ingredients, based on pre-configured percentages, e.g. 75% water, 15% cranberry juice and 10% lemon/lime.</p>\n<p>The Google software is integrated with the <em>Mixy</em> hardware, providing a seamless user experience, making drinks only based on voice commands.</p>\n<p><em>Mixy</em> interacts in different ways depending on your questions and answers, and makes sure that you are kept entertained throughout the process, for example giving you a news flash, a weather update based on your zip code or cracking a joke.</p>",
+    "technologies": [
+      "Robotics",
+      "Arduino",
+      "Automation",
+      "Google Assistant",
+      "IoT"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/Mixygoogle.png",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/mxy.jpg",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/asif-mithawala.jpg",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/GCS_Meeting.jpg",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/GoogleSummit_1.jpg",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/GoogleSummit_2.jpg",
+      "/asif/assets/images/portfolio/mixy-cocktail-robot/Accenture-Mixy-PPT.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2019-08-20"
+  },
+  {
+    "id": 12,
+    "slug": "nordic-wellness-instructor",
+    "title": "Group Exercise instructor @ Nordic Wellness",
+    "category": "Media",
+    "categories": [
+      "all",
+      "media"
+    ],
+    "image": "/asif/assets/images/portfolio/nordic-wellness-instructor/thumbnail.jpg",
+    "type": "image",
+    "fullImage": "/asif/assets/images/portfolio/nordic-wellness-instructor/thumbnail.jpg",
+    "date": "2018-12-24"
+  },
+  {
+    "id": 11,
+    "slug": "dj-christmas-party",
+    "title": "DJ @ Company Christmas Party",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/dj-christmas-party/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/jddwuY1Ldsw",
+    "description": "At my company you get the opportunity to DJing at internal parties :D",
+    "technologies": [
+      "DJ",
+      "Music",
+      "Events"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/dj-christmas-party/dj-setup.png"
+    ],
+    "date": "2018-11-26"
+  },
+  {
+    "id": 10,
+    "slug": "smart-office",
+    "title": "Smart Office",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/smart-office/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/yNxPrb_66uY",
+    "descriptionHtml": "<p><strong>INSPIRED BY IOT.</strong></p>\n<p><em>The Smart Office project is about the utilization of office resources. We monitor the usage by placing inexpensive small motion sensors on each resource. The sensors send information about movement to a central node. Using a smart algorithm, we can calculate if, when and for how long each resource is in use.</em></p>\n<p>This information can be used in different ways:</p>\n<ul>\n<li>Present real-time information about where and how many resources are in use. I.e. \"where can I sit and work?\" or \"where is the closest free phone booth?\"</li>\n<li>Report over the average percentage of occupied workplaces during office hours for a given date-interval.</li>\n<li>What is the probability of a phone booth resource being free at a given date</li>\n<li>Decision support: Do we need to add more resources?</li>\n<li>Comparison reports of different floors/offices/date intervals</li>\n<li>Trend curves of utilization. Could be used to predict when office needs expanding.</li>\n<li>Heat maps of where the most popular workplaces are located on a floor/office. Can be used to indicate undesirable areas in the office.</li>\n</ul>\n<p><strong>What it's really about</strong></p>\n<p>Really all we want to do is play around with IoT devices, build sensors, solder components, program microchips, design and 3D-print stuff and build cool web interfaces. The rest is just a bonus.</p>\n<p><strong>Going forward</strong></p>\n<p>If we are successful in this project, we are hoping to expand to other offices. We believe it's a very inexpensive way to monitor an otherwise very costly part of an organization.</p>",
+    "technologies": [
+      "IoT",
+      "Office Automation",
+      "Smart Devices",
+      "3D Printing",
+      "Sensors"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/smart-office/appsmartoffice.png",
+      "/asif/assets/images/portfolio/smart-office/webapp2.png",
+      "/asif/assets/images/portfolio/smart-office/floorstatus.png",
+      "/asif/assets/images/portfolio/smart-office/teams-image-5.jpg",
+      "/asif/assets/images/portfolio/smart-office/teams-image-1.jpg",
+      "/asif/assets/images/portfolio/smart-office/teams-image-8.jpg",
+      "/asif/assets/images/portfolio/smart-office/teams-image-3.png",
+      "/asif/assets/images/portfolio/smart-office/teams-image-2.png",
+      "/asif/assets/images/portfolio/smart-office/teams-image-1.png",
+      "/asif/assets/images/portfolio/smart-office/teams-image-4.jpg",
+      "/asif/assets/images/portfolio/smart-office/teams-irrrmage-3.png",
+      "/asif/assets/images/portfolio/smart-office/gg.png",
+      "/asif/assets/images/portfolio/smart-office/ios-1.jpg",
+      "/asif/assets/images/portfolio/smart-office/ios-2.jpg",
+      "/asif/assets/images/portfolio/smart-office/teams-uu-5.png",
+      "/asif/assets/images/portfolio/smart-office/nodeundertable.png",
+      "/asif/assets/images/portfolio/smart-office/pirs.png",
+      "/asif/assets/images/portfolio/smart-office/printcover.jpg",
+      "/asif/assets/images/portfolio/smart-office/printing.png",
+      "/asif/assets/images/portfolio/smart-office/firstpilotblog.jpg",
+      "/asif/assets/images/portfolio/smart-office/status2.png",
+      "/asif/assets/images/portfolio/smart-office/utilblog.png"
+    ],
+    "galleryMasonry": true,
+    "date": "2018-11-25"
+  },
+  {
+    "id": 9,
+    "slug": "printing-spare-parts",
+    "title": "Printing my own spare parts",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/printing-spare-parts/thumbnail.jpg",
+    "type": "video",
+    "videoUrl": "https://www.youtube.com/embed/rqhJ2k-BZ-Q",
+    "date": "2018-11-25"
+  },
+  {
+    "id": 8,
+    "slug": "magic-mirror",
+    "title": "Magic Mirror",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/magic-mirror/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/iECFagfn-Tk",
+    "descriptionHtml": "<p>I built a Magic Mirror using a Raspberry Pi 3 and the <a href=\"https://magicmirror.builders/\" target=\"_blank\">MagicMirror²</a> open-source platform.</p>\n<p>The mirror displays useful information at a glance:</p>\n<ul>\n<li>Current time and date</li>\n<li>Weather forecast</li>\n<li>Calendar events</li>\n<li>News headlines</li>\n<li>Compliments (because why not?)</li>\n</ul>\n<p>I also integrated <strong>Alexa Voice Services</strong> so I can interact with the mirror using voice commands. Ask for the weather, control smart home devices, play music, and more – all hands-free!</p>\n<p>The frontend is built with <strong>Angular 2</strong> and the backend runs on <strong>Node.js</strong>. The modular architecture makes it easy to add new features and customize the display.</p>\n<p>This project combines my love for smart home tech with practical everyday utility. It's become a central piece in my home!</p>",
+    "technologies": [
+      "Smart Home",
+      "MagicMirror",
+      "Node.js",
+      "Raspberry Pi",
+      "Alexa Voice Services",
+      "Angular"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/magic-mirror/IMG_9730.jpg",
+      "/asif/assets/images/portfolio/magic-mirror/IMG_9769.jpg",
+      "/asif/assets/images/portfolio/magic-mirror/IMG_9804.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2018-11-24"
+  },
+  {
+    "id": 7,
+    "slug": "interactive-quiz",
+    "title": "Interactive Quiz",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/interactive-quiz/thumbnail.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/HjUj-7eUtJE",
+    "description": "Me and my colleague developed an interactive quiz game with randomized questions using Google Nest Hub. If you get all answers correct you are treated with a Chocolate heart or Power bank, handed over by a Robot Arm. Check out the video!",
+    "technologies": [
+      "Google Nest Hub",
+      "Interactive",
+      "Robotics"
+    ],
+    "date": "2018-11-24"
+  },
+  {
+    "id": 6,
+    "slug": "safe-childhood-hackathon",
+    "title": "Safe Childhood Hackathon",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/safe-childhood-hackathon/thumbnail.jpg",
+    "type": "project",
+    "embedVideos": [
+      {
+        "url": "https://www.youtube.com/embed/B1NpQOsafSI",
+        "title": "Safe Childhood Hackathon"
+      },
+      {
+        "url": "https://www.youtube.com/embed/yy4NQ7XPabU",
+        "title": "Our Group Presentation"
+      }
+    ],
+    "description": "In April 2019, Accenture and Fjord in Stockholm and Helsinki arranged a Hackathon to find solutions to challenges around internet safety for children and teens with participants from World Childhood Foundation, Save the Children, Telia, Supercell, Avanade and KI. We had a great time and a lot of innovative solutions were presented!\n\nI've attached my group's contribution. We had only around 3 hours to create the presentation.\n\nLooking forward to more Hackathons!",
+    "technologies": [
+      "Hackathon",
+      "Innovation",
+      "Child Safety"
+    ],
+    "date": "2018-11-23"
+  },
+  {
+    "id": 5,
+    "slug": "aws-deepracer",
+    "title": "AWS DeepRacer",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/aws-deepracer/thumbnail.jpg",
+    "type": "project",
+    "description": "Made it to the top 10 in the AWS DeepRacer machine learning racing league. The winner won a trip to Las Vegas to compete in AWS re:Invent 2019. Top 10 won this amazing car with an Intel Atom Processor, 4GB RAM, 32GB disk and a 4 MP camera.",
+    "technologies": [
+      "AWS",
+      "Machine Learning",
+      "Reinforcement Learning",
+      "DeepRacer"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/aws-deepracer/awsdeepracer.jpg"
+    ],
+    "date": "2017-11-27"
+  },
+  {
+    "id": 4,
+    "slug": "house-3d",
+    "title": "My House in 3D",
+    "category": "Illustration",
+    "categories": [
+      "all",
+      "illustration"
+    ],
+    "image": "/asif/assets/images/portfolio/house-3d/thumbnail.jpg",
+    "type": "project",
+    "description": "I drew my entire house in 3D for an interactive Smart Home view that I was working on. Very exciting to walk around in your house with a VR headset. Real picture above, 3D rendered picture below.",
+    "technologies": [
+      "3D Modeling",
+      "Smart Home",
+      "VR",
+      "Visualization"
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/house-3d/3Dhome-1.jpg"
+    ],
+    "date": "2017-11-25"
+  },
+  {
+    "id": 3,
+    "slug": "vatternrundan",
+    "title": "300km race – Vätternrundan",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/vatternrundan/thumbnail.jpg",
+    "type": "image",
+    "fullImage": "/asif/assets/images/portfolio/vatternrundan/thumbnail.jpg",
+    "date": "2017-11-24"
+  },
+  {
+    "id": 2,
+    "slug": "3d-printing-collection",
+    "title": "3D Printing collection",
+    "category": "Illustration",
+    "categories": [
+      "all",
+      "illustration"
+    ],
+    "image": "/asif/assets/images/portfolio/3d-printing-collection/thumbnail.jpg",
+    "type": "project",
+    "description": "A collection of 3D printed objects and projects.",
+    "technologies": [
+      "3D Printing",
+      "Design"
+    ],
+    "date": "2017-11-23"
+  },
+  {
+    "id": 1,
+    "slug": "vansbrosimmet",
+    "title": "3km swim – Vansbrosimmet",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/vansbrosimmet/thumbnail.jpg",
+    "type": "image",
+    "fullImage": "/asif/assets/images/portfolio/vansbrosimmet/thumbnail.jpg",
+    "date": "2017-10-24"
+  },
+  {
+    "id": 0,
+    "slug": "cross-country-ski",
+    "title": "90 km cross-country ski",
+    "category": "Event",
+    "categories": [
+      "all",
+      "event"
+    ],
+    "image": "/asif/assets/images/portfolio/cross-country-ski/thumbnail.jpg",
+    "type": "image",
+    "fullImage": "/asif/assets/images/portfolio/cross-country-ski/thumbnail.jpg",
+    "date": "2017-08-25"
+  }
+]
