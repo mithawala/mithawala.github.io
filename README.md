@@ -42,7 +42,10 @@ definitions, routing, external integrations, and the completeness requirements.
 
 ## Add A Model Edition
 
-Use [the build-personal-edition skill](.github/skills/build-personal-edition/SKILL.md).
+Use [the build-personal-edition skill](.github/skills/build-personal-edition/SKILL.md)
+in a fresh session: one model per session. Every edition is a blind entry. The
+skill lists the shared files a builder may read; earlier editions, their tests,
+previews, and live pages are off-limits, and using them as a reference is cheating.
 It starts from content and neutral APIs, not earlier designs. Each edition owns
 its presentation, never its own copy of personal content.
 Its creative brief gives the model full control over design and interaction,
@@ -51,7 +54,10 @@ integration are delivery contracts, not reasons to repeat a safe template.
 An explicit WebGL/3D request must be implemented, with appropriate fallbacks.
 
 Register the new component in `src/versions.mjs`. Routes, gallery cards,
-screenshots, and cross-edition tests are driven by that registry.
+screenshots, and cross-edition tests are driven by that registry. Edition-specific
+tests are named after the edition ID (`tests/e2e/<id>.spec.mjs`, `tests/<id>.test.mjs`);
+the shared contract tests are `tests/e2e/site.spec.mjs`, `tests/content.test.mjs`,
+and `tests/tooling.test.mjs`.
 
 ## Verification
 
@@ -67,7 +73,8 @@ npm run screenshots -- --write-public
 desktop and mobile. The suite covers content completeness, all asset/detail
 URLs, filtering, search, browser history, media, appearance, contact states,
 music controls, accessibility, and overflow. External form/music services are
-mocked in CI; no test message is actually delivered.
+mocked in CI; no test message is actually delivered. Both test runners print
+only failures by name, so a builder never reads other editions' test titles.
 
 For a strict local production preview:
 

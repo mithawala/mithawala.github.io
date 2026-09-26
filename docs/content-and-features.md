@@ -90,7 +90,7 @@ button or a link-only substitute for the existing interactive experience.
   default; use `loading="eager"` and `fetchPriority="high"` for a hero image.
 - `MusicPlayer` and `useSoundCloud` preserve the live music integration.
   `MusicPlayer` accepts an optional `onPlaybackChange({ playing, title })`
-  callback for edition chrome such as a now-playing indicator.
+  callback so an edition can reflect playback elsewhere in its design.
 - `Dialog`, `ImageLightbox`, `VideoEmbed`, `DevicePreview`, `ProjectDetails`,
   `BlogDetails`, `ShareLinks`, and `RichText` provide accessible feature rendering.
 
@@ -120,20 +120,46 @@ at `/<repository-name>/` without joining this personal-site build.
 
 ## Stable Test Hooks
 
-- The six section IDs in `contract.json` must exist.
-- A portfolio list item has `data-project='<slug>'`; an article list item has
-  `data-article='<slug>'`. Detail containers have `data-detail='<slug>'`.
+- The six section IDs in `contract.json` must exist, and `main` holds exactly one
+  `h1`.
+- A portfolio list item has `data-project='<slug>'` and its first link opens the
+  record; an article list item has `data-article='<slug>'`. Detail containers have
+  `data-detail='<slug>'`.
 - If the default portfolio view is shortened, expose a button with
   `data-action='show-all-projects'` that reveals the complete current collection.
-- Keep equivalent accessible labels for shared search, theme, mobile menu, media,
-  device, form, and playback controls. Read the shared tests, not an older design.
-- The standard music wrapper exposes `data-player-status` for readiness checks.
+- Portfolio filtering is a group named `Portfolio categories` with one button per
+  category, named by its capitalized label (`All`, `App`, ... `Cloud`).
+- Named controls: a `Search` button; a `Switch to dark mode` / `Switch to light mode`
+  button; exactly one link whose name contains `Download CV`; a `meter` named after
+  each skill; and, on small screens, a `Menu` button with `aria-expanded` that
+  reveals the navigation named `Main navigation`, closes on Escape, and returns
+  focus to itself.
+- The music player is a region named `Music player` with `data-player-status`. It
+  has `Play music`/`Pause music`, `Previous track`, `Next track`, `Mute`/`Unmute`,
+  and `Expand music player` buttons, `Seek` and `Volume` sliders, and shows the
+  current title in an `h3` inside `.music-now-playing`. Expanded, it is a dialog
+  named `Music player` that Escape closes. An `Enlarge music artwork` button opens
+  `ImageLightbox` titled `Music`. A custom player built on `useSoundCloud` keeps
+  all of these.
+- The contact form is named `Contact form`, with fields labeled `Your name`,
+  `Email address`, `Subject`, and `Message`, a `Send message` button, and the
+  status messages from `useContactForm`. A custom form keeps these too.
 
 These hooks constrain completeness and behavior, not the visual layout.
 The six section IDs identify content destinations; they do not prescribe six
 stacked bands, a section order, or a navigation style. Spatial and experimental
 presentations are welcome. Equivalent accessible interactions may use equivalent
 test coverage while preserving every required capability and record.
+
+## Edition Independence
+
+Editions are blind entries: no edition is built with reference to another. Shared
+behavior lives in `src/asif/`, and an edition never imports from another edition's
+directory. The shared contract tests are `tests/e2e/site.spec.mjs`,
+`tests/content.test.mjs`, and `tests/tooling.test.mjs`; they contain no edition's
+selectors, labels, or layout. Edition-specific tests are named after their edition
+ID (`tests/e2e/<id>.spec.mjs`, `tests/<id>.test.mjs`, or `<id>.<topic>.test.mjs`)
+and are not part of the contract. `tests/tooling.test.mjs` enforces both rules.
 
 ## External Services And Privacy
 

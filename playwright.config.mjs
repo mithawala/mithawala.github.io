@@ -7,9 +7,11 @@ export default defineConfig({
   fullyParallel: true,
   workers: process.env.CI ? 2 : 3,
   retries: process.env.CI ? 1 : 0,
+  // Only failures are named, so a builder running the whole suite never reads
+  // another edition's test titles.
   reporter: process.env.CI
     ? [['github'], ['html', { open: 'never' }]]
-    : [['list']],
+    : [['dot']],
   use: {
     baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173',
     reducedMotion: 'reduce',
