@@ -63,6 +63,9 @@
   & .as-flap-front > span {
     top: 0;
   }
+  & .as-flap-half > span::before {
+    content: attr(data-c);
+  }
   & .as-flap-bottom > span,
   & .as-flap-back > span {
     bottom: 0;

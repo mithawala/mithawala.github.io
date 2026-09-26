@@ -23,9 +23,11 @@ const FlapCell = memo(function FlapCell({ char, delay, animate }) {
     const element = cell.current
     const [top, bottom, front, back] = element.querySelectorAll('[data-face]')
     const leaf = element.querySelector('.as-flap-leaf')
+    // Glyphs render from data-c via CSS so the DOM text stays clean.
+    const put = (face, value) => face.setAttribute('data-c', value)
     const paint = (value) => {
-      top.textContent = value
-      bottom.textContent = value
+      put(top, value)
+      put(bottom, value)
     }
     if (shown.current === null) {
       shown.current = animate ? ' ' : char
@@ -43,10 +45,10 @@ const FlapCell = memo(function FlapCell({ char, delay, animate }) {
       for (const next of stepsTo(shown.current, char)) {
         if (cancelled) return
         const previous = shown.current
-        top.textContent = next
-        bottom.textContent = previous
-        front.textContent = previous
-        back.textContent = next
+        put(top, next)
+        put(bottom, previous)
+        put(front, previous)
+        put(back, next)
         leaf.style.display = 'block'
         try {
           await leaf.animate(
@@ -60,7 +62,7 @@ const FlapCell = memo(function FlapCell({ char, delay, animate }) {
           return
         }
         shown.current = next
-        bottom.textContent = next
+        put(bottom, next)
         leaf.style.display = ''
       }
     }

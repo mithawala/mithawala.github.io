@@ -26,6 +26,7 @@ test('the split-flap board names the person and lists every destination', async 
 }) => {
   await page.goto(version.path)
   await expect(page.locator('main h1')).toHaveAccessibleName(profile.name)
+  await expect(page.locator('main h1')).toHaveText(profile.name)
   await expect(page.locator('main h1 .as-flaps')).toHaveAttribute(
     'data-text',
     profile.name,
