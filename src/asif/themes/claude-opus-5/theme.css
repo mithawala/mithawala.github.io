@@ -1,0 +1,468 @@
+/* Claude Opus 5 — "Latent"
+   A measuring instrument made of paper: hairlines, set numbers, one very large
+   voice, and a living map of the work turning behind the page. */
+
+[data-edition='claude-opus-5'] {
+  --paper: #f2f1ec;
+  --raised: #fbfaf6;
+  --sunken: #e7e6de;
+  --ink: #101014;
+  --muted: #5c5c63;
+  --line: rgba(16, 16, 20, 0.16);
+  --hair: rgba(16, 16, 20, 0.1);
+  --accent: #4436ef;
+  --mark: #dcff4d;
+  --on-accent: #ffffff;
+  --display: 'Familjen Grotesk Variable', 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --gutter: clamp(18px, 4vw, 60px);
+  --frame: 1560px;
+  --bar: 64px;
+  --soft: var(--sunken);
+  --forest: var(--accent);
+  position: relative;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1.55;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+[data-edition='claude-opus-5'][data-mode='dark'] {
+  --paper: #08080b;
+  --raised: #121218;
+  --sunken: #0e0e13;
+  --ink: #edece5;
+  --muted: #9b9ba4;
+  --line: rgba(237, 236, 229, 0.2);
+  --hair: rgba(237, 236, 229, 0.12);
+  --accent: #9d95ff;
+  --mark: #dcff4d;
+  --on-accent: #0a0a10;
+  color-scheme: dark;
+}
+
+[data-edition='claude-opus-5']
+  :where(h1, h2, h3, h4, p, ul, ol, dl, dd, figure) {
+  margin: 0;
+}
+[data-edition='claude-opus-5'] :where(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+[data-edition='claude-opus-5'] :where(h1, h2, h3, h4) {
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+[data-edition='claude-opus-5'] :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+[data-edition='claude-opus-5'] :where(button) {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+[data-edition='claude-opus-5'] :where(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+[data-edition='claude-opus-5'] ::selection {
+  background: var(--mark);
+  color: #101014;
+}
+
+.o5-mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' 1;
+}
+.o5-num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+.o5-dim {
+  color: var(--muted);
+}
+
+/* --- the map layer ------------------------------------------------------ */
+
+.o5-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.o5-field canvas,
+.o5-static {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.o5-field[data-field='live'] canvas,
+.o5-field[data-field='static'] .o5-static {
+  opacity: 1;
+}
+.o5-static-links line {
+  stroke: var(--ink);
+  stroke-width: 0.09;
+  opacity: 0.22;
+}
+.o5-readout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  max-width: 280px;
+  padding: 9px 12px 10px;
+  display: grid;
+  gap: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  pointer-events: none;
+}
+.o5-readout b {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.o5-readout span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
+/* Sections paint their own surface; where they do not, the map shows through. */
+.o5-shell {
+  position: relative;
+  z-index: 1;
+}
+.o5-plate {
+  background: var(--paper);
+}
+.o5-window {
+  position: relative;
+}
+
+/* --- header ------------------------------------------------------------- */
+
+.o5-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--bar);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 var(--gutter);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.o5-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.o5-wordmark i {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.o5-nav {
+  margin-inline: auto;
+}
+.o5-nav ul {
+  display: flex;
+  gap: 4px;
+}
+.o5-nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 11px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 2px;
+}
+.o5-nav a sup {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.o5-nav a:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+.o5-nav a[aria-current='location'] {
+  color: var(--ink);
+}
+.o5-nav a[aria-current='location'] sup {
+  color: var(--accent);
+}
+.o5-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.o5-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  color: var(--muted);
+}
+.o5-icon:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+.o5-gallery-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.o5-gallery-link:hover {
+  border-color: var(--ink);
+}
+.o5-menu-button {
+  display: none;
+}
+.o5-nav-gallery {
+  display: none;
+}
+
+/* --- shared primitives -------------------------------------------------- */
+
+.o5-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+.o5-button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.o5-button-solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+.o5-button-solid:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.o5-rule {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.o5-section {
+  position: relative;
+  scroll-margin-top: 0;
+}
+.o5-pad {
+  padding: clamp(64px, 8vw, 128px) var(--gutter);
+}
+.o5-frame {
+  max-width: var(--frame);
+  margin: 0 auto;
+}
+.o5-head h2 {
+  margin-top: clamp(20px, 2.4vw, 34px);
+  font-size: clamp(38px, 5.6vw, 76px);
+  max-width: 16ch;
+}
+.o5-head > p:not(.o5-rule) {
+  margin-top: 20px;
+  max-width: 58ch;
+  font-size: clamp(17px, 1.35vw, 20px);
+  color: var(--muted);
+}
+.o5-prose p + p {
+  margin-top: 1.1em;
+}
+.o5-prose {
+  max-width: 62ch;
+  font-size: 17.5px;
+  line-height: 1.66;
+}
+
+/* --- footer ------------------------------------------------------------- */
+
+.o5-footer {
+  position: relative;
+  z-index: 1;
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(46px, 6vw, 84px) var(--gutter) 34px;
+}
+[data-mode='dark'] .o5-footer {
+  background: #14141c;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+}
+.o5-footer a {
+  color: inherit;
+}
+.o5-footer-top {
+  max-width: var(--frame);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 48px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.o5-footer-top p:first-child {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  max-width: 14ch;
+}
+.o5-footer nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+.o5-footer nav a:hover,
+.o5-footer-meta a:hover {
+  color: var(--mark);
+}
+.o5-footer-meta {
+  max-width: var(--frame);
+  margin: 42px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 26px;
+  justify-content: space-between;
+  opacity: 0.8;
+}
+
+/* --- mobile menu -------------------------------------------------------- */
+
+@media (max-width: 1040px) {
+  [data-edition='claude-opus-5'] {
+    --bar: 58px;
+  }
+  .o5-menu-button {
+    display: grid;
+  }
+  .o5-gallery-link span {
+    display: none;
+  }
+  .o5-gallery-link {
+    padding: 0 12px;
+    width: 44px;
+    justify-content: center;
+  }
+  .o5-nav {
+    position: fixed;
+    inset: var(--bar) 0 auto;
+    margin: 0;
+    padding: 10px var(--gutter) 26px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-101%);
+    visibility: hidden;
+    transition:
+      transform 0.28s ease,
+      visibility 0.28s;
+  }
+  .o5-nav[data-open='true'] {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  .o5-nav ul {
+    flex-direction: column;
+    gap: 0;
+  }
+  .o5-nav a {
+    justify-content: space-between;
+    padding: 14px 2px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--hair);
+  }
+  .o5-nav-gallery {
+    display: block;
+  }
+  .o5-nav-gallery a {
+    color: var(--accent);
+  }
+}
+
+@media (max-width: 430px) {
+  [data-edition='claude-opus-5'] {
+    --gutter: 16px;
+  }
+  .o5-header {
+    gap: 8px;
+  }
+  .o5-gallery-link {
+    display: none;
+  }
+  .o5-wordmark {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .o5-nav {
+    transition: none;
+  }
+}
