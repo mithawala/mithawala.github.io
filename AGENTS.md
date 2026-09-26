@@ -7,7 +7,18 @@ own GitHub Pages repositories. Do not apply personal-site assumptions globally.
 ## Building A New Edition
 
 Read `.github/skills/build-personal-edition/SKILL.md` before creating a new design.
-The content and required capabilities are fixed; the art direction is yours.
+Full creative freedom is the default. The model owns the art direction: layout,
+navigation concept, typography, color, density, imagery, motion, and dimensionality.
+Ambitious experiments, real-time 3D, shaders, and new interaction ideas are welcome.
+Choose a strong concept and solve the engineering needed to make it work.
+
+The content and capabilities are fixed; the presentation is not. Shared components
+and tests are foundations, not a design template. Six semantic sections need not
+be six stacked page bands. Creative distinction matters alongside passing checks.
+When a brief explicitly requires WebGL/3D, deliver it; a fallback supports the
+requested experience rather than replacing it with a simpler effect.
+
+The following boundaries protect content and edition independence, not aesthetics:
 
 - Do not inspect, screenshot, copy, or use `mithawala.com`, the reference checkout's
   presentation code, or existing `src/asif/themes/*` editions as design inspiration.

@@ -1,0 +1,562 @@
+/* Dusk and night: the music room and the lantern-lit contact desk. */
+.op-music,
+.op-contact,
+.op-footer {
+  --ink: #f0eadf;
+  --muted: #bfbdca;
+  --line: #3f3f58;
+  --soft: #2d2b45;
+  --accent: #f0b04a;
+  --accent-ink: #f4bd5e;
+  --forest: #f0b04a;
+  --glow: rgb(240 176 74 / 0.22);
+  color-scheme: dark;
+}
+.op-music {
+  --paper: #221d36;
+  --paper-lit: #2b2542;
+  background: linear-gradient(180deg, #2f2745 0%, #221d36 38%, #1b1a2e 100%);
+}
+.op-contact {
+  --paper: #13151f;
+  --paper-lit: #1b1e2c;
+  background:
+    radial-gradient(
+      70vw 520px at 12% 0%,
+      rgb(240 176 74 / 0.16),
+      transparent 70%
+    ),
+    #13151f;
+}
+.op-music-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 7vw, 120px);
+  align-items: center;
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+.op-music-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 470px;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 0;
+  background: #2d2b45;
+  cursor: zoom-in;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 125' preserveAspectRatio='none'%3E%3Cpath d='M0 125V86.6A100 100 0 0 1 50 0a100 100 0 0 1 50 86.6V125z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 125' preserveAspectRatio='none'%3E%3Cpath d='M0 125V86.6A100 100 0 0 1 50 0a100 100 0 0 1 50 86.6V125z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+.op-music-art:focus-visible {
+  -webkit-mask: none;
+  mask: none;
+}
+.op-music-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.op-music-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    60% 45% at 50% 62%,
+    rgb(255 186 90 / 0.34),
+    transparent 70%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.op-music[data-playing] .op-music-glow {
+  opacity: 1;
+  animation: op-breathe 5.5s ease-in-out infinite;
+}
+@keyframes op-breathe {
+  50% {
+    opacity: 0.55;
+  }
+}
+.op-music-text .op-lead {
+  max-width: 30ch;
+  margin: 28px 0 32px;
+}
+
+/* Shared player, restyled as a listening desk */
+[data-edition='claude-opus-5-5'] .op-music .music-player {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgb(18 16 32 / 0.55);
+  color: var(--ink);
+  overflow: hidden;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-player.is-expanded {
+  background: #1b1a2e;
+  box-shadow: 0 0 0 30px rgb(10 9 20 / 0.9);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-player-top {
+  border-color: var(--line);
+  font-size: 15px;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-player-top .icon-button,
+[data-edition='claude-opus-5-5'] .op-music .transport .icon-button,
+[data-edition='claude-opus-5-5'] .op-music .music-volume .icon-button {
+  width: 44px;
+  height: 44px;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-now-playing {
+  border-color: var(--line);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-now-playing > img {
+  border-radius: 12px;
+  box-shadow: 0 14px 30px rgb(0 0 0 / 0.35);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-now-playing h3 {
+  font-size: clamp(24px, 2.4vw, 34px);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-now-playing p,
+[data-edition='claude-opus-5-5'] .op-music .music-player .eyebrow {
+  font-size: 14px;
+  color: var(--muted);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-now-playing a {
+  min-height: 44px;
+  font-size: 14px;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-track-list button {
+  min-height: 56px;
+  color: var(--ink);
+  border-radius: 12px;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-track-list button:hover,
+[data-edition='claude-opus-5-5']
+  .op-music
+  .music-track-list
+  button[aria-current] {
+  background: rgb(240 176 74 / 0.12);
+}
+[data-edition='claude-opus-5-5'] .op-music .track-name {
+  font-size: 15px;
+}
+[data-edition='claude-opus-5-5'] .op-music .track-name small,
+[data-edition='claude-opus-5-5'] .op-music .track-duration,
+[data-edition='claude-opus-5-5'] .op-music .track-number {
+  font-size: 13px;
+  color: var(--muted);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-player-controls {
+  background: rgb(10 9 22 / 0.45);
+  border-color: var(--line);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-play {
+  width: 54px;
+  height: 54px;
+  background: var(--accent);
+  color: #1b1a2e;
+}
+[data-edition='claude-opus-5-5'] .op-music .music-progress {
+  font-size: 13px;
+  color: var(--muted);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-state {
+  font-size: 15px;
+  color: var(--muted);
+}
+[data-edition='claude-opus-5-5'] .op-music .music-state button {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+/* Contact */
+.op-contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(36px, 7vw, 120px);
+  align-items: start;
+}
+.op-contact-email {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  font: 500 clamp(24px, 2.6vw, 40px) / 1.2 var(--display);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.op-contact-email:hover {
+  color: var(--accent-ink);
+}
+.op-contact-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+  margin: 30px 0 34px;
+}
+.op-contact-list dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.op-contact-list dd {
+  margin: 4px 0 0;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+.op-contact-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.op-map {
+  width: 100%;
+  height: 260px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  filter: grayscale(1) invert(0.9) hue-rotate(185deg) contrast(0.92);
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-form h3 {
+  font-size: clamp(26px, 2.4vw, 34px);
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-form label {
+  color: var(--muted);
+  font-size: 15px;
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-form input:not(.sr-only),
+[data-edition='claude-opus-5-5'] .op-contact .contact-form textarea {
+  margin-top: 8px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.04);
+  color: var(--ink);
+  font-size: 16px;
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-form input:focus,
+[data-edition='claude-opus-5-5'] .op-contact .contact-form textarea:focus {
+  border-color: var(--accent);
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-submit {
+  min-height: 52px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #1b1a2e;
+  font-size: 15px;
+  font-weight: 700;
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-status {
+  font-size: 15px;
+}
+[data-edition='claude-opus-5-5'] .op-contact .contact-status.error {
+  color: #ffb4a2;
+}
+
+/* Footer */
+.op-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  padding: 30px var(--gutter);
+  border-top: 1px solid #262a3a;
+  background: #0f1119;
+  color: var(--muted);
+  font-size: 14px;
+}
+.op-footer p {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 0 0;
+}
+.op-footer .op-star {
+  color: var(--accent);
+}
+.op-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Shared dialogs, search, and details */
+[data-edition='claude-opus-5-5'][data-mode] .shared-dialog {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--paper-lit);
+  color: var(--ink);
+  font-family: var(--text);
+}
+[data-edition='claude-opus-5-5'][data-mode] .shared-dialog::backdrop {
+  background: rgb(14 14 24 / 0.72);
+}
+[data-edition='claude-opus-5-5'][data-mode] .shared-dialog :is(h1, h2) {
+  font-family: var(--display);
+  letter-spacing: -0.015em;
+}
+[data-edition='claude-opus-5-5'][data-mode] .shared-dialog .eyebrow {
+  color: var(--muted);
+  font-size: 14px;
+}
+[data-edition='claude-opus-5-5'][data-mode] .rich-content {
+  max-width: 70ch;
+  font-size: 17px;
+}
+[data-edition='claude-opus-5-5'][data-mode] .search-field input {
+  font-size: 20px;
+}
+[data-edition='claude-opus-5-5'][data-mode] .search-results small,
+[data-edition='claude-opus-5-5'][data-mode] .search-status {
+  font-size: 14px;
+}
+[data-edition='claude-opus-5-5'][data-mode] .technology-list li {
+  font-size: 14px;
+}
+[data-edition='claude-opus-5-5'][data-mode] .project-links a {
+  min-height: 44px;
+}
+
+/* Responsive composition */
+@media (max-width: 1180px) {
+  .op-header nav a {
+    padding: 0 9px;
+    font-size: 14px;
+  }
+  .op-editions {
+    display: none;
+  }
+  .op-services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 980px) {
+  .op-menu {
+    display: inline-grid;
+  }
+  .op-header nav {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: none;
+    padding: calc(var(--header) + 24px) var(--gutter) 40px;
+    background: var(--paper);
+    overflow-y: auto;
+  }
+  .op-header[data-open] {
+    background: var(--paper);
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .op-header[data-open] nav {
+    display: block;
+  }
+  .op-header nav ul {
+    flex-direction: column;
+    gap: 0;
+  }
+  .op-header nav li {
+    border-bottom: 1px solid var(--line);
+  }
+  .op-header nav a {
+    width: 100%;
+    min-height: 64px;
+    padding: 0;
+    border-radius: 0;
+    font: 600 32px/1.1 var(--display);
+  }
+  .op-nav-editions {
+    display: block;
+  }
+  .op-nav-editions a {
+    gap: 10px;
+    font: 600 18px/1.2 var(--text) !important;
+  }
+  .op-now-label {
+    display: none;
+  }
+  .op-now-playing {
+    max-width: 150px;
+  }
+  .op-works-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-viewer {
+    display: none;
+  }
+  .op-work-thumb {
+    display: block;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--soft);
+  }
+  .op-work-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .op-catalogue a {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 14px 0;
+  }
+  .op-work-number {
+    display: none;
+  }
+  .op-career-body,
+  .op-contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px), (max-aspect-ratio: 4/5) {
+  .op-hero {
+    --stage: 58svh;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding-bottom: 36px;
+    background: var(--paper);
+  }
+  .op-hero .op-placard {
+    order: 1;
+  }
+  .op-hero-copy {
+    order: 2;
+  }
+  .op-stage {
+    position: relative;
+    inset: auto;
+    height: max(360px, var(--stage));
+  }
+  .op-hero-copy {
+    max-width: none;
+    padding: 26px var(--gutter) 0;
+  }
+  [data-edition] .op-name {
+    margin: 12px 0 26px;
+    font-size: clamp(50px, 15.5vw, 112px);
+  }
+  .op-name span + span {
+    margin-left: 0;
+  }
+  .op-light-control {
+    top: calc(max(360px, var(--stage)) - 66px);
+    right: 12px;
+    bottom: auto;
+    padding-left: 14px;
+  }
+  .op-light-control input {
+    width: 112px;
+  }
+  .op-placard {
+    position: static;
+    width: auto;
+    margin: 0;
+    padding: 18px var(--gutter) 0;
+    background: none;
+    box-shadow: none;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  [data-mode='dark'] .op-placard {
+    background: none;
+  }
+  .op-placard-name {
+    display: none;
+  }
+  .op-placard-role {
+    justify-content: flex-start;
+    color: var(--ink);
+    font-size: 19px;
+  }
+  .op-placard-meta {
+    color: var(--muted);
+  }
+}
+@media (max-width: 760px) {
+  .op-section-head,
+  .op-about-grid,
+  .op-music-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-about-portrait {
+    position: static;
+    max-width: 420px;
+  }
+  .op-expertise {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-services {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-timeline-row,
+  .op-timeline-axis {
+    grid-template-columns: minmax(84px, 0.36fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+  .op-timeline-name {
+    font-size: 12px;
+  }
+  .op-role summary {
+    grid-template-columns: 44px minmax(0, 1fr) 32px;
+    gap: 14px;
+  }
+  .op-role img,
+  .op-education img {
+    width: 44px;
+    height: 44px;
+  }
+  .op-role > p {
+    padding-left: 0;
+  }
+  .op-contact-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .op-music-art {
+    max-width: 360px;
+  }
+}
+@media (max-width: 420px) {
+  .op-brand span {
+    font-size: 17px;
+  }
+  .op-tools {
+    gap: 4px;
+  }
+  .op-now-playing {
+    display: none;
+  }
+  .op-catalogue a {
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+  .op-work-thumb {
+    width: 60px;
+    height: 60px;
+  }
+  .op-work-year {
+    display: none;
+  }
+}
+@media (max-width: 350px) {
+  .op-brand span {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .op-music[data-playing] .op-music-glow {
+    animation: none;
+  }
+}

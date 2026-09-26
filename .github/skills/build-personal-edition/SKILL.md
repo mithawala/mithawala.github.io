@@ -1,108 +1,112 @@
 ---
 name: build-personal-edition
-description: 'Build a new frontier-model edition of Asif Mithawala personal website. Use when adding a model version, creating a new theme or design, or registering a personal-site edition in the gallery. Requires complete shared content and feature parity without copying earlier designs.'
-argument-hint: 'Exact model name and optional design constraints'
+description: 'Build an independent edition of Asif Mithawala personal website with full creative freedom over its design and interactions. Use when adding a model version, designing a theme, or registering an edition. Encourage ambitious original work, including 3D, while preserving canonical content and shared capabilities.'
+argument-hint: 'Exact model name and optional creative brief'
 user-invocable: true
 ---
 
 # Build An Independent Personal-Site Edition
 
-## Goal
+## Creative Freedom Comes First
 
-Create an exceptional original design at `/asif/<model-id>/`, with every piece of
-canonical content and every required capability intact. The root gallery shows a
-real screenshot and the exact model name. Content changes must update all editions.
+You have full creative freedom over the edition's design. Act as its art director:
+make an original, memorable website that expresses your own point of view.
+Technical compliance is the floor; creative distinction is the goal.
 
-## Independence Rule
+Choose the entire visual and interactive language: layout, navigation concept,
+section order, typography, palette, density, imagery, illustration, geometry,
+materials, motion, and depth. Invent a new way to experience this person's work.
+The shared content is your subject matter, not a predesigned page to decorate.
 
-Do not open the original site, the reference checkout's UI files, existing theme
-files, gallery preview images, or earlier screenshots for inspiration. Do not
-copy their CSS, composition, typography, section ordering, or markup. This is a
-fresh design exercise, not a recolor. The original content migration is finished.
-Do not repeat it or depend on a sibling checkout.
+- Explore ambitious ideas and prototype the most distinctive part early.
+  Choose the strongest direction yourself and carry it through the whole site.
+- Think beyond a conventional portfolio: an immersive space, an expressive
+  publication, an interactive instrument, or something none of those describes.
+  These are invitations, not a menu or a preferred aesthetic.
+- Embrace experimentation with 3D, shaders, canvas, SVG, new browser capabilities,
+  and interaction libraries when they serve your concept. Suitable dependencies
+  and locally hosted assets are welcome.
+- Make confident aesthetic decisions without asking permission for each effect
+  or justifying every motif. Restraint, maximalism, playfulness, and cinematic
+  expression are equally available; there is no prescribed amount of motion.
+- Judge the result as a designed experience, not merely a passing test suite.
+  Look at your own screenshots, use the site, and refine what feels unfinished.
 
-When the user explicitly asks to refine an existing edition, inspect and change
-only that edition and directly affected infrastructure. This exception does not
-permit studying previous editions when building a new one.
+The six content sections are semantic destinations, not a requirement for six
+stacked bands. Shared components supply behavior, not mandatory markup or styling.
+You may restyle, compose, or extend them and their hooks to realize your concept
+while keeping the complete accessible experience.
 
-You may read the shared infrastructure and content files listed below. Those are
-the contract, not a visual reference. Existing editions should remain unchanged.
+## 3D And Experimental Interaction
 
-## Read First
+Treat real-time 3D and WebGL as first-class creative tools, not extras to avoid.
+Prototype the interaction you want, then solve its engineering challenges.
+When the brief leaves the medium open, choose it freely without defaulting to
+the easiest implementation. This skill imposes neither a 3D quota nor a 2D default.
 
-1. `AGENTS.md` and `README.md` at the repository root.
-2. `docs/content-and-features.md` for the schema, complete capability checklist,
-   routing requirements, and stable browser-test hooks.
-3. Every file in `content/asif/`. Read full portfolio and article bodies, not just
-   titles or thumbnails. Inspect shared media assets as needed.
-4. `src/asif/content.mjs`, `src/asif/core.jsx`, `src/asif/features.jsx`,
-   `src/asif/Dialog.jsx`, and `src/asif/MusicPlayer.jsx` for reusable behavior.
-5. `src/versions.mjs` for the small registry format, without opening its theme imports.
-6. `tests/e2e/site.spec.mjs` for the behavioral contract. It runs for every edition.
+If the user explicitly requests a WebGL/3D edition, deliver a working real-time
+3D element in the normal experience. CSS perspective, a static render, or an
+explanation for omitting it does not fulfill that request. A fallback supports
+the feature; it does not replace the requested implementation.
 
-## Design Quality Gate
+Engineer for reach: keep content accessible through DOM and keyboard/touch
+controls, support reduced motion and graphics-unavailable fallbacks, and load
+heavy rendering within your edition. Test the interactive experience as well as
+the offline, reduced-motion composition used by CI. These are implementation
+problems to solve, not reasons to abandon the creative direction. Mark a scene
+that renders asynchronously with `data-rendering` until its first complete frame
+so preview capture waits for it; see the contract's screenshot section.
 
-Use design guidance as a way to question your choices, not as a style to import:
+## Independent Starting Point
 
-- Start with what visitors should understand and do. Make the actual work easy
-  to reach; a large introduction should not bury the gallery or its model labels.
-- Let the person's real work, images, and interests lead. Explain the purpose of
-  a motif before adding it. Remove repeated decoration that competes with content.
-- Establish a readable hierarchy and comfortable text measures. Test long
-  paragraphs as carefully as the hero. Do not shrink mobile text to make it fit.
-- Keep primary controls at least 44px in both dimensions and mobile text inputs
-  at least 16px. Keep zoom enabled, focus visible, and menu focus predictable.
-- Motion must have a purpose, stop for reduced-motion preferences, and have a
-  pause control for persistent automatic updates. Never hide content until an
-  animation or observer runs.
-- Use `ResponsiveImage` for canonical cover imagery. The build generates shared
-  WebP candidates; originals remain available for full-resolution viewers.
-- Inspect actual screenshots and interactions before declaring the design done.
-  Check model identity/preview visibility, image crops, readable metadata, loading
-  behavior, keyboard focus, 320px reflow, and both color modes.
+Start with canonical content and neutral APIs. Do not inspect mithawala.com,
+the reference checkout's UI, or earlier themes, previews, and screenshots for
+inspiration. The migration is finished; the repository stands on its own.
+An explicit request to refine an existing edition permits inspecting that edition,
+not borrowing from it when creating the next one.
 
-Useful primary sources to consult without copying their layouts or skill text:
+Read:
+
+1. `AGENTS.md`, `README.md`, and `docs/content-and-features.md`.
+2. Every record in `content/asif/`, including full project and article bodies.
+3. `src/asif/content.mjs`, `core.jsx`, `features.jsx`, `Dialog.jsx`,
+   `MusicPlayer.jsx`, and `images.mjs` for shared behavior and media helpers.
+4. `src/versions.mjs` as registry metadata, without following earlier theme imports.
+5. `tests/e2e/site.spec.mjs` for the behavioral contract, not a layout template.
+
+Optional research can expand your vocabulary:
 [frontend-design principles](https://github.com/anthropics/skills/tree/main/skills/frontend-design),
 [interaction guidance](https://vercel.com/design/guidelines),
-[W3C target sizes](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
-and [image/LCP performance](https://web.dev/articles/optimize-lcp).
-No palette, typeface, layout, or motion library is prescribed for future editions.
+[accessible interaction](https://www.w3.org/WAI/WCAG22/quickref/),
+and [rendering performance](https://web.dev/articles/optimize-lcp).
+Use these to improve your execution, not to import someone else's aesthetic.
 
-## Procedure
+## Build And Deliver
 
-1. Confirm the model label from the user's request. Derive a lowercase, hyphenated
-   ID. Ask only when that identity is missing or ambiguous. Never guess which
-   model you are. The model name is display metadata supplied by the user.
-2. Write down a distinct art direction: type choices, palette, layout rhythm,
-   use of real photography/project media, and a small number of meaningful motion
-   choices. Design for the actual person and portfolio, not a generic SaaS template.
-3. Create only your own directory under `src/asif/themes/<id>/`. Export a default
-   React `Theme` component. Obtain data and controls with `useAsif()`.
-4. Render all six required sections and all canonical records. Layout, ordering,
-   cards vs lists, and presentation are creative decisions. Long content may use
-   accessible disclosure, but must never be discarded or rewritten into summaries.
-5. Use `detailPath(version, kind, slug)` for project/article links. The shared
-   provider supplies search, navigation state, appearance, and full detail views.
-   Reuse `ContactForm`, `ImageLightbox`, and `MusicPlayer` or their headless hooks.
-   Restyle them to fit your design; do not remove behavior or fork personal data.
-6. Preserve the current semantic control labels and `data-project`, `data-article`,
-   and optional `data-action='show-all-projects'` hooks. Add equivalent shared tests
-   if an interaction genuinely needs a different accessible presentation.
-7. Add one entry to `src/versions.mjs`: ID, exact model label, path, release date,
-   desktop/mobile preview paths, accent color, and `load: () => import(...)`.
-   No gallery markup or hard-coded routing additions should be necessary.
-8. Run the verification commands below. Fix your edition or shared regressions;
-   never delete records, remove assertions, or skip tests to pass.
-9. Inspect your own screenshots at 1440x1000 and 390x844, plus narrow (320px),
-   tablet, and wide desktop layouts. Check light/dark modes, focus, dialogs,
-   overflow, real images, reduced motion, and touch targets.
-10. Generate checked-in development previews with
-    `npm run screenshots -- --write-public`. CI independently regenerates its
-    own preview artifacts from the finished build on every deployment.
-11. Only commit/push when authorized. After deployment, verify `/` and the new
-    edition URL, a deep project link, article link, and both screenshot URLs.
+1. Use the exact user-supplied model label and derive its lowercase hyphenated ID.
+   Briefly state your concept, then build it in `src/asif/themes/<id>/` with a
+   default `Theme` export and `useAsif()`. Keep theme styles and dependencies scoped.
+2. Render the complete canonical collections and capabilities from the content
+   contract. Content changes must update every edition. Full text can use accessible
+   disclosure; facts, records, and functioning features stay intact.
+3. Integrate through `detailPath(version, kind, slug)` and the shared APIs.
+   `ResponsiveImage` provides generated cover sizes; originals serve detail views.
+   Retain semantic labels, `data-project`, `data-article`, and the optional
+   `data-action='show-all-projects'` hook. Equivalent interactions can have
+   equivalent tests that preserve coverage rather than force an old layout.
+4. Register one completed edition in `src/versions.mjs`: ID, exact model label,
+   `/asif/<model-id>/` path, release date, desktop/mobile previews, accent metadata,
+   and lazy import. Existing editions, the gallery, and unrelated paths remain
+   independent; change shared infrastructure only where integration needs it.
+5. Run verification below for every edition without weakening the assertions.
+   Inspect your own desktop (1440x1000), mobile (390x844), 320px, tablet, and wide
+   layouts. Verify both color modes, readable text, keyboard focus, touch targets,
+   reduced motion, complete content, and any experimental feature's fallback.
+6. Generate real previews with `npm run screenshots -- --write-public`.
+   Commit/push only when authorized. Confirm Actions succeeded and verify the
+   public gallery, edition, project/article deep links, and both preview URLs.
 
-## Verification Commands
+## Delivery Checks
 
 ```sh
 npm ci
@@ -111,18 +115,11 @@ npm run build
 npx playwright install chromium
 npm run test:e2e
 npm run screenshots -- --write-public
+npm run format:check
 ```
 
-The external-provider tests in CI are deterministic and intercepted. Separately
-verify the real SoundCloud playlist and embeds when changing integrations. Never
-send a real contact message just to test the form without explicit permission.
+CI intercepts external form/music services; separately verify integrations when
+changing them. Real contact submissions require the owner's permission.
 
-## Acceptance
-
-- No copied visual design and no changes to previous themes.
-- No personal content duplicated in theme source.
-- Every section, source record, full text, asset, and capability is represented.
-- All shared tests pass for every edition, not only the new one.
-- Real, nonblank preview images and a correctly labeled gallery entry.
-- Deep links work on GitHub Pages without a catch-all SPA rewrite.
-- Unrelated top-level paths remain independent.
+Deliver both: a distinctive authored design and the complete, reliable personal
+site. Neither is a substitute for the other.

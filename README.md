@@ -8,7 +8,9 @@ The gallery identifies the model behind each edition alongside real automated
 desktop and mobile captures.
 
 - Gallery: https://mithawala.github.io/
-- First edition: https://mithawala.github.io/asif/gpt-6-astra/
+- Editions:
+  - GPT-6 Astra: https://mithawala.github.io/asif/gpt-6-astra/
+  - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5/
 
 ## Local Development
 
@@ -42,8 +44,10 @@ definitions, routing, external integrations, and the completeness requirements.
 Use [the build-personal-edition skill](.github/skills/build-personal-edition/SKILL.md).
 It starts from content and neutral APIs, not earlier designs. Each edition owns
 its presentation, never its own copy of personal content.
-Its design quality gate incorporates primary accessibility, interaction, and
-performance guidance without prescribing a palette or layout for the next model.
+Its creative brief gives the model full control over design and interaction,
+including ambitious 3D and experimental interfaces. Content, accessibility, and
+integration are delivery contracts, not reasons to repeat a safe template.
+An explicit WebGL/3D request must be implemented, with appropriate fallbacks.
 
 Register the new component in `src/versions.mjs`. Routes, gallery cards,
 screenshots, and cross-edition tests are driven by that registry.

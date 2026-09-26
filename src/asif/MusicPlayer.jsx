@@ -221,7 +221,7 @@ export function useSoundCloud({ playlistUrl, artist, artwork }) {
   }
 }
 
-export default function MusicPlayer({ music, artist }) {
+export default function MusicPlayer({ music, artist, onPlaybackChange }) {
   const player = useSoundCloud({
     playlistUrl: music.playlistUrl,
     artist,
@@ -231,6 +231,14 @@ export default function MusicPlayer({ music, artist }) {
   const expandButton = useRef(null)
   const [expanded, setExpanded] = useState(false)
   const ready = player.status === 'ready'
+  const playbackListener = useRef(onPlaybackChange)
+  playbackListener.current = onPlaybackChange
+  useEffect(() => {
+    playbackListener.current?.({
+      playing: player.playing,
+      title: player.track?.title || '',
+    })
+  }, [player.playing, player.track?.title])
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

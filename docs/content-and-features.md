@@ -89,6 +89,8 @@ button or a link-only substitute for the existing interactive experience.
 - `ResponsiveImage` selects generated cover sizes, with native lazy loading by
   default; use `loading="eager"` and `fetchPriority="high"` for a hero image.
 - `MusicPlayer` and `useSoundCloud` preserve the live music integration.
+  `MusicPlayer` accepts an optional `onPlaybackChange({ playing, title })`
+  callback for edition chrome such as a now-playing indicator.
 - `Dialog`, `ImageLightbox`, `VideoEmbed`, `DevicePreview`, `ProjectDetails`,
   `BlogDetails`, `ShareLinks`, and `RichText` provide accessible feature rendering.
 
@@ -128,6 +130,10 @@ at `/<repository-name>/` without joining this personal-site build.
 - The standard music wrapper exposes `data-player-status` for readiness checks.
 
 These hooks constrain completeness and behavior, not the visual layout.
+The six section IDs identify content destinations; they do not prescribe six
+stacked bands, a section order, or a navigation style. Spatial and experimental
+presentations are welcome. Equivalent accessible interactions may use equivalent
+test coverage while preserving every required capability and record.
 
 ## External Services And Privacy
 
@@ -148,10 +154,13 @@ Failed builds leave the previous deployment intact.
 
 Screenshots are taken from the built edition, using light mode, reduced motion,
 fixed desktop/mobile viewports, loaded fonts/images, and no external network.
-They are checked for blank pixels and overflow, converted to WebP, and inserted
+An edition that renders asynchronously, such as a WebGL scene, marks an element
+with `data-rendering` until its first complete frame; capture waits up to 15
+seconds for that marker to disappear. Keep a readable fallback in case it never does.
+Captures are checked for blank pixels and overflow, converted to WebP, and inserted
 into the same deployment artifact. `--write-public` also updates the local/dev
 preview copies. Screenshots are generated assets, never content sources.
 
-The edition-builder skill also includes a style-neutral design quality gate and
-links to primary design/accessibility guidance. Those are evaluation criteria,
-not a visual template to share between editions.
+The edition-builder skill leads with full creative freedom and includes optional
+design research. This contract protects completeness and usable interaction;
+it does not prescribe the visual language, level of ambition, or rendering medium.

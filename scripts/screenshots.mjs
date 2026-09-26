@@ -38,10 +38,34 @@ try {
         await document.fonts.ready
         await Promise.all(
           [...document.images]
-            .filter((image) => image.getBoundingClientRect().top < innerHeight)
+            .filter((image) => {
+              const bounds = image.getBoundingClientRect()
+              return (
+                bounds.width > 0 &&
+                bounds.height > 0 &&
+                bounds.bottom > 0 &&
+                bounds.top < innerHeight
+              )
+            })
             .map((image) => image.decode()),
         )
       })
+      // Editions may mark asynchronous rendering (such as WebGL) as pending.
+      await page
+        .waitForFunction(
+          () => !document.querySelector('[data-rendering]'),
+          null,
+          {
+            timeout: 15000,
+          },
+        )
+        .catch(() => {})
+      await page.evaluate(
+        () =>
+          new Promise((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+          ),
+      )
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,
       )
