@@ -1,0 +1,262 @@
+html:has([data-edition='claude-opus-5-5-iteration-2']) {
+  scroll-padding-top: 16px;
+  scroll-padding-bottom: 84px;
+}
+body:has([data-edition='claude-opus-5-5-iteration-2'][data-mode='light']) {
+  background: #e6e3dc;
+}
+body:has([data-edition='claude-opus-5-5-iteration-2'][data-mode='dark']) {
+  background: #111315;
+  color-scheme: dark;
+}
+
+[data-edition='claude-opus-5-5-iteration-2'] {
+  /* Day operations: apron concrete, signage yellow, board black. */
+  --as-ground: #e6e3dc;
+  --as-ground-2: #dad6cd;
+  --as-slab: rgb(20 20 18 / 0.075);
+  --as-ink: #151617;
+  --as-ink-2: #34363a;
+  --as-muted: #54575b;
+  --as-rule: rgb(21 22 23 / 0.16);
+  --as-rule-strong: rgb(21 22 23 / 0.42);
+  --as-paper: #f8f6f0;
+  --as-paper-2: #eeebe3;
+  --as-card: #fcfbf8;
+  --as-link: #1a50c2;
+  --as-focus: #1a50c2;
+  --as-ok: #146c3a;
+  --as-alert: #b3121f;
+  --as-sign: #ffcd00;
+  --as-sign-ink: #121212;
+  --as-red: #c1121f;
+  --as-board: #111214;
+  --as-flap: #1f2124;
+  --as-flap-2: #282a2e;
+  --as-flap-ink: #f3efe4;
+  --as-line-edge: #151617;
+  --as-cabin: #ebe8e1;
+  --as-window-frame: #d9d5cc;
+  --as-awb: #fbfaf5;
+  --as-awb-ink: #151617;
+  --as-awb-red: #b3121f;
+  --as-awb-line: #26282b;
+  --as-awb-muted: #4f5256;
+  --as-awb-hint: #6c6e72;
+  --as-awb-focus: #fff6cc;
+  --as-shadow: 0 30px 60px -38px rgb(0 0 0 / 0.55);
+  --as-edge: clamp(12px, 3.4vw, 48px);
+  --as-max: 1360px;
+  --as-side: max(var(--as-edge), calc((100% - var(--as-max)) / 2));
+  --as-gutter: 0px;
+  --as-lane-x: 0px;
+
+  --paper: var(--as-paper);
+  --ink: var(--as-ink);
+  --muted: var(--as-muted);
+  --line: var(--as-rule);
+  --soft: var(--as-paper-2);
+  --accent: var(--as-alert);
+  --forest: var(--as-ink);
+
+  color-scheme: light;
+  min-height: 100svh;
+  color: var(--as-ink);
+  background-color: var(--as-ground);
+  font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  &[data-mode='dark'] {
+    /* Night operations: asphalt, lit signs, glowing boards. */
+    --as-ground: #111315;
+    --as-ground-2: #181b1e;
+    --as-slab: rgb(255 255 255 / 0.035);
+    --as-ink: #ecebe6;
+    --as-ink-2: #cbc9c3;
+    --as-muted: #a4a6a9;
+    --as-rule: rgb(236 235 230 / 0.15);
+    --as-rule-strong: rgb(236 235 230 / 0.4);
+    --as-paper: #1b1e22;
+    --as-paper-2: #23272c;
+    --as-card: #202328;
+    --as-link: #8cb4ff;
+    --as-focus: #8cb4ff;
+    --as-ok: #5fd394;
+    --as-alert: #ff8a8a;
+    --as-board: #0a0b0c;
+    --as-flap: #17191c;
+    --as-flap-2: #1f2226;
+    --as-line-edge: transparent;
+    --as-cabin: #26292e;
+    --as-window-frame: #3a3e44;
+    --as-awb: #1d2025;
+    --as-awb-ink: #ecebe6;
+    --as-awb-red: #ff8a8a;
+    --as-awb-line: rgb(236 235 230 / 0.42);
+    --as-awb-muted: #b3b5b8;
+    --as-awb-hint: #909296;
+    --as-awb-focus: #2a2616;
+    --as-shadow: 0 30px 60px -34px rgb(0 0 0 / 0.9);
+    color-scheme: dark;
+  }
+
+  @media (min-width: 1000px) {
+    --as-gutter: 112px;
+    --as-lane-x: 44px;
+  }
+
+  & :focus-visible {
+    outline: 3px solid var(--as-focus);
+    outline-offset: 3px;
+  }
+  & ::selection {
+    background: var(--as-sign);
+    color: #111;
+  }
+  & a {
+    color: inherit;
+  }
+
+  & .as-root {
+    position: relative;
+    overflow-x: clip;
+    background-image:
+      linear-gradient(var(--as-slab) 1px, transparent 1px),
+      linear-gradient(90deg, var(--as-slab) 1px, transparent 1px);
+    background-size: 168px 168px;
+    background-position: -1px -1px;
+  }
+  & .as-main:focus {
+    outline: none;
+  }
+
+  /* Mono split-flap strip: fixed-advance glyphs over drawn flap cells. */
+  & .as-mf {
+    --mf-gap: 0.22em;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-stretch: 80%;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: var(--mf-gap);
+    text-transform: uppercase;
+    padding: 0.46em 0 0.46em calc(var(--mf-gap) / 2);
+    color: var(--as-flap-ink);
+    border-radius: 2px;
+    background:
+      linear-gradient(
+        to bottom,
+        transparent calc(50% - 0.5px),
+        rgb(0 0 0 / 0.72) calc(50% - 0.5px),
+        rgb(0 0 0 / 0.72) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+      ),
+      repeating-linear-gradient(
+        90deg,
+        var(--as-flap) 0 calc(1ch + var(--mf-gap) - 2px),
+        transparent calc(1ch + var(--mf-gap) - 2px) calc(1ch + var(--mf-gap))
+      );
+  }
+
+  /* Airfield signs. */
+  & .as-sign {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    font-family: 'Archivo Variable', sans-serif;
+    font-weight: 780;
+    font-stretch: 74%;
+    font-size: 17px;
+    line-height: 1;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      transform 0.16s ease,
+      background-color 0.16s ease;
+  }
+  & .as-sign:hover {
+    transform: translateY(-2px);
+  }
+  & .as-sign--ahead,
+  & .as-sign--behind {
+    background: var(--as-sign);
+    color: var(--as-sign-ink);
+    border-color: var(--as-sign-ink);
+  }
+  & .as-sign--here {
+    background: #111;
+    color: var(--as-sign);
+    border-color: var(--as-sign);
+    box-shadow: 0 0 0 2px #111;
+  }
+  & .as-sign--mandatory {
+    background: var(--as-red);
+    color: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #111;
+  }
+  & .as-sign--info {
+    background: #111;
+    color: var(--as-sign);
+  }
+  & .as-sign-letter {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.45em;
+    height: 1.45em;
+    padding: 0 0.15em;
+    border: 2px solid currentColor;
+    border-radius: 2px;
+    font-size: 0.82em;
+    font-stretch: 80%;
+  }
+
+  & .as-block-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 16px;
+    margin: 0 0 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid currentColor;
+    font-size: clamp(22px, 2.1vw, 30px);
+    font-weight: 820;
+    font-stretch: 76%;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  & .as-block-meta {
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    font-stretch: 85%;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    color: var(--as-muted);
+  }
+  & .as-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    color: var(--as-link);
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}

@@ -29,6 +29,16 @@ export const versions = [
     color: '#4436ef',
     load: () => import('./asif/themes/claude-opus-5/Theme.jsx'),
   },
+  {
+    id: 'claude-opus-5-5-iteration-2',
+    model: 'Claude Opus 5.5 Iteration 2',
+    path: '/asif/claude-opus-5-5-iteration-2/',
+    released: '2026-09-27',
+    preview: '/gallery/previews/claude-opus-5-5-iteration-2.webp',
+    mobilePreview: '/gallery/previews/claude-opus-5-5-iteration-2-mobile.webp',
+    color: '#ffcd00',
+    load: () => import('./asif/themes/claude-opus-5-5-iteration-2/Theme.jsx'),
+  },
 ]
 
 export const siteOrigin = 'https://mithawala.github.io'

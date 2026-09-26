@@ -1,0 +1,108 @@
+[data-edition='claude-opus-5-5-iteration-2'] {
+  & .as-flaps {
+    display: block;
+    min-width: 0;
+  }
+  & .as-flap-row {
+    display: flex;
+    gap: var(--gap);
+  }
+  & .as-flap-row + .as-flap-row {
+    margin-top: calc(var(--gap) * 1.3);
+  }
+  & .as-flap {
+    position: relative;
+    flex: none;
+    width: var(--cell);
+    height: calc(var(--cell) * 1.36);
+    font-size: calc(var(--cell) * 1.05);
+    border-radius: max(2px, calc(var(--cell) * 0.09));
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.05),
+      0 2px 4px rgb(0 0 0 / 0.55);
+  }
+  & .as-flap-half {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    overflow: hidden;
+    color: var(--as-flap-ink);
+    background: var(--as-flap);
+  }
+  & .as-flap-top,
+  & .as-flap-front {
+    top: 0;
+    border-radius: inherit;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background: linear-gradient(var(--as-flap-2), var(--as-flap));
+  }
+  & .as-flap-bottom {
+    bottom: 0;
+    border-radius: inherit;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  & .as-flap-half > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 200%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.05em;
+    font-family: 'Archivo Variable', sans-serif;
+    font-weight: 720;
+    font-stretch: 76%;
+    line-height: 1;
+    white-space: pre;
+  }
+  & .as-flap-top > span,
+  & .as-flap-front > span {
+    top: 0;
+  }
+  & .as-flap-bottom > span,
+  & .as-flap-back > span {
+    bottom: 0;
+  }
+  & .as-flap-leaf {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 50%;
+    display: none;
+    border-radius: inherit;
+    transform-origin: 50% 100%;
+    transform-style: preserve-3d;
+  }
+  & .as-flap-front,
+  & .as-flap-back {
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  & .as-flap-back {
+    top: 0;
+    transform: rotateX(180deg);
+    border-radius: inherit;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  & .as-flap::after {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    top: calc(50% - 0.5px);
+    height: 1px;
+    background: rgb(0 0 0 / 0.8);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+  & .as-role-flaps .as-flap-half {
+    color: var(--as-sign);
+  }
+}

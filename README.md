@@ -12,6 +12,7 @@ desktop and mobile captures.
   - GPT-6 Astra: https://mithawala.github.io/asif/gpt-6-astra/
   - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5/
   - Claude Opus 5: https://mithawala.github.io/asif/claude-opus-5/
+  - Claude Opus 5.5 Iteration 2: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
 
 ## Local Development
 

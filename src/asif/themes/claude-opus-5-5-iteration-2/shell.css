@@ -1,0 +1,330 @@
+[data-edition='claude-opus-5-5-iteration-2'] {
+  /* Taxiway centreline threading the page. */
+  & .as-lane::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--as-side) + var(--as-lane-x) - 4px);
+    width: 8px;
+    display: none;
+    background-color: var(--as-sign);
+    box-shadow:
+      0 0 0 2px var(--as-line-edge),
+      0 0 0 0 transparent;
+  }
+  &[data-mode='dark'] .as-lane::before {
+    background-image: radial-gradient(
+      circle at 50% 50%,
+      #b6ffd4 0 1.6px,
+      #2fe07f 2.4px,
+      transparent 3.6px
+    );
+    background-size: 8px 56px;
+    box-shadow: 0 0 14px rgb(255 205 0 / 0.12);
+  }
+  & .as-hero.as-lane::before {
+    top: auto;
+    height: clamp(56px, 7vw, 96px);
+  }
+
+  & .as-stop {
+    position: relative;
+    padding: 0 var(--as-side) clamp(76px, 9vw, 132px)
+      calc(var(--as-side) + var(--as-gutter));
+  }
+  & .as-stop > * {
+    position: relative;
+    z-index: 1;
+  }
+  & .as-holding {
+    height: 30px;
+    margin-left: calc(var(--as-lane-x) - var(--as-gutter) - 26px);
+    background:
+      linear-gradient(var(--as-sign), var(--as-sign)) 0 0 / 100% 4px no-repeat,
+      linear-gradient(var(--as-sign), var(--as-sign)) 0 8px / 100% 4px no-repeat,
+      repeating-linear-gradient(
+          90deg,
+          var(--as-sign) 0 20px,
+          transparent 20px 32px
+        )
+        0 18px / 100% 4px no-repeat,
+      repeating-linear-gradient(
+          90deg,
+          var(--as-sign) 0 20px,
+          transparent 20px 32px
+        )
+        0 26px / 100% 4px no-repeat;
+    filter: drop-shadow(1px 0 0 var(--as-line-edge))
+      drop-shadow(-1px 0 0 var(--as-line-edge))
+      drop-shadow(0 1px 0 var(--as-line-edge))
+      drop-shadow(0 -1px 0 var(--as-line-edge));
+  }
+  & .as-stop-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'mark eyebrow'
+      'title title'
+      'lead lead';
+    column-gap: 14px;
+    align-items: center;
+    max-width: 1080px;
+    margin-bottom: clamp(30px, 4vw, 56px);
+    padding-top: clamp(26px, 3.6vw, 46px);
+  }
+  & .as-marking {
+    grid-area: mark;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--as-sign);
+    background: #111;
+    border: 3px solid var(--as-sign);
+    box-shadow: 0 0 0 3px #111;
+    font-size: 27px;
+    font-weight: 850;
+    font-stretch: 78%;
+    line-height: 1;
+  }
+  & .as-eyebrow {
+    grid-area: eyebrow;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 0;
+    color: var(--as-muted);
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: 85%;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  & .as-eyebrow-sv {
+    font-weight: 400;
+    font-style: italic;
+  }
+  & .as-stop h2 {
+    grid-area: title;
+    margin: 14px 0 0;
+    font-size: clamp(3rem, 1.4rem + 6.4vw, 8.25rem);
+    font-weight: 830;
+    font-stretch: 68%;
+    line-height: 0.84;
+    letter-spacing: -0.004em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+  & .as-lead {
+    grid-area: lead;
+    max-width: 62ch;
+    margin: 20px 0 0;
+    color: var(--as-ink-2);
+    font-size: clamp(1.05rem, 0.98rem + 0.4vw, 1.3rem);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 1000px) {
+    & .as-lane::before {
+      display: block;
+    }
+    & .as-stop-head {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'eyebrow'
+        'title'
+        'lead';
+    }
+    & .as-marking {
+      position: absolute;
+      top: clamp(26px, 3.6vw, 46px);
+      left: calc(var(--as-lane-x) - var(--as-gutter) - 31px);
+      width: 62px;
+      height: 62px;
+      font-size: 38px;
+    }
+  }
+
+  /* Runway threshold. */
+  & .as-footer {
+    position: relative;
+    color: #dcd9d0;
+    background: #121315;
+    padding: 0 var(--as-side) calc(30px + 76px);
+  }
+  & .as-runway {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(14px, 3vw, 40px);
+    padding: clamp(34px, 5vw, 60px) 0;
+  }
+  & .as-runway-keys {
+    height: clamp(56px, 9vw, 110px);
+    background: repeating-linear-gradient(
+      90deg,
+      #f1efe8 0 clamp(8px, 1.2vw, 16px),
+      transparent clamp(8px, 1.2vw, 16px) clamp(16px, 2.4vw, 32px)
+    );
+  }
+  & .as-runway-name {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    color: #f1efe8;
+    text-align: center;
+  }
+  & .as-runway-name b {
+    font-size: clamp(64px, 11vw, 160px);
+    font-weight: 850;
+    font-stretch: 64%;
+    line-height: 0.8;
+    letter-spacing: 0.04em;
+  }
+  & .as-runway-name small {
+    color: #bfbcb3;
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  & .as-footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: 14px;
+  }
+  & .as-footer-row p {
+    margin: 0;
+  }
+  & .as-footer-social,
+  & .as-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  & .as-footer a,
+  & .as-footer button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgb(255 255 255 / 0.35);
+    text-underline-offset: 5px;
+  }
+  & .as-footer a:hover,
+  & .as-footer button:hover {
+    color: var(--as-sign);
+  }
+  & .as-footer :focus-visible {
+    outline-color: #8cb4ff;
+  }
+
+  /* Shared dialogs, restyled as terminal information desks. */
+  & .shared-dialog {
+    color: var(--as-ink);
+    background: var(--as-paper);
+    border: 0;
+    border-top: 8px solid var(--as-sign);
+    border-radius: 12px;
+    box-shadow: 0 50px 100px -30px rgb(0 0 0 / 0.7);
+  }
+  & .shared-dialog::backdrop {
+    background: rgb(9 10 11 / 0.74);
+    backdrop-filter: blur(5px);
+  }
+  & .dialog-close {
+    color: #111;
+    background: var(--as-sign);
+    border: 2px solid #111;
+    border-radius: 4px;
+  }
+  & .dialog-close:hover {
+    background: #ffe066;
+  }
+  & .shared-dialog h1 {
+    font-size: clamp(28px, 3.6vw, 46px);
+    font-weight: 820;
+    font-stretch: 78%;
+    line-height: 1.04;
+  }
+  & .shared-dialog .eyebrow {
+    color: var(--as-muted);
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  & .rich-content {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  & .rich-content a {
+    color: var(--as-link);
+  }
+  & .rich-content h3 {
+    font-stretch: 86%;
+  }
+  & .technology-list li {
+    color: var(--as-ink);
+    background: var(--as-paper-2);
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  & .project-links a,
+  & .device-toolbar a {
+    color: var(--as-link);
+    font-weight: 650;
+  }
+  & .search-dialog h2 {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 830;
+    font-stretch: 70%;
+    text-transform: uppercase;
+  }
+  & .search-field {
+    border-bottom: 3px solid var(--as-ink);
+  }
+  & .search-field input {
+    font-family: 'Martian Mono Variable', ui-monospace, monospace;
+    font-size: 19px;
+  }
+  & .search-results > a {
+    border-radius: 6px;
+    padding-inline: 8px;
+  }
+  & .search-results > a:hover {
+    background: var(--as-paper-2);
+  }
+  & .image-lightbox {
+    color: #eeeae0;
+    background: #0d0e10;
+  }
+  & .image-lightbox .icon-button {
+    border-color: rgb(255 255 255 / 0.25);
+  }
+  & .image-lightbox .dialog-close {
+    color: #111;
+  }
+}
