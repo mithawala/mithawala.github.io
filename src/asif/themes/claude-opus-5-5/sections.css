@@ -1,3 +1,8 @@
+/* Anchors land right below the header (the root cannot read --header). */
+:root:has([data-edition='claude-opus-5-5']) {
+  scroll-padding-top: 72px;
+}
+
 /* Section rhythm: the day moves from morning plaster to golden afternoon. */
 .op-section {
   position: relative;
