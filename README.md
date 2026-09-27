@@ -1,6 +1,6 @@
 # Asif Mithawala - Editions
 
-A screenshot-led gallery of independently designed personal websites, all powered
+A 3D expedition through independently designed personal websites, all powered
 by one canonical content library and shared feature implementations.
 
 Each edition owns its presentation; the content and capabilities are shared.
@@ -15,17 +15,29 @@ desktop and mobile captures.
   - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
   - GPT-6 Astra - The Curiosity Atlas: https://mithawala.github.io/asif/gpt-6-astra-iteration-2/
 
-### The Edition Room
+### Edition Nexus
 
-The landing page is a registry-driven exhibition with real desktop and mobile
-captures. Each entry keeps a unique edition number and release date, so repeated
-model labels remain distinguishable without changing existing URLs.
+The landing page is a real-time Three.js portal space. Metallic worlds display
+real desktop/mobile captures from the registry. Click a portal, drag horizontally,
+or use the previous/next controls and arrow keys to travel. The active world's
+entry card and the remaining collection keep every website directly accessible.
 
-Choose **Compare** on two cards, or use **Compare first & latest**. The comparison
-room supports side-by-side previews, a mouse/touch-draggable overlay, desktop/mobile
-switching, and replacing either selection. The overlay slider supports arrow
-keys; vertical touch gestures still scroll. Escape closes the dialog and restores focus. Previews are static captures;
-each entry links to the complete interactive website.
+The optional expedition has three objectives: scan each world, recover three
+colored 3D signal beacons, and compare two perspectives. Complete them to energize
+the nexus and unlock a launch sequence. **Mission log** contains progress, clues,
+equivalent keyboard/low-graphics controls, and **Reset expedition**. Progress is
+saved only in this browser under `asif:nexus-expedition:v1`; there are no accounts,
+tracking, network writes, or access gates. Storage failures display an explicit
+session-only notice. Adding a world updates the exploration objective naturally.
+
+Choose **Compare** on two cards, or use **Compare first & latest**. Side-by-side
+and draggable-overlay comparison retain desktop/mobile switching and native
+keyboard controls. Escape closes each dialog and restores focus.
+
+Three.js is loaded only for the gallery's scene. Graphics-unavailable fallback,
+pause, live reduced-motion preferences, and offscreen/hidden-tab suspension are
+supported. The scene is decorative navigation and gameplay, not a replacement for
+accessible DOM content. Preview windows are captures, not live site embeds.
 
 ### The Curiosity Atlas
 
