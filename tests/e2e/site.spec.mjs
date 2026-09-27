@@ -627,19 +627,72 @@ test('gallery nexus unlocks a real launch sequence after completing the expediti
     'data-expedition-complete',
     'true',
   )
+  await page.locator('.nx-portal-scene').evaluate((element) => {
+    const transitions = []
+    element.__launchTransitions = transitions
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.oldValue && transitions.at(-1)?.state !== record.oldValue)
+          transitions.push({ state: record.oldValue, time: performance.now() })
+        const state = element.dataset.launchState
+        if (transitions.at(-1)?.state !== state)
+          transitions.push({ state, time: performance.now() })
+      }
+      if (element.dataset.launchState === 'complete') observer.disconnect()
+    })
+    observer.observe(element, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ['data-launch-state'],
+    })
+  })
   await page
     .getByRole('button', { name: 'Launch sequence', exact: true })
     .click()
   const scene = page.locator('.nx-portal-scene')
-  await expect(scene).toHaveAttribute('data-launch-state', 'launching')
-  await expect(scene).toBeInViewport()
   await expect(scene).toHaveAttribute('data-launch-state', 'complete', {
     timeout: 12000,
   })
+  const transitions = await scene.evaluate(
+    (element) => element.__launchTransitions,
+  )
+  expect(transitions.map(({ state }) => state)).toEqual([
+    'idle',
+    'launching',
+    'complete',
+  ])
+  expect(transitions.at(-1).time - transitions[1].time).toBeLessThan(12000)
+  await expect(scene).toBeInViewport()
   await expect(page.locator('.nx-hero')).toHaveAttribute(
     'data-active-world',
     versions[0].id,
   )
+})
+
+test('gallery nexus reduces rendering cost after sustained slow frames', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const request = window.requestAnimationFrame
+    window.requestAnimationFrame = (callback) =>
+      request(() => {
+        const start = performance.now()
+        while (performance.now() - start < 80) {}
+        callback(performance.now())
+      })
+  })
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  await readyNexus(page)
+  const scene = page.locator('.nx-portal-scene')
+  await expect
+    .poll(async () => Number(await scene.getAttribute('data-render-scale')))
+    .toBeLessThan(1)
+  await page.getByRole('button', { name: 'Pause motion', exact: true }).click()
+  const scale = Number(await scene.getAttribute('data-render-scale'))
+  expect(scale).toBeGreaterThanOrEqual(0.5)
+  await expect(scene).toHaveAttribute('data-scene-status', 'ready')
+  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
 test('gallery nexus switches real preview textures and recovers from a lost graphics context', async ({

@@ -326,6 +326,8 @@ export class PortalSceneController {
     this.textureGeneration = 0
     this.pendingCount = 0
     this.firstFrame = false
+    this.renderScale = 1
+    this.slowFrames = 0
     this.disposed = false
     this.failed = false
     this.inView = true
@@ -1286,11 +1288,13 @@ export class PortalSceneController {
     }
     const width = Math.round(rect.width)
     const height = Math.round(rect.height)
-    const dpr = Math.min(
-      window.devicePixelRatio || 1,
-      1.5,
-      Math.sqrt(2400000 / (width * height)),
-    )
+    const dpr =
+      Math.min(
+        window.devicePixelRatio || 1,
+        1.5,
+        Math.sqrt(2400000 / (width * height)),
+      ) * this.renderScale
+    this.host.dataset.renderScale = this.renderScale.toFixed(2)
     if (this.width !== width || this.height !== height || this.dpr !== dpr) {
       this.width = width
       this.height = height
@@ -1424,6 +1428,14 @@ export class PortalSceneController {
         : 0
     const delta = Math.min(elapsed, 0.045)
     this.lastFrameTime = moving ? time : 0
+    if (moving && this.firstFrame && elapsed > 0) {
+      this.slowFrames = elapsed > 0.066 ? this.slowFrames + 1 : 0
+      if (this.slowFrames >= 3 && this.renderScale > 0.5) {
+        this.renderScale = Math.max(0.5, this.renderScale * 0.75)
+        this.slowFrames = 0
+        this.measure()
+      }
+    }
     this.clock += delta
     if (!this.gesture?.dragging) {
       this.orbit = moving

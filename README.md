@@ -36,7 +36,9 @@ keyboard controls. Escape closes each dialog and restores focus.
 
 Three.js is loaded only for the gallery's scene. Graphics-unavailable fallback,
 pause, live reduced-motion preferences, and offscreen/hidden-tab suspension are
-supported. The scene is decorative navigation and gameplay, not a replacement for
+supported. Sustained slow frames lower the drawing resolution rather than
+blocking interaction; launch timing remains independent of frame rate.
+The scene is decorative navigation and gameplay, not a replacement for
 accessible DOM content. Preview windows are captures, not live site embeds.
 
 ### The Curiosity Atlas
