@@ -264,6 +264,7 @@ export class PortalSceneController {
     Object.assign(this, { host, canvas, tooltip, options, report })
     this.resources = new Resources()
     this.portalResources = new Resources()
+    this.cachedPortalSets = new Map()
     this.previewTextures = new Set()
     this.pendingImages = new Set()
     this.cleanups = []
@@ -404,7 +405,9 @@ export class PortalSceneController {
     const room = new RoomEnvironment()
     const pmrem = new THREE.PMREMGenerator(this.renderer)
     try {
-      const environment = own(pmrem.fromScene(room, 0.045))
+      const environment = own(
+        pmrem.fromScene(room, 0.045, 0.1, 100, { size: 64 }),
+      )
       this.scene.environment = environment.texture
       this.scene.environmentIntensity = 0.75
     } finally {
@@ -633,6 +636,8 @@ export class PortalSceneController {
   }
 
   rebuildPortals() {
+    const reusable = this.portals.length > 0 && this.pendingCount === 0
+    this.cancelFrame()
     this.cancelImages()
     for (const portal of this.portals) {
       this.scene.remove(
@@ -643,9 +648,44 @@ export class PortalSceneController {
       )
     }
     if (this.connections) this.scene.remove(this.connections)
-    this.portalResources.dispose()
-    for (const texture of this.previewTextures) texture.dispose()
-    this.previewTextures.clear()
+    if (reusable) {
+      this.cachedPortalSets.set(this.portalSetKey, {
+        portals: this.portals,
+        resources: this.portalResources,
+        textures: this.previewTextures,
+        connections: this.connections,
+      })
+    } else {
+      this.portalResources.dispose()
+      for (const texture of this.previewTextures) texture.dispose()
+    }
+    const cached = this.cachedPortalSets.get(this.portalSignature)
+    this.cachedPortalSets.delete(this.portalSignature)
+    this.portalSetKey = this.portalSignature
+    while (this.cachedPortalSets.size > 1) {
+      const [key, entry] = this.cachedPortalSets.entries().next().value
+      entry.resources.dispose()
+      for (const texture of entry.textures) texture.dispose()
+      this.cachedPortalSets.delete(key)
+    }
+    this.setStatus('loading')
+    if (cached) {
+      this.portals = cached.portals
+      this.portalResources = cached.resources
+      this.previewTextures = cached.textures
+      this.connections = cached.connections
+      for (const portal of this.portals)
+        this.scene.add(
+          portal.root,
+          portal.reflection,
+          portal.shadow,
+          portal.marker,
+        )
+      this.scene.add(this.connections)
+      return
+    }
+    this.portalResources = new Resources()
+    this.previewTextures = new Set()
     this.portals = []
     const own = (resource) => this.portalResources.own(resource)
     const { width, height, outerWidth, outerHeight } = portalDimensions(
@@ -1170,6 +1210,7 @@ export class PortalSceneController {
       this.disposed ||
       this.failed ||
       !this.renderer ||
+      this.pendingCount > 0 ||
       !this.hasSize ||
       document.hidden ||
       !this.inView
@@ -1189,6 +1230,7 @@ export class PortalSceneController {
     if (
       this.disposed ||
       this.failed ||
+      this.pendingCount > 0 ||
       document.hidden ||
       !this.inView ||
       !this.hasSize
@@ -1500,6 +1542,11 @@ export class PortalSceneController {
     this.portalResources.dispose()
     for (const texture of this.previewTextures) texture.dispose()
     this.previewTextures.clear()
+    for (const entry of this.cachedPortalSets.values()) {
+      entry.resources.dispose()
+      for (const texture of entry.textures) texture.dispose()
+    }
+    this.cachedPortalSets.clear()
     this.resources.dispose()
     this.scene?.clear()
     this.scene = null

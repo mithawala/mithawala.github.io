@@ -634,6 +634,14 @@ test('gallery 3D reduces rendering cost after sustained slow frames', async ({
 test('gallery 3D switches real preview textures and recovers from a lost graphics context', async ({
   page,
 }) => {
+  await page.addInitScript(() => {
+    window.__galleryShaderLinks = 0
+    const link = WebGL2RenderingContext.prototype.linkProgram
+    WebGL2RenderingContext.prototype.linkProgram = function (...args) {
+      window.__galleryShaderLinks++
+      return link.apply(this, args)
+    }
+  })
   await page.goto('/')
   await readyGalleryScene(page)
   const canvas = page.locator('.nx-portal-canvas')
@@ -645,6 +653,9 @@ test('gallery 3D switches real preview textures and recovers from a lost graphic
   await expect
     .poll(async () => desktop.equals(await canvas.screenshot()))
     .toBeFalsy()
+  const preparedPrograms = await page.evaluate(
+    () => window.__galleryShaderLinks,
+  )
   await page
     .getByRole('button', { name: 'Desktop preview', exact: true })
     .click()
@@ -655,6 +666,9 @@ test('gallery 3D switches real preview textures and recovers from a lost graphic
     .getByRole('button', { name: 'Desktop preview', exact: true })
     .click()
   await readyGalleryScene(page)
+  expect(await page.evaluate(() => window.__galleryShaderLinks)).toBe(
+    preparedPrograms,
+  )
   await expect(page.locator('.nx-active-card img')).toHaveAttribute(
     'src',
     versions[0].preview,

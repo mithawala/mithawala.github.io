@@ -39,7 +39,9 @@ keyboard controls. Escape closes each dialog and restores focus.
 
 Three.js is loaded only for the gallery's scene. Graphics-unavailable fallback,
 pause, live reduced-motion preferences, and offscreen/hidden-tab suspension are
-supported. Sustained slow frames lower the drawing resolution rather than
+supported. Prepared desktop/mobile scenes are reused, and preview images load
+before the first draw rather than repeatedly recompiling incomplete previews.
+Sustained slow frames lower the drawing resolution rather than
 blocking interaction. The scene is visual navigation, not a replacement for
 accessible DOM content. Preview windows are captures, not live site embeds.
 
