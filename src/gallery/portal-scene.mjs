@@ -3,11 +3,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 
 const TAU = Math.PI * 2
 const FLOOR = -2.5
-const SCENE_OWNER = Symbol('nexusScene')
+const SCENE_OWNER = Symbol('modelEditionsScene')
 const FOCUS = new THREE.Vector3(0, 0.85, 1.1)
 const CYAN = new THREE.Color('#78efff')
-const ICE = new THREE.Color('#d8f9ff')
-const AMBER = new THREE.Color('#ffc88e')
 const DIM = new THREE.Color('#153643')
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 const smoothstep = (a, b, value) => {
@@ -89,45 +87,6 @@ export function sceneFraming(width, height, viewport = 'desktop') {
     portalWidth: dimensions.outerWidth * pixelsPerUnit,
     portalHeight: dimensions.outerHeight * pixelsPerUnit,
   }
-}
-
-export function signalAnchors(framing, viewport, count) {
-  const { width, height, narrow, centerY, portalWidth, portalHeight } = framing
-  const left = (width - portalWidth) / 2
-  const above = Math.max(framing.top + 24, centerY - portalHeight / 2 - 29)
-  const below = Math.min(
-    height - framing.bottom - 27,
-    centerY + portalHeight / 2 + 38,
-  )
-  const positions =
-    narrow && viewport !== 'mobile'
-      ? [
-          [width * 0.16, above],
-          [width * 0.84, above + 9],
-          [width * 0.5, below],
-        ]
-      : [
-          [Math.max(31, left - (narrow ? 36 : 68)), centerY - 24],
-          [
-            Math.min(width - 31, width - left + (narrow ? 36 : 68)),
-            centerY + 15,
-          ],
-          [width * 0.5, below],
-        ]
-  return Array.from({ length: count }, (_, index) => {
-    if (index < positions.length) {
-      return { x: positions[index][0], y: positions[index][1] }
-    }
-    const angle = (index / count) * TAU
-    return {
-      x: clamp(width / 2 + Math.cos(angle) * width * 0.36, 30, width - 30),
-      y: clamp(
-        centerY + Math.sin(angle) * framing.stageHeight * 0.4,
-        framing.top + 25,
-        height - framing.bottom - 25,
-      ),
-    }
-  })
 }
 
 class Resources {
@@ -305,14 +264,11 @@ export class PortalSceneController {
     Object.assign(this, { host, canvas, tooltip, options, report })
     this.resources = new Resources()
     this.portalResources = new Resources()
-    this.signalResources = new Resources()
     this.previewTextures = new Set()
     this.pendingImages = new Set()
     this.cleanups = []
     this.portals = []
-    this.beacons = []
     this.pickTargets = []
-    this.visibilityTargets = []
     this.raycaster = new THREE.Raycaster()
     this.pointer = new THREE.Vector2()
     this.projected = new THREE.Vector3()
@@ -332,7 +288,6 @@ export class PortalSceneController {
     this.failed = false
     this.inView = true
     this.hasSize = false
-    this.seenLaunchId = 0
     this.status = ''
   }
 
@@ -461,9 +416,9 @@ export class PortalSceneController {
     const key = new THREE.DirectionalLight('#e2f6ff', 3.5)
     key.position.set(-5, 9, 8)
     this.scene.add(key)
-    this.reactorLight = new THREE.PointLight('#78efff', 36, 24, 2)
-    this.reactorLight.position.set(0, 4.4, 4)
-    this.scene.add(this.reactorLight)
+    const fill = new THREE.PointLight('#78efff', 36, 24, 2)
+    fill.position.set(0, 4.4, 4)
+    this.scene.add(fill)
     const amberLight = new THREE.PointLight('#ffc88e', 18, 26, 2)
     amberLight.position.set(9, 3, -5)
     this.scene.add(amberLight)
@@ -518,7 +473,7 @@ export class PortalSceneController {
     dais.position.set(0, FLOOR - 0.1, -5)
     this.scene.add(dais)
 
-    this.circuitMaterial = own(
+    const circuitMaterial = own(
       new THREE.MeshBasicMaterial({
         color: CYAN,
         transparent: true,
@@ -539,7 +494,7 @@ export class PortalSceneController {
             180,
           ),
         ),
-        this.circuitMaterial,
+        circuitMaterial,
       )
       ring.rotation.x = -Math.PI / 2
       this.orbitalTrack.add(ring)
@@ -586,11 +541,11 @@ export class PortalSceneController {
       metal,
     )
     this.skyGate.add(spine)
-    this.archMaterial = own(
+    const archMaterial = own(
       new THREE.MeshBasicMaterial({
         color: '#6ab9db',
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.25,
         toneMapped: false,
         depthWrite: false,
       }),
@@ -602,7 +557,7 @@ export class PortalSceneController {
     ]) {
       const ring = new THREE.Mesh(
         own(new THREE.TorusGeometry(radius, 0.015, 5, 150, arc)),
-        this.archMaterial,
+        archMaterial,
       )
       ring.rotation.z = rotation
       this.skyGate.add(ring)
@@ -674,41 +629,6 @@ export class PortalSceneController {
       haze.position.set(x, y, z)
       haze.scale.set(size, size * 0.7, 1)
       this.scene.add(haze)
-    }
-
-    this.warpSeeds = Array.from({ length: 170 }, () => ({
-      angle: random() * TAU,
-      radius: 3.6 + random() * 20,
-      z: random() * 54,
-      length: 2 + random() * 5,
-    }))
-    this.warpGeometry = own(new THREE.BufferGeometry())
-    this.warpGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(new Float32Array(this.warpSeeds.length * 6), 3),
-    )
-    this.warpMaterial = own(
-      new THREE.LineBasicMaterial({
-        color: '#b4ecff',
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        toneMapped: false,
-      }),
-    )
-    this.warp = new THREE.LineSegments(this.warpGeometry, this.warpMaterial)
-    this.warp.frustumCulled = false
-    this.warp.visible = false
-    this.scene.add(this.warp)
-    this.launchRings = []
-    const launchGeometry = own(new THREE.TorusGeometry(5.8, 0.022, 5, 120))
-    for (let index = 0; index < 3; index += 1) {
-      const material = own(this.warpMaterial.clone())
-      const ring = new THREE.Mesh(launchGeometry, material)
-      ring.visible = false
-      this.launchRings.push(ring)
-      this.scene.add(ring)
     }
   }
 
@@ -964,7 +884,6 @@ export class PortalSceneController {
         aura,
         suspension,
         outerHeight,
-        indicator,
         reflection,
         shadow,
         marker,
@@ -978,10 +897,15 @@ export class PortalSceneController {
       'position',
       new THREE.BufferAttribute(new Float32Array(this.portals.length * 6), 3),
     )
-    geometry.setAttribute(
-      'color',
-      new THREE.BufferAttribute(new Float32Array(this.portals.length * 6), 3),
+    const colors = new THREE.BufferAttribute(
+      new Float32Array(this.portals.length * 6),
+      3,
     )
+    this.portals.forEach((_, index) => {
+      colors.setXYZ(index * 2, DIM.r * 0.45, DIM.g * 0.45, DIM.b * 0.45)
+      colors.setXYZ(index * 2 + 1, DIM.r, DIM.g, DIM.b)
+    })
+    geometry.setAttribute('color', colors)
     this.connections = new THREE.LineSegments(
       geometry,
       own(
@@ -996,95 +920,6 @@ export class PortalSceneController {
     this.connections.frustumCulled = false
     this.scene.add(this.connections)
     this.loadPreviews()
-  }
-
-  rebuildSignals() {
-    for (const beacon of this.beacons) this.scene.remove(beacon.root)
-    this.signalResources.dispose()
-    this.beacons = []
-    const own = (resource) => this.signalResources.own(resource)
-    const coreGeometry = own(new THREE.OctahedronGeometry(0.19))
-    const ringGeometry = own(new THREE.TorusGeometry(0.31, 0.012, 6, 44))
-    const colliderGeometry = own(new THREE.SphereGeometry(0.38, 12, 8))
-    const colliderMaterial = own(
-      new THREE.MeshBasicMaterial({ visible: false }),
-    )
-    this.options.signals.forEach((signal, index) => {
-      const root = new THREE.Group()
-      const color = signal.color ? new THREE.Color(signal.color) : AMBER.clone()
-      const core = new THREE.Mesh(
-        coreGeometry,
-        own(
-          new THREE.MeshPhysicalMaterial({
-            color,
-            metalness: 0.3,
-            roughness: 0.16,
-            emissive: color,
-            emissiveIntensity: 1.3,
-            clearcoat: 1,
-          }),
-        ),
-      )
-      const ringMaterial = own(
-        new THREE.MeshBasicMaterial({
-          color,
-          transparent: true,
-          opacity: 0.85,
-          toneMapped: false,
-        }),
-      )
-      const ring = new THREE.Mesh(ringGeometry, ringMaterial)
-      ring.rotation.set(0.65, 0.36, 0)
-      const secondRing = new THREE.Mesh(
-        ringGeometry,
-        own(
-          new THREE.MeshBasicMaterial({
-            color,
-            transparent: true,
-            opacity: 0.65,
-            toneMapped: false,
-          }),
-        ),
-      )
-      secondRing.rotation.set(-0.65, -0.45, 0.8)
-      secondRing.scale.setScalar(1.14)
-      const glow = new THREE.Sprite(
-        own(
-          new THREE.SpriteMaterial({
-            map: this.radial,
-            color,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            opacity: 0.46,
-            depthWrite: false,
-            toneMapped: false,
-          }),
-        ),
-      )
-      glow.scale.setScalar(1.6)
-      const collider = new THREE.Mesh(colliderGeometry, colliderMaterial)
-      collider.userData.action = {
-        kind: 'signal',
-        id: signal.id,
-        label: signal.label,
-        hint: signal.hint,
-      }
-      root.add(core, ring, secondRing, glow, collider)
-      this.scene.add(root)
-      this.beacons.push({
-        signal,
-        index,
-        color,
-        root,
-        core,
-        ring,
-        secondRing,
-        glow,
-        collider,
-        base: new THREE.Vector3(),
-        baseScale: 1,
-      })
-    })
   }
 
   update(options) {
@@ -1122,21 +957,6 @@ export class PortalSceneController {
       if (this.failed) return
       rebuilt = true
     }
-    const signalSignature = JSON.stringify(
-      options.signals.map(({ id, label, color, hint }) => [
-        id,
-        label,
-        color,
-        hint,
-      ]),
-    )
-    if (signalSignature !== this.signalSignature) {
-      this.signalSignature = signalSignature
-      this.rebuildSignals()
-      rebuilt = true
-    }
-    this.collected = new Set(options.collectedIds)
-    this.scanned = new Set(options.scannedIds)
     const index = Math.max(
       0,
       options.versions.findIndex(({ id }) => id === options.activeId),
@@ -1150,21 +970,6 @@ export class PortalSceneController {
     )
     if (rebuilt || this.reduced || options.paused) this.orbit = this.targetOrbit
     this.measure()
-    if (options.launchId !== this.seenLaunchId) {
-      this.seenLaunchId = options.launchId
-      if (options.launchId > 0) {
-        if (this.reduced || options.paused) {
-          this.launch = null
-          this.host.dataset.launchState = 'complete'
-        } else {
-          this.launch = { elapsed: 0 }
-          this.host.dataset.launchState = 'launching'
-        }
-      } else {
-        this.launch = null
-        this.host.dataset.launchState = 'idle'
-      }
-    }
     this.syncMotion()
     this.pointsDirty = true
     this.requestFrame()
@@ -1314,49 +1119,21 @@ export class PortalSceneController {
       height,
     )
     this.camera.updateProjectionMatrix()
-    this.applyCamera(0, 0)
-    this.positionSignals()
+    this.applyCamera(0)
     this.pointsDirty = true
     this.requestFrame()
   }
 
-  applyCamera(time, launchAmount) {
+  applyCamera(time) {
     const distance = this.framing.distance
     const drift = this.reduced ? 0 : Math.sin(time * 0.17) * 0.07
     this.camera.position.set(
       drift,
-      FOCUS.y + distance * 0.105 + launchAmount * 0.2,
-      FOCUS.z + distance * 0.9945 - launchAmount * distance * 0.13,
+      FOCUS.y + distance * 0.105,
+      FOCUS.z + distance * 0.9945,
     )
     this.camera.lookAt(FOCUS)
     this.camera.updateMatrixWorld()
-  }
-
-  positionSignals() {
-    if (!this.framing) return
-    const anchors = signalAnchors(
-      this.framing,
-      this.options.viewport,
-      this.beacons.length,
-    )
-    const desiredSize = this.framing.narrow ? 37 : 42
-    this.beacons.forEach((beacon, index) => {
-      const { x, y } = anchors[index]
-      const ray = new THREE.Vector3(
-        (x / this.width) * 2 - 1,
-        -(y / this.height) * 2 + 1,
-        0.5,
-      )
-        .unproject(this.camera)
-        .sub(this.camera.position)
-        .normalize()
-      const distance = (3 - this.camera.position.z) / ray.z
-      beacon.base.copy(this.camera.position).addScaledVector(ray, distance)
-      const pixelScale =
-        this.height /
-        (2 * Math.tan((this.camera.fov * Math.PI) / 360) * distance)
-      beacon.baseScale = desiredSize / (0.76 * pixelScale)
-    })
   }
 
   canAnimate() {
@@ -1379,10 +1156,6 @@ export class PortalSceneController {
         : 'paused'
     if (this.options.paused || this.reduced) {
       this.orbit = this.targetOrbit
-      if (this.launch) {
-        this.launch = null
-        this.host.dataset.launchState = 'complete'
-      }
     }
     if (!this.canAnimate()) {
       this.cancelFrame()
@@ -1446,20 +1219,9 @@ export class PortalSceneController {
         this.orbit = this.targetOrbit
     }
     const phase = this.reduced ? 0 : this.clock
-    let launchAmount = 0
-    let launchProgress = 0
-    if (this.launch) {
-      this.launch.elapsed += elapsed
-      launchProgress = clamp(this.launch.elapsed / 3.2, 0, 1)
-      launchAmount = Math.sin(Math.PI * smoothstep(0, 1, launchProgress))
-      if (launchProgress >= 1) {
-        this.launch = null
-        this.host.dataset.launchState = 'complete'
-      }
-    }
     try {
-      this.applyCamera(phase, launchAmount)
-      this.updateObjects(phase, launchAmount, launchProgress)
+      this.applyCamera(phase)
+      this.updateObjects(phase)
       this.renderer.render(this.scene, this.camera)
       if (this.pendingCount === 0) {
         this.firstFrame = true
@@ -1484,16 +1246,10 @@ export class PortalSceneController {
     if (this.canAnimate()) this.requestFrame()
   }
 
-  updateObjects(time, launchAmount, launchProgress) {
-    const energized = this.options.complete
-    this.reactorLight.intensity = (energized ? 54 : 36) + launchAmount * 35
-    this.circuitMaterial.opacity =
-      (energized ? 0.54 : 0.3) + launchAmount * 0.22
-    this.archMaterial.opacity = (energized ? 0.42 : 0.25) + launchAmount * 0.25
+  updateObjects(time) {
     this.skyGate.rotation.z = -0.14 + Math.sin(time * 0.07) * 0.025
     this.stars.rotation.y = Math.sin(time * 0.025) * 0.04
     const positions = this.connections.geometry.attributes.position
-    const colors = this.connections.geometry.attributes.color
     const count = this.portals.length
     this.portals.forEach((portal, index) => {
       const pose = portalPose(
@@ -1511,23 +1267,11 @@ export class PortalSceneController {
       portal.root.rotation.y = pose.yaw
       portal.root.scale.setScalar(pose.scale)
       portal.root.visible = pose.visibility > 0.015
-      const scanned = this.scanned.has(portal.version.id)
-      portal.frameMaterial.emissiveIntensity =
-        0.025 +
-        pose.focus * 0.055 +
-        (scanned ? 0.035 : 0) +
-        (energized ? 0.065 : 0) +
-        launchAmount * 0.12
-      portal.rim.material.opacity =
-        0.22 + pose.focus * 0.52 + (scanned ? 0.18 : 0)
-      portal.glassEdge.material.opacity =
-        0.14 + pose.focus * 0.22 + (scanned ? 0.08 : 0)
+      portal.frameMaterial.emissiveIntensity = 0.025 + pose.focus * 0.055
+      portal.rim.material.opacity = 0.22 + pose.focus * 0.52
+      portal.glassEdge.material.opacity = 0.14 + pose.focus * 0.22
       portal.aura.material.uniforms.uOpacity.value =
-        (0.07 +
-          pose.focus * 0.16 +
-          (energized ? 0.13 : 0) +
-          launchAmount * 0.15) *
-        pose.visibility
+        (0.07 + pose.focus * 0.16) * pose.visibility
       const suspensionHeight = Math.max(
         0.01,
         (portal.root.position.y - FLOOR) / pose.scale - portal.outerHeight / 2,
@@ -1536,10 +1280,9 @@ export class PortalSceneController {
         -portal.outerHeight / 2 - suspensionHeight / 2
       portal.suspension.scale.y = suspensionHeight
       portal.suspension.material.uniforms.uOpacity.value =
-        0.045 + pose.focus * 0.09 + (energized ? 0.06 : 0)
-      portal.indicator.material.color.copy(scanned ? ICE : DIM)
+        0.045 + pose.focus * 0.09
       portal.marker.position.set(pose.x, FLOOR + 0.022, pose.z)
-      portal.marker.material.opacity = scanned ? 0.9 : 0.18 + pose.focus * 0.3
+      portal.marker.material.opacity = 0.18 + pose.focus * 0.3
       portal.marker.scale.setScalar(pose.scale * (1 + pose.focus * 0.25))
       portal.marker.visible = portal.root.visible
       portal.shadow.position.set(pose.x, FLOOR + 0.008, pose.z + 0.18)
@@ -1554,86 +1297,32 @@ export class PortalSceneController {
       portal.reflection.scale.setScalar(pose.scale)
       portal.reflection.visible = portal.root.visible
       portal.reflection.material.uniforms.uOpacity.value =
-        (0.03 + pose.focus * 0.105 + launchAmount * 0.055) * pose.visibility
+        (0.03 + pose.focus * 0.105) * pose.visibility
       positions.setXYZ(index * 2, 0, FLOOR + 0.012, FOCUS.z - pose.radius)
       positions.setXYZ(index * 2 + 1, pose.x, FLOOR + 0.012, pose.z)
-      const color = scanned ? CYAN : DIM
-      colors.setXYZ(index * 2, color.r * 0.45, color.g * 0.45, color.b * 0.45)
-      colors.setXYZ(index * 2 + 1, color.r, color.g, color.b)
     })
     positions.needsUpdate = true
-    colors.needsUpdate = true
     const radius = this.portals[0]?.pose.radius || 7
     this.orbitalTrack.position.z = FOCUS.z - radius
     this.orbitalTrack.scale.set(radius, 1, radius)
 
-    this.beacons.forEach((beacon, index) => {
-      const collected = this.collected.has(beacon.signal.id)
-      beacon.root.position.copy(beacon.base)
-      if (!this.reduced && !collected)
-        beacon.root.position.y += Math.sin(time * 1.1 + index * 2) * 0.065
-      beacon.root.scale.setScalar(beacon.baseScale * (collected ? 0.7 : 1))
-      beacon.core.rotation.set(
-        0.18,
-        collected ? Math.PI / 4 : time * 0.55 + index,
-        0.15,
-      )
-      beacon.ring.rotation.z = collected ? 0 : time * 0.25 + index
-      beacon.secondRing.rotation.z = collected ? 0.8 : 0.8 - time * 0.22
-      beacon.core.material.color.copy(collected ? ICE : beacon.color)
-      beacon.core.material.emissive.copy(collected ? CYAN : beacon.color)
-      beacon.core.material.emissiveIntensity = collected ? 0.75 : 1.3
-      beacon.ring.material.color.copy(collected ? CYAN : beacon.color)
-      beacon.secondRing.material.color.copy(collected ? CYAN : beacon.color)
-      beacon.glow.material.color.copy(collected ? CYAN : beacon.color)
-      beacon.glow.material.opacity = collected ? 0.16 : 0.42
-    })
-    const portals = this.portals
+    this.pickTargets = this.portals
       .filter((portal) => portal.root.visible)
       .flatMap((portal) => portal.hitMeshes)
-    this.visibilityTargets = [
-      ...portals,
-      ...this.beacons.map((beacon) => beacon.collider),
-    ]
-    this.pickTargets = [
-      ...portals,
-      ...this.beacons
-        .filter((beacon) => !this.collected.has(beacon.signal.id))
-        .map((beacon) => beacon.collider),
-    ]
-    this.warp.visible = launchAmount > 0.001
-    if (this.warp.visible) {
-      const attribute = this.warpGeometry.attributes.position
-      this.warpSeeds.forEach((seed, index) => {
-        const z = -55 + ((seed.z + launchProgress * 78) % 54)
-        const x = Math.cos(seed.angle) * seed.radius
-        const y = Math.sin(seed.angle) * seed.radius + FOCUS.y
-        attribute.setXYZ(index * 2, x, y, z)
-        attribute.setXYZ(index * 2 + 1, x, y, z + seed.length * launchAmount)
-      })
-      attribute.needsUpdate = true
-      this.warpMaterial.opacity = launchAmount * 0.65
-    }
-    this.launchRings.forEach((ring, index) => {
-      ring.visible = launchAmount > 0.001
-      ring.position.set(0, FOCUS.y, -18 + launchProgress * 14 - index * 8)
-      ring.scale.setScalar(1 + launchProgress * 0.4)
-      ring.material.opacity = launchAmount * (0.42 - index * 0.07)
-    })
   }
 
-  intersection(x, y, targets = this.pickTargets) {
+  intersection(x, y) {
     this.pointer.set((x / this.width) * 2 - 1, -(y / this.height) * 2 + 1)
     this.raycaster.setFromCamera(this.pointer, this.camera)
     return (
-      this.raycaster.intersectObjects(targets, false)[0]?.object.userData
-        .action || null
+      this.raycaster.intersectObjects(this.pickTargets, false)[0]?.object
+        .userData.action || null
     )
   }
 
   publishPoints() {
-    const point = (id, world, kind, available = true) => {
-      this.projected.copy(world).project(this.camera)
+    const point = (id, position, available = true) => {
+      this.projected.copy(position).project(this.camera)
       const x = (this.projected.x * 0.5 + 0.5) * this.width
       const y = (-this.projected.y * 0.5 + 0.5) * this.height
       const inside =
@@ -1644,31 +1333,19 @@ export class PortalSceneController {
         y > 2 &&
         x < this.width - 2 &&
         y < this.height - 2
-      const hit = inside
-        ? this.intersection(x, y, this.visibilityTargets)
-        : null
+      const hit = inside ? this.intersection(x, y) : null
       return {
         id,
         x: Math.round(x * 100) / 100,
         y: Math.round(y * 100) / 100,
-        visible: Boolean(inside && hit?.id === id && hit?.kind === kind),
+        visible: Boolean(inside && hit?.id === id),
       }
     }
     const portals = this.portals.map((portal) => {
       portal.screen.getWorldPosition(this.worldPoint)
-      return point(
-        portal.version.id,
-        this.worldPoint,
-        'portal',
-        portal.root.visible,
-      )
-    })
-    const signals = this.beacons.map((beacon) => {
-      beacon.core.getWorldPosition(this.worldPoint)
-      return point(beacon.signal.id, this.worldPoint, 'signal')
+      return point(portal.version.id, this.worldPoint, portal.root.visible)
     })
     this.host.dataset.portalPoints = JSON.stringify(portals)
-    this.host.dataset.signalPoints = JSON.stringify(signals)
   }
 
   localPointer(event) {
@@ -1718,10 +1395,7 @@ export class PortalSceneController {
       return
     }
     this.canvas.style.cursor = 'pointer'
-    this.tooltip.textContent =
-      hit.kind === 'signal'
-        ? `${hit.label} · ${hit.hint || 'collect signal'}`
-        : `${hit.label} · scan world`
+    this.tooltip.textContent = `${hit.label} · select edition`
     this.tooltip.hidden = false
     const tooltipWidth = this.tooltip.offsetWidth
     this.tooltip.style.transform = `translate(${clamp(x - tooltipWidth / 2, 12, this.width - tooltipWidth - 12)}px, ${Math.max(12, y - 52)}px)`
@@ -1743,12 +1417,7 @@ export class PortalSceneController {
       return
     const { x, y } = this.localPointer(event)
     const hit = this.intersection(x, y)
-    if (hit?.kind === 'signal') {
-      this.hideTooltip()
-      this.options.onCollect?.(hit.id)
-    } else if (hit?.kind === 'portal') {
-      this.select(hit.id)
-    }
+    if (hit) this.select(hit.id)
   }
 
   cancelGesture() {
@@ -1816,31 +1485,26 @@ export class PortalSceneController {
   fail(message, error) {
     if (this.disposed || this.failed) return
     this.failed = true
-    console.warn('[Edition Nexus] 3D preview unavailable:', error)
+    console.warn('[Model Editions] 3D preview unavailable:', error)
     this.cancelFrame()
     this.cancelGesture()
     this.cancelImages()
     this.hideTooltip()
     this.host.dataset.sceneMotion = this.reduced ? 'reduced' : 'paused'
-    this.host.dataset.launchState = 'idle'
     this.host.dataset.portalPoints = '[]'
-    this.host.dataset.signalPoints = '[]'
     this.setStatus('fallback', message)
     this.releaseGraphics()
   }
 
   releaseGraphics() {
     this.portalResources.dispose()
-    this.signalResources.dispose()
     for (const texture of this.previewTextures) texture.dispose()
     this.previewTextures.clear()
     this.resources.dispose()
     this.scene?.clear()
     this.scene = null
     this.portals = []
-    this.beacons = []
     this.pickTargets = []
-    this.visibilityTargets = []
     if (this.renderer) {
       const renderer = this.renderer
       this.renderer = null

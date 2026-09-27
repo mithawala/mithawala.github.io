@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { Link } from 'react-router-dom'
 import {
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   Check,
@@ -22,13 +23,8 @@ import {
   Monitor,
   Pause,
   Play,
-  Plus,
-  Radio,
-  Rocket,
-  RotateCcw,
-  ScanLine,
+  Focus,
   Smartphone,
-  Sparkles,
   X,
 } from 'lucide-react'
 import '@fontsource-variable/space-grotesk'
@@ -36,18 +32,10 @@ import '@fontsource/ibm-plex-mono/400.css'
 import { versions } from '../versions.mjs'
 import { profile, formatDate } from '../asif/content.mjs'
 import Dialog from '../asif/Dialog.jsx'
-import {
-  EXPEDITION_KEY,
-  NEXUS_SIGNALS,
-  loadExpedition,
-  saveExpedition,
-  updateExpedition,
-  expeditionStats,
-} from './nexus-game.mjs'
 import './gallery.css'
 
 const PortalScene = lazy(() => import('./PortalScene.jsx'))
-const WORLD_IDS = versions.map((version) => version.id)
+const EDITION_IDS = versions.map((version) => version.id)
 const editionNumber = (version) =>
   String(versions.findIndex((entry) => entry.id === version.id) + 1).padStart(
     2,
@@ -192,7 +180,7 @@ function ComparisonDialog({
         <p className="gx-eyebrow">
           <Columns2 size={14} aria-hidden="true" /> Parallel view
         </p>
-        <h2>Two worlds. One human.</h2>
+        <h2>Two models. The same brief.</h2>
         <p>
           Same content. Two independent interpretations. Look a little closer.
         </p>
@@ -362,7 +350,7 @@ class PortalBoundary extends Component {
     return { failed: true }
   }
   componentDidCatch() {
-    console.warn('[Edition Nexus] The 3D module could not be loaded.')
+    console.warn('[Model Editions] The 3D gallery could not be loaded.')
     this.props.onFallback()
   }
   render() {
@@ -395,43 +383,13 @@ function useReducedMotion() {
   return reduced
 }
 
-function useExpedition() {
-  const [state, setState] = useState(() =>
-    loadExpedition(() => localStorage.getItem(EXPEDITION_KEY), WORLD_IDS),
-  )
-  const current = useRef(state)
-  const act = useCallback((action) => {
-    const progress = updateExpedition(
-      current.current.progress,
-      action,
-      WORLD_IDS,
-    )
-    if (progress === current.current.progress)
-      return expeditionStats(progress, WORLD_IDS)
-    let next = { ...current.current, progress }
-    if (next.persistent) {
-      const saved = saveExpedition(progress, (value) =>
-        localStorage.setItem(EXPEDITION_KEY, value),
-      )
-      next = { ...next, persistent: saved.ok, notice: saved.notice }
-      if (!saved.ok) console.warn(`[Edition Nexus] ${saved.notice}`)
-    }
-    current.current = next
-    setState(next)
-    return expeditionStats(progress, WORLD_IDS)
-  }, [])
-  return { ...state, act, stats: expeditionStats(state.progress, WORLD_IDS) }
-}
-
 function EditionCard({
   version,
   viewport,
   compact = false,
-  scanned,
   chosen,
   selectionFull,
   onCompare,
-  onEnter,
   onLocate,
 }) {
   return (
@@ -439,14 +397,12 @@ function EditionCard({
       className={`nx-edition-card ${compact ? 'nx-active-card' : ''}`}
       data-edition-card={version.id}
       data-selected={chosen}
-      data-scanned={scanned}
       style={{ '--world-color': version.color }}
     >
       <Link
         className="nx-card-preview"
         to={version.path}
         aria-label={`Explore ${version.model}`}
-        onClick={() => onEnter(version.id)}
       >
         <PreviewImage
           version={version}
@@ -455,22 +411,17 @@ function EditionCard({
         />
         {!compact && (
           <span className="nx-preview-enter">
-            Enter this world <ArrowUpRight size={18} aria-hidden="true" />
+            Open this edition <ArrowUpRight size={18} aria-hidden="true" />
           </span>
         )}
       </Link>
       <div className="nx-card-info">
         <p className="nx-eyebrow">
           <span className="nx-world-dot" />
-          World {editionNumber(version)}{' '}
-          <span className="nx-scan-state">
-            {scanned ? 'Scanned' : 'Uncharted'}
-          </span>
+          Edition {editionNumber(version)}
         </p>
         <h2>
-          <Link to={version.path} onClick={() => onEnter(version.id)}>
-            {version.model}
-          </Link>
+          <Link to={version.path}>{version.model}</Link>
         </h2>
         <time dateTime={version.released}>
           {formatDate(version.released, {
@@ -485,9 +436,8 @@ function EditionCard({
           className="nx-enter-world"
           to={version.path}
           aria-label={`Visit ${version.model}`}
-          onClick={() => onEnter(version.id)}
         >
-          Enter edition <ArrowUpRight size={17} aria-hidden="true" />
+          Open edition <ArrowUpRight size={17} aria-hidden="true" />
         </Link>
         {!compact && (
           <button
@@ -495,7 +445,7 @@ function EditionCard({
             aria-label={`Locate ${editionLabel(version)} in 3D`}
             onClick={() => onLocate(version.id)}
           >
-            <ScanLine size={17} aria-hidden="true" />
+            <Focus size={17} aria-hidden="true" />
             <span>Locate</span>
           </button>
         )}
@@ -524,277 +474,43 @@ function EditionCard({
   )
 }
 
-function ExpeditionLog({
-  progress,
-  stats,
-  persistent,
-  notice,
-  onScan,
-  onCollect,
-  onReset,
-  onClose,
-}) {
-  return (
-    <Dialog
-      title="Expedition log"
-      onClose={onClose}
-      className="nx-mission-dialog"
-    >
-      <p className="nx-eyebrow">
-        <Compass size={15} aria-hidden="true" />
-        Optional expedition / Your progress
-      </p>
-      <h2>
-        {stats.complete
-          ? 'Nexus stabilized.'
-          : 'Find the human in the machine.'}
-      </h2>
-      <p className="nx-mission-intro">
-        Explore the worlds. Recover the signals. Connect two perspectives.
-        Nothing here locks access to the websites.
-      </p>
-      <div
-        className="nx-expedition-meter"
-        role="progressbar"
-        aria-label="Expedition progress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow={stats.percent}
-      >
-        <span style={{ width: `${stats.percent}%` }} />
-      </div>
-      <p className="nx-mission-progress" role="status">
-        {stats.objectivesComplete} / {stats.objectivesTotal} objectives complete{' '}
-        <span>{stats.percent}% synchronized</span>
-      </p>
-      <div className="nx-objectives">
-        <article data-objective="worlds" data-complete={stats.worldsComplete}>
-          <span className="nx-objective-icon">
-            {stats.worldsComplete ? (
-              <Check size={20} />
-            ) : (
-              <ScanLine size={20} />
-            )}
-          </span>
-          <div>
-            <h3>Chart the worlds</h3>
-            <p>
-              Select every portal in the 3D field, or travel with the arrow
-              controls.
-            </p>
-          </div>
-          <strong>
-            {stats.scanned}/{stats.totalWorlds}
-          </strong>
-        </article>
-        <article data-objective="signals" data-complete={stats.signalsComplete}>
-          <span className="nx-objective-icon">
-            {stats.signalsComplete ? <Check size={20} /> : <Radio size={20} />}
-          </span>
-          <div>
-            <h3>Recover the signals</h3>
-            <p>
-              Three beacons are hiding in plain sight. Their colors are your
-              clues.
-            </p>
-          </div>
-          <strong>
-            {stats.recovered}/{stats.totalSignals}
-          </strong>
-        </article>
-        {stats.comparisonAvailable && (
-          <article data-objective="compare" data-complete={progress.compared}>
-            <span className="nx-objective-icon">
-              {progress.compared ? <Check size={20} /> : <Columns2 size={20} />}
-            </span>
-            <div>
-              <h3>Think in parallel</h3>
-              <p>
-                Open a comparison between two editions. A different view changes
-                everything.
-              </p>
-            </div>
-            <strong>{progress.compared ? '1/1' : '0/1'}</strong>
-          </article>
-        )}
-      </div>
-      <div className="nx-signal-clues">
-        {NEXUS_SIGNALS.map((signal, index) => (
-          <div
-            key={signal.id}
-            data-recovered={progress.signals.includes(signal.id)}
-            style={{ '--signal-color': signal.color }}
-          >
-            <span className="nx-signal-symbol">
-              {progress.signals.includes(signal.id) ? (
-                <Check size={18} aria-hidden="true" />
-              ) : (
-                <Radio size={18} aria-hidden="true" />
-              )}
-            </span>
-            <span className="nx-eyebrow">
-              Signal {String(index + 1).padStart(2, '0')}
-            </span>
-            <h3>{signal.label}</h3>
-            <p>
-              {progress.signals.includes(signal.id)
-                ? 'Recovered. The nexus grows stronger.'
-                : signal.hint}
-            </p>
-          </div>
-        ))}
-      </div>
-      <details className="nx-accessible-controls">
-        <summary>
-          Keyboard & low-graphics controls <Plus size={17} aria-hidden="true" />
-        </summary>
-        <p>
-          The same expedition, without needing to find or click a 3D object.
-        </p>
-        <div className="nx-access-worlds">
-          {versions.map((version) => (
-            <button
-              key={version.id}
-              aria-label={`Scan ${editionLabel(version)}`}
-              aria-pressed={progress.scanned.includes(version.id)}
-              onClick={() => onScan(version.id)}
-            >
-              <span>{editionNumber(version)}</span>
-              {version.model}
-              {progress.scanned.includes(version.id) ? (
-                <Check size={16} aria-hidden="true" />
-              ) : (
-                <ScanLine size={16} aria-hidden="true" />
-              )}
-            </button>
-          ))}
-        </div>
-        <div className="nx-access-signals">
-          {NEXUS_SIGNALS.map((signal) => (
-            <button
-              key={signal.id}
-              aria-label={`Collect ${signal.label}`}
-              aria-pressed={progress.signals.includes(signal.id)}
-              onClick={() => onCollect(signal.id)}
-            >
-              {progress.signals.includes(signal.id) ? (
-                <Check size={16} aria-hidden="true" />
-              ) : (
-                <Radio size={16} aria-hidden="true" />
-              )}
-              {signal.label}
-            </button>
-          ))}
-        </div>
-      </details>
-      <div className="nx-log-footer">
-        <p>
-          {notice ||
-            (persistent
-              ? 'Saved only in this browser. No account. No tracking.'
-              : 'Session-only progress. Browser storage is unavailable.')}
-        </p>
-        <button onClick={onReset}>
-          <RotateCcw size={15} aria-hidden="true" />
-          Reset expedition
-        </button>
-      </div>
-    </Dialog>
-  )
-}
-
 export default function Gallery() {
   const [viewport, setViewport] = useState('desktop')
   const [selected, setSelected] = useState([])
   const [comparison, setComparison] = useState(null)
   const [activeId, setActiveId] = useState(versions[0].id)
-  const [missionOpen, setMissionOpen] = useState(false)
   const [paused, setPaused] = useState(false)
-  const [launchId, setLaunchId] = useState(0)
   const [sceneStatus, setSceneStatus] = useState('loading')
-  const [announcement, setAnnouncement] = useState(
-    'Click a portal to scan a world. Find the three floating signals.',
-  )
   const reducedMotion = useReducedMotion()
-  const game = useExpedition()
   const activeVersion = versionFor(activeId)
-  const activeIndex = WORLD_IDS.indexOf(activeId)
+  const activeIndex = EDITION_IDS.indexOf(activeId)
   const collection = useRef(null)
   const hero = useRef(null)
-  const worldControls = useRef(null)
+  const editionControls = useRef(null)
   const selectionTray = useRef(null)
   const comparisonOpener = useRef(null)
-  const missionOpener = useRef(null)
   useEffect(() => {
     if (!comparison && comparisonOpener.current) {
       comparisonOpener.current.focus()
       comparisonOpener.current = null
     }
   }, [comparison])
-  useEffect(() => {
-    if (!missionOpen && missionOpener.current) {
-      missionOpener.current.focus()
-      missionOpener.current = null
-    }
-  }, [missionOpen])
-  const recordScan = useCallback(
-    (id) => {
-      const stats = game.act({ type: 'scan', id })
-      setAnnouncement(
-        `World ${editionNumber(versionFor(id))} scanned. ${stats.scanned} of ${stats.totalWorlds} worlds charted.`,
-      )
-    },
-    [game.act],
-  )
-  const selectWorld = useCallback(
-    (id) => {
-      setActiveId(id)
-      recordScan(id)
-    },
-    [recordScan],
-  )
-  const collectSignal = useCallback(
-    (id) => {
-      const stats = game.act({ type: 'signal', id })
-      const signal = NEXUS_SIGNALS.find((entry) => entry.id === id)
-      setAnnouncement(
-        `${signal.label} recovered. ${stats.recovered} of ${stats.totalSignals} signals found.`,
-      )
-    },
-    [game.act],
-  )
+  const selectEdition = useCallback((id) => setActiveId(versionFor(id).id), [])
   const graphicsUnavailable = useCallback(() => setSceneStatus('fallback'), [])
-  const travel = (direction) =>
-    selectWorld(
-      WORLD_IDS[(activeIndex + direction + versions.length) % versions.length],
+  const changeEdition = (direction) =>
+    selectEdition(
+      EDITION_IDS[
+        (activeIndex + direction + versions.length) % versions.length
+      ],
     )
-  const locateWorld = (id) => {
-    selectWorld(id)
+  const locateEdition = (id) => {
+    selectEdition(id)
     hero.current?.scrollIntoView({
       behavior: reducedMotion ? 'auto' : 'smooth',
       block: 'start',
     })
     requestAnimationFrame(() =>
-      worldControls.current?.focus({ preventScroll: true }),
-    )
-  }
-  const resetExpedition = () => {
-    game.act({ type: 'reset' })
-    setActiveId(versions[0].id)
-    setAnnouncement(
-      'A fresh expedition. The worlds are open, and the signals are waiting.',
-    )
-  }
-  const launch = () => {
-    hero.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
-    worldControls.current?.focus({ preventScroll: true })
-    setLaunchId((value) => value + 1)
-    setAnnouncement(
-      sceneStatus === 'fallback'
-        ? 'Nexus stabilized. The animated launch needs 3D graphics, but every world is open.'
-        : paused || reducedMotion
-          ? 'Nexus stabilized. The launch display stays still while motion is paused.'
-          : 'Launch sequence engaged. All worlds are yours to explore.',
+      editionControls.current?.focus({ preventScroll: true }),
     )
   }
   const models = new Set(versions.map((version) => version.model)).size
@@ -806,10 +522,6 @@ export default function Gallery() {
         : [...current, id],
     )
   const openComparison = (pair, opener) => {
-    game.act({ type: 'compare' })
-    setAnnouncement(
-      'Parallel connection established. A new perspective is part of the expedition.',
-    )
     comparisonOpener.current = opener
     setSelected(pair.map((version) => version.id))
     setComparison(pair)
@@ -836,19 +548,16 @@ export default function Gallery() {
       version={version}
       viewport={viewport}
       compact={compact}
-      scanned={game.progress.scanned.includes(version.id)}
       chosen={selected.includes(version.id)}
       selectionFull={selected.length === 2}
       onCompare={toggleSelection}
-      onEnter={recordScan}
-      onLocate={locateWorld}
+      onLocate={locateEdition}
     />
   )
   return (
     <div
-      className="editions-gallery nx-nexus"
+      className="editions-gallery nx-model-editions"
       data-comparing={selected.length > 0}
-      data-expedition-complete={game.stats.complete}
       data-motion={reducedMotion ? 'reduced' : paused ? 'paused' : 'running'}
     >
       <a href="#editions" className="skip-link">
@@ -860,37 +569,32 @@ export default function Gallery() {
             <Compass size={29} strokeWidth={1.2} />
           </span>
           <span>
-            EDITION<span>NEXUS</span>
+            mithawala.com<span>MODEL EDITIONS</span>
           </span>
         </Link>
-        <span className="nx-header-signal">
+        <span className="nx-header-meta">
           <span />
-          {versions.length} worlds online
+          {versions.length} interpretations
           <span className="nx-header-divider">/</span>
-          {models} model signatures
+          {models} AI models
         </span>
-        <button
-          className="nx-mission-trigger"
-          aria-label="Mission log"
-          aria-haspopup="dialog"
-          onClick={(event) => {
-            missionOpener.current = event.currentTarget
-            setMissionOpen(true)
-          }}
+        <a
+          className="nx-about-link"
+          href="#about-benchmark"
+          aria-label="About the benchmark"
         >
-          <Compass size={16} aria-hidden="true" />
-          <span>Mission log</span>
-          <strong aria-hidden="true">
-            {game.stats.objectivesComplete}/{game.stats.objectivesTotal}
-          </strong>
-        </button>
+          <span>
+            About<span className="nx-about-detail"> the benchmark</span>
+          </span>{' '}
+          <ArrowDown size={15} aria-hidden="true" />
+        </a>
       </header>
       <main className="nx-main" id="editions" ref={collection} tabIndex="-1">
         <section
           ref={hero}
           className="nx-hero"
           aria-labelledby="nx-title"
-          data-active-world={activeId}
+          data-active-edition={activeId}
           data-scene={sceneStatus}
         >
           <div className="nx-scene-mount">
@@ -903,7 +607,7 @@ export default function Gallery() {
                     role="status"
                   >
                     <Compass size={30} aria-hidden="true" />
-                    <span>Opening the nexus...</span>
+                    <span>Loading the 3D gallery...</span>
                   </div>
                 }
               >
@@ -911,19 +615,8 @@ export default function Gallery() {
                   versions={versions}
                   activeId={activeId}
                   viewport={viewport}
-                  paused={
-                    paused ||
-                    reducedMotion ||
-                    Boolean(comparison) ||
-                    missionOpen
-                  }
-                  signals={NEXUS_SIGNALS}
-                  collectedIds={game.progress.signals}
-                  scannedIds={game.progress.scanned}
-                  complete={game.stats.complete}
-                  launchId={launchId}
-                  onSelect={selectWorld}
-                  onCollect={collectSignal}
+                  paused={paused || reducedMotion || Boolean(comparison)}
+                  onSelect={selectEdition}
                   onStatusChange={setSceneStatus}
                 />
               </Suspense>
@@ -932,63 +625,50 @@ export default function Gallery() {
           <div className="nx-hero-copy">
             <h1 id="nx-title">
               <span className="nx-owner">
-                {profile.name} / An interactive edition expedition
+                {profile.name} / A hands-on AI design benchmark
               </span>
-              Choose your <em>reality.</em>
+              One site. <em>Every model.</em>
             </h1>
-            <p>One human. Independent worlds. A few signals worth following.</p>
+            <p>
+              Whenever a new AI model comes out, I give it the same challenge:
+              create its own interpretation of{' '}
+              <a href="https://mithawala.com" target="_blank" rel="noreferrer">
+                mithawala.com
+              </a>
+              . Same content. Same capabilities. A fresh design, built
+              independently.
+            </p>
           </div>
           <div className="nx-sector-label" aria-hidden="true">
-            <span>Current sector</span>
+            <span>Selected edition</span>
             <strong>
               {editionNumber(activeVersion)}
               <small> / {String(versions.length).padStart(2, '0')}</small>
             </strong>
             <span>
-              Drag to travel
+              Drag to browse
               <br />
-              Click a portal to scan
-            </span>
-          </div>
-          <div
-            className="nx-signal-radar"
-            aria-label={`${game.stats.recovered} of ${game.stats.totalSignals} signals recovered`}
-          >
-            <span className="nx-eyebrow">Recover the signals</span>
-            <div>
-              {NEXUS_SIGNALS.map((signal) => (
-                <span
-                  key={signal.id}
-                  title={signal.label}
-                  data-found={game.progress.signals.includes(signal.id)}
-                  style={{ '--signal-color': signal.color }}
-                >
-                  <Radio size={19} aria-hidden="true" />
-                </span>
-              ))}
-            </div>
-            <span>
-              {game.stats.recovered}/{game.stats.totalSignals} recovered
+              Click a preview to select
             </span>
           </div>
           <div className="nx-hero-bottom">
             <div className="nx-flight-controls">
               <div
-                ref={worldControls}
+                ref={editionControls}
                 className="nx-world-navigation"
                 role="group"
-                aria-label="World navigation"
+                aria-label="Edition navigation"
                 tabIndex="-1"
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
                     event.preventDefault()
-                    travel(event.key === 'ArrowLeft' ? -1 : 1)
+                    changeEdition(event.key === 'ArrowLeft' ? -1 : 1)
                   }
                 }}
               >
                 <button
-                  aria-label="Previous world"
-                  onClick={() => travel(-1)}
+                  aria-label="Previous edition"
+                  onClick={() => changeEdition(-1)}
                   disabled={versions.length < 2}
                 >
                   <ChevronLeft size={18} aria-hidden="true" />
@@ -998,8 +678,8 @@ export default function Gallery() {
                   <small>/ {String(versions.length).padStart(2, '0')}</small>
                 </span>
                 <button
-                  aria-label="Next world"
-                  onClick={() => travel(1)}
+                  aria-label="Next edition"
+                  onClick={() => changeEdition(1)}
                   disabled={versions.length < 2}
                 >
                   <ChevronRight size={18} aria-hidden="true" />
@@ -1008,15 +688,14 @@ export default function Gallery() {
               <div
                 className="nx-world-selector"
                 role="group"
-                aria-label="Choose a world"
+                aria-label="Choose an edition"
               >
                 {versions.map((version) => (
                   <button
                     key={version.id}
                     aria-label={`Select ${editionLabel(version)}`}
                     aria-pressed={activeId === version.id}
-                    data-charted={game.progress.scanned.includes(version.id)}
-                    onClick={() => selectWorld(version.id)}
+                    onClick={() => selectEdition(version.id)}
                   >
                     {editionNumber(version)}
                   </button>
@@ -1047,98 +726,76 @@ export default function Gallery() {
             </div>
             {renderEdition(activeVersion, true)}
             <p className="nx-announcement" role="status">
-              {game.notice ||
-                (sceneStatus === 'fallback'
-                  ? 'Preview mode. Use the world arrows and Mission log to explore without 3D.'
-                  : announcement)}
+              {sceneStatus === 'fallback'
+                ? 'Preview mode. Use the edition arrows or browse the collection below.'
+                : `${activeVersion.model} / Edition ${editionNumber(activeVersion)}. Open the full site or compare it with another interpretation.`}
             </p>
           </div>
         </section>
         <section
-          className="nx-expedition-deck"
-          aria-labelledby="nx-expedition-title"
+          id="about-benchmark"
+          className="nx-benchmark"
+          aria-labelledby="nx-benchmark-title"
         >
-          <div className="nx-expedition-heading">
-            <span className="nx-orbit-icon" aria-hidden="true">
-              <Sparkles size={29} strokeWidth={1.3} />
-            </span>
-            <div>
-              <p className="nx-eyebrow">A little curiosity goes a long way</p>
-              <h2 id="nx-expedition-title">
-                {game.stats.complete
-                  ? 'Nexus stabilized.'
-                  : 'There is more here than a menu.'}
-              </h2>
+          <div className="nx-benchmark-intro">
+            <p className="nx-eyebrow">What this collection is about</p>
+            <h2 id="nx-benchmark-title">
+              A new model.
+              <br />
+              <span>The same challenge.</span>
+            </h2>
+            <p>
+              I benchmark new AI models by asking each one to build a new
+              interpretation of my personal website,{' '}
+              <a href="https://mithawala.com" target="_blank" rel="noreferrer">
+                mithawala.com
+              </a>
+              . The results live here: real, working websites you can explore
+              and compare.
+            </p>
+          </div>
+          <div className="nx-benchmark-method">
+            <article>
+              <span className="nx-eyebrow">01 / A consistent brief</span>
+              <h3>Same person. Same content.</h3>
               <p>
-                {game.stats.complete
-                  ? 'You found the signals and connected the perspectives. Your launch sequence is ready.'
-                  : 'Chart the worlds. Find three colored beacons. Compare two perspectives. Power up the nexus.'}
+                Every model starts with the same biography, projects, articles,
+                and required functionality. The subject stays the same.
               </p>
-            </div>
-          </div>
-          <div className="nx-quest-stats">
-            <div>
-              <strong>
-                {String(game.stats.scanned).padStart(2, '0')}
-                <small>
-                  /{String(game.stats.totalWorlds).padStart(2, '0')}
-                </small>
-              </strong>
-              <span>Worlds charted</span>
-            </div>
-            <div>
-              <strong>
-                {String(game.stats.recovered).padStart(2, '0')}
-                <small>
-                  /{String(game.stats.totalSignals).padStart(2, '0')}
-                </small>
-              </strong>
-              <span>Signals recovered</span>
-            </div>
-            <div>
-              <strong>
-                {game.progress.compared ? '01' : '00'}
-                <small>/01</small>
-              </strong>
-              <span>Parallel connection</span>
-            </div>
-          </div>
-          <div className="nx-expedition-actions">
-            <button
-              className="nx-launch-sequence"
-              aria-label="Launch sequence"
-              disabled={!game.stats.complete}
-              onClick={launch}
-            >
-              <Rocket size={18} aria-hidden="true" />
-              <span>
-                {game.stats.complete
-                  ? 'Engage launch sequence'
-                  : 'Launch sequence locked'}
+            </article>
+            <article>
+              <span className="nx-eyebrow">
+                02 / An independent interpretation
               </span>
-              {game.stats.complete ? (
-                <ArrowRight size={17} aria-hidden="true" />
-              ) : (
-                <span className="nx-quest-count">
-                  {game.stats.objectivesComplete}/{game.stats.objectivesTotal}
-                </span>
-              )}
-            </button>
-            <span>
-              {game.stats.complete
-                ? 'A reward for following your curiosity.'
-                : 'Optional challenge. Every website is already open.'}
-            </span>
+              <h3>A blank canvas for each model.</h3>
+              <p>
+                No previous edition to copy. Each model chooses its own layout,
+                typography, visual language, and interactions.
+              </p>
+            </article>
+            <article>
+              <span className="nx-eyebrow">03 / A working result</span>
+              <h3>Judge the experience, not a screenshot.</h3>
+              <p>
+                Open an edition to see what it actually built. Compare the
+                creativity, craft, usability, and implementation across models.
+              </p>
+            </article>
           </div>
+          <p className="nx-benchmark-note">
+            A hands-on, qualitative benchmark of AI design and development, not
+            a numerical leaderboard. The gallery grows as new models are put to
+            the test.
+          </p>
         </section>
         <section className="nx-directory" aria-labelledby="nx-directory-title">
           <div className="nx-directory-heading">
             <div>
-              <p className="nx-eyebrow">The remaining coordinates</p>
-              <h2 id="nx-directory-title">Every world stays open.</h2>
+              <p className="nx-eyebrow">The collection</p>
+              <h2 id="nx-directory-title">Compare the interpretations.</h2>
               <p>
-                Your selected world is above. These are the other{' '}
-                {versions.length - 1} interpretations.
+                Your selected edition is above. Explore the other{' '}
+                {versions.length - 1} interpretations below.
               </p>
             </div>
             <button
@@ -1165,34 +822,31 @@ export default function Gallery() {
           <Compass size={33} strokeWidth={1.1} aria-hidden="true" />
           <div>
             <h2>
-              Different dimensions.
+              Different designs.
               <br />
               <span>The same source.</span>
             </h2>
             <p>
-              Every world contains the complete portfolio, articles, experience,
-              music, and contact details. Portal windows use real captures.
-              Enter any edition for the full interactive site.
+              Every edition contains the complete portfolio, articles,
+              experience, music, and contact details. The gallery uses real
+              automated captures; each preview opens the full interactive
+              website.
             </p>
           </div>
           <a href={profile.social.github} target="_blank" rel="noreferrer">
             <Github size={17} aria-hidden="true" />
-            Follow the source <ArrowUpRight size={15} aria-hidden="true" />
+            Follow the work <ArrowUpRight size={15} aria-hidden="true" />
           </a>
         </section>
       </main>
       <footer className="nx-footer">
         <span>{profile.copyright}</span>
-        <span>
-          {game.persistent
-            ? 'Expedition saved on this device only'
-            : 'Expedition progress is session-only'}
-        </span>
+        <span>New models. Independent interpretations.</span>
         <a href="https://mithawala.com" target="_blank" rel="noreferrer">
           Original site <ArrowUpRight size={14} aria-hidden="true" />
         </a>
         <a href={`mailto:${profile.about.email}`}>
-          Open a channel <ArrowUpRight size={14} aria-hidden="true" />
+          Get in touch <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </footer>
       {selected.length > 0 && (
@@ -1255,18 +909,6 @@ export default function Gallery() {
           viewport={viewport}
           setViewport={setViewport}
           onClose={() => setComparison(null)}
-        />
-      )}
-      {missionOpen && (
-        <ExpeditionLog
-          progress={game.progress}
-          stats={game.stats}
-          persistent={game.persistent}
-          notice={game.notice}
-          onScan={selectWorld}
-          onCollect={collectSignal}
-          onReset={resetExpedition}
-          onClose={() => setMissionOpen(false)}
         />
       )}
     </div>

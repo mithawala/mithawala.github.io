@@ -10,9 +10,8 @@ import {
 } from '../../src/asif/content.mjs'
 import { versions } from '../../src/versions.mjs'
 import { previewPath, previewSources } from '../../src/asif/images.mjs'
-import { EXPEDITION_KEY, NEXUS_SIGNALS } from '../../src/gallery/nexus-game.mjs'
 
-async function readyNexus(page) {
+async function readyGalleryScene(page) {
   await page.locator('.nx-hero').scrollIntoViewIfNeeded()
   await expect(page.locator('.nx-portal-scene')).toHaveAttribute(
     'data-scene-status',
@@ -40,13 +39,6 @@ async function clickScenePoint(page, kind, id) {
   const point = await scenePoint(page, kind, id)
   const box = await canvas.boundingBox()
   await page.mouse.click(box.x + point.x, box.y + point.y)
-}
-
-async function savedExpedition(page) {
-  return page.evaluate(
-    (key) => JSON.parse(localStorage.getItem(key)),
-    EXPEDITION_KEY,
-  )
 }
 
 test.beforeEach(async ({ page }) => {
@@ -370,11 +362,11 @@ test('gallery comparison remains usable on a 320px screen', async ({
   ).toBeTruthy()
 })
 
-test('gallery nexus is real 3D and keyboard/raycast travel scans actual worlds', async ({
+test('gallery 3D selects every edition with keyboard and real raycast interaction', async ({
   page,
 }) => {
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
   const scene = page.locator('.nx-portal-scene')
   const canvas = page.getByRole('group', {
     name: 'Explore editions in 3D',
@@ -399,45 +391,113 @@ test('gallery nexus is real 3D and keyboard/raycast travel scans actual worlds',
   await canvas.focus()
   await page.keyboard.press('ArrowRight')
   await expect(page.locator('.nx-hero')).toHaveAttribute(
-    'data-active-world',
+    'data-active-edition',
     versions[1].id,
   )
-  await expect
-    .poll(async () => (await savedExpedition(page)).scanned)
-    .toContain(versions[1].id)
+  await expect(page.locator('.nx-active-card')).toHaveAttribute(
+    'data-edition-card',
+    versions[1].id,
+  )
+  await expect(page.locator('.nx-announcement')).toContainText(
+    versions[1].model,
+  )
   await page
-    .getByRole('button', { name: 'Previous world', exact: true })
+    .getByRole('button', { name: 'Previous edition', exact: true })
     .click()
   await expect(page.locator('.nx-hero')).toHaveAttribute(
-    'data-active-world',
+    'data-active-edition',
     versions[0].id,
   )
-  await clickScenePoint(page, 'portal', versions[0].id)
-  await expect
-    .poll(async () => (await savedExpedition(page)).scanned.length)
-    .toBe(2)
+  await canvas.focus()
+  await page.keyboard.press('ArrowRight')
+  await page.keyboard.press('ArrowRight')
+  await expect(page.locator('.nx-active-card')).toHaveAttribute(
+    'data-edition-card',
+    versions[2].id,
+  )
+  const point = JSON.parse(await scene.getAttribute('data-portal-points')).find(
+    (entry) => entry.visible && entry.id !== versions[2].id,
+  )
+  if (point) {
+    await clickScenePoint(page, 'portal', point.id)
+    await expect(page.locator('.nx-active-card')).toHaveAttribute(
+      'data-edition-card',
+      point.id,
+    )
+  } else {
+    await clickScenePoint(page, 'portal', versions[2].id)
+    await expect(page.locator('.nx-active-card')).toHaveAttribute(
+      'data-edition-card',
+      versions[2].id,
+    )
+  }
+  for (let index = 0; index < versions.length; index++) {
+    await page
+      .getByRole('button', { name: 'Next edition', exact: true })
+      .click()
+    await expect(page.locator('[data-edition-card]')).toHaveCount(
+      versions.length,
+    )
+  }
   await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
-test('gallery expedition collects real 3D signals and preserves progress across reloads', async ({
+test('gallery explains the recurring model benchmark without gameplay or saved progress', async ({
   page,
+  isMobile,
 }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'asif:nexus-expedition:v1',
+      '{"schema":1,"scanned":["gpt-6-astra"],"signals":["origin"],"compared":true}',
+    )
+    window.__galleryStorageCalls = []
+    for (const name of ['getItem', 'setItem', 'removeItem', 'clear']) {
+      const original = Storage.prototype[name]
+      Storage.prototype[name] = function (...args) {
+        window.__galleryStorageCalls.push(name)
+        return original.apply(this, args)
+      }
+    }
+  })
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
+  await expect(page.locator('.nx-hero-copy')).toContainText(
+    'Whenever a new AI model comes out',
+  )
+  await expect(page.locator('.nx-hero-copy')).toContainText(
+    'create its own interpretation of mithawala.com',
+  )
+  await expect(page.locator('.nx-hero-copy')).toContainText(
+    'Same content. Same capabilities.',
+  )
+  const explanation = await page.locator('.nx-hero-copy').boundingBox()
+  const scene = await page.locator('.nx-portal-canvas').boundingBox()
+  expect(explanation.y + explanation.height).toBeLessThan(
+    scene.y + scene.height * (isMobile ? 0.3 : 0.25),
+  )
   await expect(
-    page.getByRole('button', { name: 'Launch sequence', exact: true }),
-  ).toBeDisabled()
-  for (let index = 0; index < versions.length; index++)
-    await page.getByRole('button', { name: 'Next world', exact: true }).click()
-  await expect
-    .poll(async () => (await savedExpedition(page)).scanned.length)
-    .toBe(versions.length)
-  for (const signal of NEXUS_SIGNALS) {
-    await clickScenePoint(page, 'signal', signal.id)
-    await expect
-      .poll(async () => (await savedExpedition(page)).signals)
-      .toContain(signal.id)
-  }
+    page.getByRole('link', { name: 'About the benchmark', exact: true }),
+  ).toHaveAttribute('href', '#about-benchmark')
+  await expect(page.locator('#about-benchmark')).toContainText(
+    'No previous edition to copy',
+  )
+  await expect(page.locator('#about-benchmark')).toContainText(
+    'qualitative benchmark',
+  )
+  await expect(page.locator('#about-benchmark')).toContainText(
+    'not a numerical leaderboard',
+  )
+  const forbidden =
+    /\b(nexus|expedition|mission|collectible|scanned|uncharted|launch sequence|recover the signals)\b/i
+  expect(await page.locator('body').innerText()).not.toMatch(forbidden)
+  await expect(
+    page.locator(
+      '[data-launch-state], [data-signal-points], [data-expedition-complete], [data-scanned], [data-charted]',
+    ),
+  ).toHaveCount(0)
+  await expect(page.getByRole('progressbar')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Next edition', exact: true }).click()
   await page
     .getByRole('button', { name: 'Compare first & latest', exact: true })
     .click()
@@ -445,62 +505,32 @@ test('gallery expedition collects real 3D signals and preserves progress across 
     page.getByRole('dialog', { name: 'Compare editions', exact: true }),
   ).toBeVisible()
   await page.keyboard.press('Escape')
-  await expect(page.locator('.nx-nexus')).toHaveAttribute(
-    'data-expedition-complete',
-    'true',
-  )
-  await expect(
-    page.getByRole('button', { name: 'Launch sequence', exact: true }),
-  ).toBeEnabled()
-  const before = await savedExpedition(page)
+  expect(await page.evaluate(() => window.__galleryStorageCalls)).toEqual([])
   await page.reload()
-  await readyNexus(page)
-  expect(await savedExpedition(page)).toEqual(before)
-  await page.getByRole('button', { name: 'Mission log', exact: true }).click()
-  const log = page.getByRole('dialog', { name: 'Expedition log', exact: true })
-  await expect(
-    log.getByRole('progressbar', { name: 'Expedition progress' }),
-  ).toHaveAttribute('aria-valuenow', '100')
-  await page.evaluate(() => localStorage.setItem('asif:appearance', 'dark'))
-  await log
-    .getByRole('button', { name: 'Reset expedition', exact: true })
-    .click()
-  expect(await savedExpedition(page)).toEqual({
-    schema: 1,
-    scanned: [],
-    signals: [],
-    compared: false,
-  })
-  expect(
-    await page.evaluate(() => localStorage.getItem('asif:appearance')),
-  ).toBe('dark')
-  await expect(
-    log.getByRole('progressbar', { name: 'Expedition progress' }),
-  ).toHaveAttribute('aria-valuenow', '0')
-  await page.keyboard.press('Escape')
-  await expect(
-    page.getByRole('button', { name: 'Mission log', exact: true }),
-  ).toBeFocused()
+  await readyGalleryScene(page)
+  expect(await page.evaluate(() => window.__galleryStorageCalls)).toEqual([])
+  await expect(page.locator('.nx-active-card')).toHaveAttribute(
+    'data-edition-card',
+    versions[0].id,
+  )
 })
 
-test('gallery expedition remains playable without WebGL or browser storage', async ({
+test('gallery remains usable without WebGL or access to browser storage', async ({
   page,
   isMobile,
 }) => {
-  await page.addInitScript((key) => {
+  await page.addInitScript(() => {
     const getContext = HTMLCanvasElement.prototype.getContext
     HTMLCanvasElement.prototype.getContext = function (type, ...args) {
       return type.startsWith('webgl') || type === 'experimental-webgl'
         ? null
         : getContext.call(this, type, ...args)
     }
-    const read = Storage.prototype.getItem
-    Storage.prototype.getItem = function (name) {
-      if (name === key)
-        throw new DOMException('Storage unavailable', 'SecurityError')
-      return read.call(this, name)
-    }
-  }, EXPEDITION_KEY)
+    for (const name of ['getItem', 'setItem', 'removeItem', 'clear'])
+      Storage.prototype[name] = () => {
+        throw new DOMException('Storage disabled', 'SecurityError')
+      }
+  })
   await page.goto('/')
   await expect(page.locator('.nx-portal-scene')).toHaveAttribute(
     'data-scene-status',
@@ -509,7 +539,8 @@ test('gallery expedition remains playable without WebGL or browser storage', asy
   await expect(page.locator('.nx-scene-fallback-message')).toContainText(
     'Edition links remain available',
   )
-  await expect(page.locator('.nx-announcement')).toContainText('session only')
+  await expect(page.locator('.nx-announcement')).toContainText('edition arrows')
+  await expect(page.locator('.nx-hero-copy')).toContainText('mithawala.com')
   if (isMobile) {
     const message = await page
       .locator('.nx-scene-fallback-message')
@@ -517,29 +548,22 @@ test('gallery expedition remains playable without WebGL or browser storage', asy
     const controls = await page.locator('.nx-flight-controls').boundingBox()
     expect(message.y + message.height).toBeLessThan(controls.y)
   }
+  for (let index = 1; index <= versions.length; index++) {
+    await page
+      .getByRole('button', { name: 'Next edition', exact: true })
+      .click()
+    const version = versions[index % versions.length]
+    await expect(page.locator('.nx-active-card')).toHaveAttribute(
+      'data-edition-card',
+      version.id,
+    )
+    await expect(
+      page
+        .locator('.nx-active-card')
+        .getByRole('link', { name: `Visit ${version.model}`, exact: true }),
+    ).toHaveAttribute('href', version.path)
+  }
   await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
-  await page.getByRole('button', { name: 'Mission log', exact: true }).click()
-  const log = page.getByRole('dialog', { name: 'Expedition log', exact: true })
-  await log.locator('.nx-accessible-controls > summary').click()
-  for (const [index, version] of versions.entries())
-    await log
-      .getByRole('button', {
-        name: `Scan ${version.model}, edition ${String(index + 1).padStart(2, '0')}`,
-        exact: true,
-      })
-      .click()
-  for (const signal of NEXUS_SIGNALS)
-    await log
-      .getByRole('button', { name: `Collect ${signal.label}`, exact: true })
-      .click()
-  await expect(log.locator('[data-objective="worlds"]')).toHaveAttribute(
-    'data-complete',
-    'true',
-  )
-  await expect(log.locator('[data-objective="signals"]')).toHaveAttribute(
-    'data-complete',
-    'true',
-  )
   expect(
     (
       await new AxeBuilder({ page })
@@ -547,33 +571,14 @@ test('gallery expedition remains playable without WebGL or browser storage', asy
         .analyze()
     ).violations,
   ).toEqual([])
-  await page.keyboard.press('Escape')
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
-test('gallery expedition saves a world scan before following its entry link', async ({
-  page,
-}) => {
-  await page.goto('/')
-  const version = versions.at(-1)
-  await page
-    .locator(`[data-edition-card="${version.id}"]`)
-    .getByRole('link', { name: `Visit ${version.model}`, exact: true })
-    .click()
-  await expect(page).toHaveURL(new RegExp(`${version.path}$`))
-  expect((await savedExpedition(page)).scanned).toContain(version.id)
-  await page.goBack()
-  await expect(
-    page.locator(`[data-edition-card="${version.id}"]`),
-  ).toHaveAttribute('data-scanned', 'true')
-})
-
-test('gallery nexus pauses motion and responds to live reduced-motion changes', async ({
+test('gallery 3D pauses motion and responds to live reduced-motion changes', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
   const scene = page.locator('.nx-portal-scene')
   const canvas = page.locator('.nx-portal-canvas')
   await expect(scene).toHaveAttribute('data-scene-motion', 'running')
@@ -595,81 +600,12 @@ test('gallery nexus pauses motion and responds to live reduced-motion changes', 
   await page.waitForTimeout(350)
   expect(reduced.equals(await canvas.screenshot())).toBeTruthy()
   await expect(page.locator('.nx-hero')).toHaveAttribute(
-    'data-active-world',
+    'data-active-edition',
     versions[0].id,
   )
 })
 
-test('gallery nexus unlocks a real launch sequence after completing the expedition', async ({
-  page,
-}) => {
-  await page.addInitScript(
-    ({ key, worldIds, signalIds }) =>
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          schema: 1,
-          scanned: worldIds,
-          signals: signalIds,
-          compared: true,
-        }),
-      ),
-    {
-      key: EXPEDITION_KEY,
-      worldIds: versions.map((version) => version.id),
-      signalIds: NEXUS_SIGNALS.map((signal) => signal.id),
-    },
-  )
-  await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await page.goto('/')
-  await readyNexus(page)
-  await expect(page.locator('.nx-nexus')).toHaveAttribute(
-    'data-expedition-complete',
-    'true',
-  )
-  await page.locator('.nx-portal-scene').evaluate((element) => {
-    const transitions = []
-    element.__launchTransitions = transitions
-    const observer = new MutationObserver((records) => {
-      for (const record of records) {
-        if (record.oldValue && transitions.at(-1)?.state !== record.oldValue)
-          transitions.push({ state: record.oldValue, time: performance.now() })
-        const state = element.dataset.launchState
-        if (transitions.at(-1)?.state !== state)
-          transitions.push({ state, time: performance.now() })
-      }
-      if (element.dataset.launchState === 'complete') observer.disconnect()
-    })
-    observer.observe(element, {
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ['data-launch-state'],
-    })
-  })
-  await page
-    .getByRole('button', { name: 'Launch sequence', exact: true })
-    .click()
-  const scene = page.locator('.nx-portal-scene')
-  await expect(scene).toHaveAttribute('data-launch-state', 'complete', {
-    timeout: 12000,
-  })
-  const transitions = await scene.evaluate(
-    (element) => element.__launchTransitions,
-  )
-  expect(transitions.map(({ state }) => state)).toEqual([
-    'idle',
-    'launching',
-    'complete',
-  ])
-  expect(transitions.at(-1).time - transitions[1].time).toBeLessThan(12000)
-  await expect(scene).toBeInViewport()
-  await expect(page.locator('.nx-hero')).toHaveAttribute(
-    'data-active-world',
-    versions[0].id,
-  )
-})
-
-test('gallery nexus reduces rendering cost after sustained slow frames', async ({
+test('gallery 3D reduces rendering cost after sustained slow frames', async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -683,7 +619,7 @@ test('gallery nexus reduces rendering cost after sustained slow frames', async (
   })
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
   const scene = page.locator('.nx-portal-scene')
   await expect
     .poll(async () => Number(await scene.getAttribute('data-render-scale')))
@@ -695,17 +631,17 @@ test('gallery nexus reduces rendering cost after sustained slow frames', async (
   await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
-test('gallery nexus switches real preview textures and recovers from a lost graphics context', async ({
+test('gallery 3D switches real preview textures and recovers from a lost graphics context', async ({
   page,
 }) => {
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
   const canvas = page.locator('.nx-portal-canvas')
   const desktop = await canvas.screenshot()
   await page
     .getByRole('button', { name: 'Mobile preview', exact: true })
     .click()
-  await readyNexus(page)
+  await readyGalleryScene(page)
   await expect
     .poll(async () => desktop.equals(await canvas.screenshot()))
     .toBeFalsy()
@@ -718,7 +654,7 @@ test('gallery nexus switches real preview textures and recovers from a lost grap
   await page
     .getByRole('button', { name: 'Desktop preview', exact: true })
     .click()
-  await readyNexus(page)
+  await readyGalleryScene(page)
   await expect(page.locator('.nx-active-card img')).toHaveAttribute(
     'src',
     versions[0].preview,
@@ -749,7 +685,7 @@ test('gallery nexus switches real preview textures and recovers from a lost grap
     'fallback',
   )
   await expect(page.locator('[data-rendering]')).toHaveCount(0)
-  await page.getByRole('button', { name: 'Next world', exact: true }).click()
+  await page.getByRole('button', { name: 'Next edition', exact: true }).click()
   await expect(page.locator('.nx-active-card')).toHaveAttribute(
     'data-edition-card',
     versions[1].id,
@@ -757,13 +693,13 @@ test('gallery nexus switches real preview textures and recovers from a lost grap
   await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
-test('gallery nexus touch travel leaves vertical page scrolling available', async ({
+test('gallery 3D touch travel leaves vertical page scrolling available', async ({
   page,
   isMobile,
 }) => {
   if (!isMobile) return
   await page.goto('/')
-  await readyNexus(page)
+  await readyGalleryScene(page)
   const session = await page.context().newCDPSession(page)
   const canvas = page.locator('.nx-portal-canvas')
   let box = await canvas.boundingBox()
@@ -782,12 +718,12 @@ test('gallery nexus touch travel leaves vertical page scrolling available', asyn
     touchPoints: [],
   })
   await expect(page.locator('.nx-hero')).not.toHaveAttribute(
-    'data-active-world',
+    'data-active-edition',
     versions[0].id,
   )
   const activeId = await page
     .locator('.nx-hero')
-    .getAttribute('data-active-world')
+    .getAttribute('data-active-edition')
   const beforeScroll = await page.evaluate(() => scrollY)
   box = await canvas.boundingBox()
   const x = box.x + box.width / 2
@@ -809,44 +745,10 @@ test('gallery nexus touch travel leaves vertical page scrolling available', asyn
     .poll(() => page.evaluate(() => scrollY))
     .toBeGreaterThan(beforeScroll + 20)
   await expect(page.locator('.nx-hero')).toHaveAttribute(
-    'data-active-world',
+    'data-active-edition',
     activeId,
   )
   await session.detach()
-})
-
-test('gallery expedition discloses corrupted saves and failed persistence without blocking play', async ({
-  page,
-}) => {
-  await page.addInitScript((key) => {
-    localStorage.setItem(key, '{broken')
-    const write = Storage.prototype.setItem
-    Storage.prototype.setItem = function (name, value) {
-      if (name === key)
-        throw new DOMException('Quota full', 'QuotaExceededError')
-      return write.call(this, name, value)
-    }
-  }, EXPEDITION_KEY)
-  await page.goto('/')
-  await expect(page.locator('.nx-announcement')).toContainText(
-    'could not be read',
-  )
-  await readyNexus(page)
-  await page.getByRole('button', { name: 'Next world', exact: true }).click()
-  await expect(page.locator('.nx-announcement')).toContainText(
-    'could not be saved',
-  )
-  await expect(page.locator('.nx-active-card')).toHaveAttribute(
-    'data-scanned',
-    'true',
-  )
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
-  await page.getByRole('button', { name: 'Mission log', exact: true }).click()
-  await expect(
-    page
-      .getByRole('dialog', { name: 'Expedition log', exact: true })
-      .locator('[data-objective="worlds"]'),
-  ).toContainText(`1/${versions.length}`)
 })
 
 test('responsive cover previews are much smaller and full-resolution originals remain available', async ({

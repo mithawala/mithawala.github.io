@@ -131,7 +131,11 @@ at `/<repository-name>/` without joining this personal-site build.
   model label, real preview, release date, and version-specific links. Display
   labels may change without renaming IDs, preview files, or routes.
   The active card is in the portal space; the other cards stay in the directory.
-  Changing worlds moves the selected entry without duplicating or omitting one.
+  Changing editions moves the selected entry without duplicating or omitting one.
+- The hero explains that each new AI model is benchmarked by creating its own
+  independent interpretation of mithawala.com. `About the benchmark` links to the
+  consistent-brief, independent-design, and working-result explanation. This is a
+  qualitative comparison, not a scored leaderboard.
 - `Desktop preview` and `Mobile preview` switch the collection's captures. The
   first registered model and its preview remain visible without scrolling.
 - `data-compare-select='<id>'` selects at most two distinct entries. A complementary
@@ -147,23 +151,17 @@ at `/<repository-name>/` without joining this personal-site build.
   collection, and Escape closes the dialog and restores focus.
 - The gallery's lazy-loaded real WebGL space exposes `.nx-portal-scene` with
   `data-scene-status`, `data-active-portal`, `data-scene-motion`, and
-  `data-launch-state`. `data-rendering` clears after the first complete frame or
-  explicit fallback. Geometry-derived `data-portal-points` and
-  `data-signal-points` support real canvas-raycast tests, not substitute DOM hits.
-- `Explore editions in 3D` is the keyboard-focusable canvas. `Previous world`
-  and `Next world` provide equivalent DOM travel. Vertical touch gestures scroll
+  `data-render-scale`. `data-rendering` clears after the first complete frame or
+  explicit fallback. Geometry-derived `data-portal-points` support real
+  canvas-raycast tests, not substitute DOM hits.
+- `Explore editions in 3D` is the keyboard-focusable canvas. `Previous edition`
+  and `Next edition` provide equivalent DOM navigation. Vertical touch gestures scroll
   rather than being trapped by the scene. `Pause motion` and live reduced-motion
   preferences stop continuous rendering.
-- `Mission log` opens the `Expedition log` dialog, with an `Expedition progress`
-  progressbar and world/signal/comparison objectives. Duplicate scans and signals
-  never count twice; completion uses the current registry length. Scans are
-  persisted before following edition links. Local-only versioned progress has
-  explicit unavailable/corrupt-storage notices and can be reset without touching
-  appearance settings. Keyboard/low-graphics controls support the same goals.
-- Completing the optional expedition enables `Launch sequence`. Launch returns
-  the viewport to the 3D space, animates without sound or navigation, then settles
-  back. Paused/reduced-motion visitors receive a static completed state. No
-  edition access or shared personal-site functionality is gated by gameplay.
+- The gallery is for explanation, browsing, and comparison only. It has no game
+  objectives, collectible scene objects, rewards, or persisted progress.
+  Browsing and comparison do not read or write browser storage; legacy saved
+  progress is ignored. Personal-edition appearance preferences remain independent.
 
 ### Personal Editions
 

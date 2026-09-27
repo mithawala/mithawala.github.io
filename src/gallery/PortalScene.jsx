@@ -2,20 +2,12 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { PortalSceneController } from './portal-scene.mjs'
 import './PortalScene.css'
 
-const EMPTY = []
-
 export default function PortalScene({
   versions,
   activeId,
   viewport = 'desktop',
   paused = false,
-  signals = EMPTY,
-  collectedIds = EMPTY,
-  scannedIds = EMPTY,
-  complete = false,
-  launchId = 0,
   onSelect,
-  onCollect,
   onStatusChange,
 }) {
   const hostRef = useRef(null)
@@ -37,13 +29,7 @@ export default function PortalScene({
     activeId,
     viewport,
     paused,
-    signals,
-    collectedIds,
-    scannedIds,
-    complete,
-    launchId,
     onSelect,
-    onCollect,
     onStatusChange,
   }
 
@@ -71,20 +57,7 @@ export default function PortalScene({
 
   useEffect(() => {
     controllerRef.current?.update(optionsRef.current)
-  }, [
-    versions,
-    activeId,
-    viewport,
-    paused,
-    signals,
-    collectedIds,
-    scannedIds,
-    complete,
-    launchId,
-    onSelect,
-    onCollect,
-    onStatusChange,
-  ])
+  }, [versions, activeId, viewport, paused, onSelect, onStatusChange])
 
   const active =
     versions.find((version) => version.id === activeId) || versions[0]
@@ -104,7 +77,7 @@ export default function PortalScene({
       }
       data-active-portal={active?.id || ''}
       data-scene-motion="paused"
-      data-launch-state="idle"
+      data-render-scale="1.00"
     >
       <canvas
         ref={canvasRef}
@@ -117,8 +90,8 @@ export default function PortalScene({
       />
       <p className="nx-scene-sr-only" id={instructionsId}>
         Drag horizontally or use the left and right arrow keys to select an
-        edition. Select a glowing signal to collect it. Edition links and
-        equivalent exploration controls are available outside the scene.
+        edition. Preview and compare editions using the controls and links
+        outside the scene.
       </p>
       <div
         ref={tooltipRef}
@@ -129,7 +102,7 @@ export default function PortalScene({
       {sceneState.status === 'loading' && (
         <div className="nx-scene-loading" role="status">
           <span aria-hidden="true" />
-          Establishing portal connections
+          Loading model edition previews
         </div>
       )}
       {fallback && (
@@ -144,7 +117,7 @@ export default function PortalScene({
             <figure className="nx-scene-fallback-window">
               <figcaption>
                 <span aria-hidden="true">◈</span>
-                {active?.model || 'Edition Nexus'}
+                {active?.model || 'Model Editions'}
               </figcaption>
               {preview && failedPreview !== preview ? (
                 <img
@@ -155,7 +128,7 @@ export default function PortalScene({
               ) : (
                 <div className="nx-scene-fallback-symbol" aria-hidden="true">
                   <span>◈</span>
-                  <small>YOUR NEXT WORLD AWAITS</small>
+                  <small>MODEL EDITION PREVIEW</small>
                 </div>
               )}
               <div className="nx-scene-fallback-edge" aria-hidden="true">

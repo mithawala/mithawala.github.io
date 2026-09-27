@@ -1,7 +1,8 @@
 # Asif Mithawala - Editions
 
-A 3D expedition through independently designed personal websites, all powered
-by one canonical content library and shared feature implementations.
+A hands-on benchmark of new AI models through independently designed
+interpretations of [mithawala.com](https://mithawala.com/). Every model gets the
+same personal content and required capabilities, then builds its own design.
 
 Each edition owns its presentation; the content and capabilities are shared.
 The gallery identifies the model behind each edition alongside real automated
@@ -15,20 +16,22 @@ desktop and mobile captures.
   - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
   - GPT-6 Astra - The Curiosity Atlas: https://mithawala.github.io/asif/gpt-6-astra-iteration-2/
 
-### Edition Nexus
+### Model Editions
 
-The landing page is a real-time Three.js portal space. Metallic worlds display
-real desktop/mobile captures from the registry. Click a portal, drag horizontally,
-or use the previous/next controls and arrow keys to travel. The active world's
-entry card and the remaining collection keep every website directly accessible.
+Whenever a new AI model comes out, it is put to the same practical test:
+create a fresh interpretation of mithawala.com. This collection shows the working
+results, making it possible to compare design creativity, implementation quality,
+and usability, not just a model's claims or a single screenshot.
 
-The optional expedition has three objectives: scan each world, recover three
-colored 3D signal beacons, and compare two perspectives. Complete them to energize
-the nexus and unlock a launch sequence. **Mission log** contains progress, clues,
-equivalent keyboard/low-graphics controls, and **Reset expedition**. Progress is
-saved only in this browser under `asif:nexus-expedition:v1`; there are no accounts,
-tracking, network writes, or access gates. Storage failures display an explicit
-session-only notice. Adding a world updates the exploration objective naturally.
+Each model starts independently, with the same canonical content and full feature
+contract, without seeing earlier editions. The benchmark is qualitative, not a
+numerical leaderboard. New completed interpretations are added to the registry.
+
+The landing page keeps its real-time Three.js gallery and actual desktop/mobile
+captures. Click a preview, drag horizontally, or use **Previous edition**,
+**Next edition**, and arrow keys to browse. The active entry and the remaining
+collection always link directly to the websites. The gallery has no missions,
+collectibles, rewards, progress tracking, or browser-storage dependency.
 
 Choose **Compare** on two cards, or use **Compare first & latest**. Side-by-side
 and draggable-overlay comparison retain desktop/mobile switching and native
@@ -37,8 +40,7 @@ keyboard controls. Escape closes each dialog and restores focus.
 Three.js is loaded only for the gallery's scene. Graphics-unavailable fallback,
 pause, live reduced-motion preferences, and offscreen/hidden-tab suspension are
 supported. Sustained slow frames lower the drawing resolution rather than
-blocking interaction; launch timing remains independent of frame rate.
-The scene is decorative navigation and gameplay, not a replacement for
+blocking interaction. The scene is visual navigation, not a replacement for
 accessible DOM content. Preview windows are captures, not live site embeds.
 
 ### The Curiosity Atlas

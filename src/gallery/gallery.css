@@ -63,11 +63,10 @@ html:has(.editions-gallery[data-comparing='true']) {
 
 .nx-eyebrow,
 .nx-owner,
-.nx-header-signal,
+.nx-header-meta,
 .nx-world-navigation > span,
 .nx-world-selector,
 .nx-sector-label,
-.nx-signal-radar,
 .nx-card-info time,
 .nx-announcement,
 .nx-footer {
@@ -109,9 +108,9 @@ html:has(.editions-gallery[data-comparing='true']) {
 
 .nx-brand > span:last-child > span {
   display: block;
-  font-size: 19px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   line-height: 1;
   color: var(--nx-ink);
 }
@@ -130,7 +129,7 @@ html:has(.editions-gallery[data-comparing='true']) {
   background: #0c1c2b;
 }
 
-.nx-header-signal {
+.nx-header-meta {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -140,7 +139,7 @@ html:has(.editions-gallery[data-comparing='true']) {
   color: var(--nx-muted);
 }
 
-.nx-header-signal > span:first-child {
+.nx-header-meta > span:first-child {
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -153,7 +152,7 @@ html:has(.editions-gallery[data-comparing='true']) {
   margin-inline: 5px;
 }
 
-.nx-mission-trigger {
+.nx-about-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -164,22 +163,16 @@ html:has(.editions-gallery[data-comparing='true']) {
   border-radius: 6px;
   background: #0b1b2a;
   font-size: 11px;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.nx-mission-trigger > svg {
+.nx-about-link > svg {
   color: var(--nx-accent);
 }
 
-.nx-mission-trigger strong {
-  color: var(--nx-accent);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  font-weight: 400;
-  border-left: 1px solid #37556b;
-  padding-left: 10px;
-}
-
-.nx-mission-trigger:hover {
+.nx-about-link:hover {
   background: #163147;
   border-color: #62a5b8;
 }
@@ -219,7 +212,7 @@ html:has(.editions-gallery[data-comparing='true']) {
 }
 
 .nx-hero h1 {
-  font-size: clamp(62px, 7.7vw, 115px);
+  font-size: clamp(48px, 6.5vw, 90px);
   font-weight: 550;
   letter-spacing: -0.065em;
   line-height: 1;
@@ -245,9 +238,96 @@ html:has(.editions-gallery[data-comparing='true']) {
 
 .nx-hero-copy > p {
   color: #a7bdd5;
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 740px;
+  margin-inline: auto;
+  margin-bottom: 0;
+  text-wrap: pretty;
+}
+
+.nx-hero-copy a {
+  pointer-events: auto;
+  color: var(--nx-accent);
+  text-underline-offset: 4px;
+}
+
+.nx-benchmark {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 28px 60px;
+  width: min(1300px, calc(100% - 96px));
+  margin: 40px auto 0;
+  padding: 42px;
+  border: 1px solid #304b60;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #102335, #0a1423);
+  scroll-margin-top: 28px;
+}
+
+.nx-benchmark-intro > .nx-eyebrow {
+  color: var(--nx-accent);
+  margin-bottom: 18px;
+}
+
+.nx-benchmark h2 {
+  font-size: clamp(32px, 3.4vw, 47px);
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  font-weight: 450;
+  margin-bottom: 25px;
+}
+
+.nx-benchmark h2 span {
+  color: #a8e8f1;
+}
+
+.nx-benchmark-intro > p:last-child {
+  color: #b1c7db;
+  font-size: 14px;
+  line-height: 1.85;
+  max-width: 450px;
+  margin-bottom: 0;
+}
+
+.nx-benchmark a {
+  color: var(--nx-accent);
+  text-underline-offset: 4px;
+}
+
+.nx-benchmark-method {
+  display: grid;
+  gap: 22px;
+}
+
+.nx-benchmark-method article + article {
+  border-top: 1px solid #2f4a60;
+  padding-top: 22px;
+}
+
+.nx-benchmark-method h3 {
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 450;
+  letter-spacing: -0.035em;
+  margin: 8px 0 9px;
+}
+
+.nx-benchmark-method p {
   font-size: 12px;
   line-height: 1.8;
-  margin-bottom: 0;
+  color: #aec3d7;
+  margin: 0;
+}
+
+.nx-benchmark-note {
+  grid-column: 1 / -1;
+  padding-top: 23px;
+  border-top: 1px solid #304b60;
+  margin: 0;
+  font-size: 11px;
+  color: #a8bfd3;
+  line-height: 1.8;
 }
 
 .nx-sector-label {
@@ -286,53 +366,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   font-size: 11px;
   letter-spacing: 0;
   color: #b3c5d9;
-}
-
-.nx-signal-radar {
-  position: absolute;
-  right: clamp(24px, 4vw, 76px);
-  top: 38%;
-  z-index: 2;
-  text-align: right;
-  padding: 15px;
-  border: 1px solid #385b72;
-  border-radius: 8px;
-  background: #071422e8;
-  backdrop-filter: blur(12px);
-}
-
-.nx-signal-radar .nx-eyebrow {
-  font-size: 8px;
-}
-
-.nx-signal-radar > div {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin: 14px 0;
-}
-
-.nx-signal-radar > div > span {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--signal-color) 45%, transparent);
-  color: var(--signal-color);
-  background: #081421ad;
-  border-radius: 50%;
-}
-
-.nx-signal-radar > div > span[data-found='true'] {
-  color: #081521;
-  background: var(--signal-color);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--signal-color) 35%, transparent);
-}
-
-.nx-signal-radar > span:last-child {
-  font-size: 8px;
-  letter-spacing: 0.04em;
-  color: var(--nx-muted);
 }
 
 .nx-hero-bottom {
@@ -408,16 +441,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   background: #153b4b;
   color: var(--nx-accent);
   box-shadow: inset 0 0 0 1px #447f91;
-}
-
-.nx-world-selector > button[data-charted='true']::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--nx-accent);
 }
 
 .nx-motion-control {
@@ -572,17 +595,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   box-shadow: 0 0 13px color-mix(in srgb, var(--world-color) 55%, transparent);
 }
 
-.nx-scan-state {
-  margin-left: auto;
-  color: #b0bfd3;
-  font-size: 7px;
-  letter-spacing: 0.09em;
-}
-
-.nx-edition-card[data-scanned='true'] .nx-scan-state {
-  color: var(--nx-accent);
-}
-
 .nx-card-info h2 {
   font-size: clamp(23px, 2.3vw, 35px);
   line-height: 1.15;
@@ -700,10 +712,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   font-size: 8px;
 }
 
-.nx-active-card .nx-scan-state {
-  margin-left: 5px;
-}
-
 .nx-active-card .nx-card-info h2 {
   font-size: clamp(22px, 2.2vw, 33px);
   line-height: 1.2;
@@ -758,152 +766,11 @@ html:has(.editions-gallery[data-comparing='true']) {
   padding: 10px 17px;
 }
 
-.nx-expedition-deck,
 .nx-directory,
 .nx-common-source,
 .nx-footer {
   width: min(1300px, calc(100% - 96px));
   margin-inline: auto;
-}
-
-.nx-expedition-deck {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: 30px 48px;
-  padding: 36px;
-  margin-top: 32px;
-  border: 1px solid #2c455a;
-  border-radius: 14px;
-  background:
-    radial-gradient(ellipse at 100% 0, #1349603d, transparent 70%), #0b1726;
-  box-shadow: 0 0 55px #000d1720;
-}
-
-.nx-expedition-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 23px;
-}
-
-.nx-orbit-icon {
-  width: 54px;
-  height: 54px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  color: var(--nx-accent);
-  border: 1px solid #486d80;
-  border-radius: 50%;
-  box-shadow: inset 0 0 20px #6ceeff0a;
-}
-
-.nx-expedition-heading .nx-eyebrow {
-  margin-bottom: 10px;
-  font-size: 8px;
-}
-
-.nx-expedition-heading h2 {
-  font-size: 27px;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.035em;
-  margin-bottom: 12px;
-}
-
-.nx-expedition-heading p:last-child {
-  color: #acc0d4;
-  font-size: 12px;
-  line-height: 1.9;
-  margin-bottom: 0;
-  max-width: 430px;
-}
-
-.nx-quest-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 25px;
-  align-self: center;
-}
-
-.nx-quest-stats > div {
-  padding-left: 20px;
-  border-left: 1px solid #375267;
-}
-
-.nx-quest-stats strong {
-  display: block;
-  font-size: 37px;
-  line-height: 1;
-  letter-spacing: -0.065em;
-  font-weight: 450;
-  color: #d7f8ff;
-}
-
-.nx-quest-stats small {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  margin-left: 4px;
-  letter-spacing: 0;
-  color: #a6bdd2;
-}
-
-.nx-quest-stats span {
-  display: block;
-  margin-top: 13px;
-  font-size: 9px;
-  color: #abc1d5;
-}
-
-.nx-expedition-actions {
-  grid-column: 1 / -1;
-  border-top: 1px solid #2c455a;
-  padding-top: 25px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.nx-launch-sequence {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  min-height: 48px;
-  border: 1px solid #59818c;
-  border-radius: 6px;
-  background: #1a3945;
-  color: #e0ffff;
-  padding: 12px 18px;
-  font-size: 12px;
-}
-
-.nx-launch-sequence:disabled {
-  opacity: 0.85;
-  background: #0c1b2a;
-  color: #b7cadb;
-}
-
-.nx-quest-count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  border-left: 1px solid #3b586e;
-  padding-left: 16px;
-}
-
-.nx-expedition-actions > span {
-  font-size: 11px;
-  color: #aec2d5;
-}
-
-[data-expedition-complete='true'] .nx-expedition-deck {
-  border-color: #75bdb7;
-  box-shadow: 0 0 50px #6fffed12;
-}
-
-[data-expedition-complete='true'] .nx-launch-sequence {
-  color: #061d23;
-  background: #9af5dc;
-  border-color: #9af5dc;
-  box-shadow: 0 0 28px #59ffc225;
 }
 
 .nx-directory {
@@ -1444,276 +1311,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   background: #21495f;
 }
 
-.editions-gallery .nx-mission-dialog {
-  width: min(890px, calc(100% - 32px));
-  padding: 36px;
-}
-
-.nx-mission-dialog > .nx-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--nx-accent);
-  padding-right: 55px;
-  margin-bottom: 18px;
-}
-
-.nx-mission-dialog > h2 {
-  padding-right: 45px;
-  font-size: clamp(29px, 3.5vw, 46px);
-  font-weight: 450;
-  letter-spacing: -0.05em;
-  line-height: 1.12;
-  margin-bottom: 17px;
-}
-
-.nx-mission-intro {
-  font-size: 13px;
-  line-height: 1.8;
-  color: #b2c8da;
-  max-width: 650px;
-}
-
-.nx-expedition-meter {
-  height: 5px;
-  background: #233b52;
-  overflow: hidden;
-  border-radius: 5px;
-  margin-top: 27px;
-}
-
-.nx-expedition-meter > span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, #67aefe, #a5ffdf);
-  box-shadow: 0 0 15px #71fcdf90;
-}
-
-.nx-mission-progress {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  font-family: 'IBM Plex Mono', monospace;
-  color: #b8d3e9;
-  font-size: 9px;
-  margin: 12px 0 25px;
-}
-
-.nx-mission-progress span {
-  color: #a5f7e7;
-}
-
-.nx-objectives {
-  display: grid;
-  gap: 10px;
-}
-
-.nx-objectives article {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 20px;
-  border: 1px solid #314d65;
-  border-radius: 8px;
-  background: #102133;
-}
-
-.nx-objectives article[data-complete='true'] {
-  border-color: #407e79;
-  background: #0e2a31;
-}
-
-.nx-objective-icon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border: 1px solid #496d83;
-  border-radius: 8px;
-  color: #9feff0;
-}
-
-.nx-objectives h3 {
-  font-size: 18px;
-  line-height: 1.3;
-  letter-spacing: -0.035em;
-  font-weight: 500;
-  margin: 0 0 5px;
-}
-
-.nx-objectives p {
-  font-size: 11px;
-  line-height: 1.65;
-  color: #b0c4d7;
-  margin: 0;
-}
-
-.nx-objectives article > strong {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: #a1f3e7;
-  margin-left: auto;
-  flex-shrink: 0;
-  font-weight: 400;
-}
-
-.nx-signal-clues {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 26px;
-}
-
-.nx-signal-clues > div {
-  border: 1px solid #314e66;
-  border-radius: 8px;
-  padding: 20px;
-  background: #0a1b2c;
-}
-
-.nx-signal-symbol {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid color-mix(in srgb, var(--signal-color) 65%, transparent);
-  border-radius: 50%;
-  color: var(--signal-color);
-  margin-bottom: 17px;
-  box-shadow: 0 0 18px color-mix(in srgb, var(--signal-color) 10%, transparent);
-}
-
-.nx-signal-clues [data-recovered='true'] .nx-signal-symbol {
-  color: #081621;
-  background: var(--signal-color);
-}
-
-.nx-signal-clues .nx-eyebrow {
-  font-size: 8px;
-}
-
-.nx-signal-clues h3 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.4;
-  margin: 8px 0;
-}
-
-.nx-signal-clues p {
-  font-size: 11px;
-  color: #a5bfd7;
-  margin: 0;
-}
-
-.nx-accessible-controls {
-  border-top: 1px solid #344f64;
-  border-bottom: 1px solid #344f64;
-  margin-top: 27px;
-}
-
-.nx-accessible-controls summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  min-height: 58px;
-  padding: 16px 0;
-  cursor: pointer;
-  list-style: none;
-  font-size: 12px;
-  color: #cbe3f4;
-}
-
-.nx-accessible-controls summary::-webkit-details-marker {
-  display: none;
-}
-.nx-accessible-controls[open] summary > svg {
-  transform: rotate(45deg) scale(0.7);
-}
-.nx-accessible-controls > p {
-  font-size: 11px;
-  color: #abc3d8;
-}
-
-.nx-access-worlds,
-.nx-access-signals {
-  display: grid;
-  gap: 8px;
-  padding-bottom: 20px;
-}
-
-.nx-access-worlds {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.nx-access-signals {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.nx-access-worlds button,
-.nx-access-signals button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 12px;
-  background: #122a3c;
-  color: #d3e7f5;
-  border: 1px solid #345f77;
-  border-radius: 6px;
-  font-size: 11px;
-  text-align: left;
-}
-
-.nx-access-worlds button > span {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  color: #a4eee9;
-}
-
-.nx-access-worlds button > svg {
-  margin-left: auto;
-}
-
-.nx-access-worlds button[aria-pressed='true'],
-.nx-access-signals button[aria-pressed='true'] {
-  background: #173e45;
-  border-color: #619e9c;
-  color: #befcf0;
-}
-
-.nx-log-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  padding-top: 22px;
-}
-
-.nx-log-footer p {
-  max-width: 450px;
-  margin: 0;
-  font-size: 10px;
-  color: #b1c7d9;
-}
-
-.nx-log-footer button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 10px;
-  border: 1px solid #536071;
-  border-radius: 5px;
-  background: #152333;
-  color: #e9d5c8;
-  font-size: 10px;
-  flex-shrink: 0;
-}
-
 @media (min-width: 1800px) {
   .nx-hero-bottom {
     width: 1160px;
@@ -1721,41 +1318,29 @@ html:has(.editions-gallery[data-comparing='true']) {
   .nx-sector-label {
     top: 37%;
   }
-  .nx-signal-radar {
-    top: 41%;
-  }
 }
 
 @media (max-width: 1150px) {
+  .nx-benchmark {
+    width: calc(100% - 64px);
+    padding: 32px;
+    gap: 28px 36px;
+  }
   .nx-hero-copy {
     padding-top: 34px;
   }
   .nx-hero h1 {
-    font-size: 8.2vw;
+    font-size: 7vw;
   }
   .nx-sector-label {
     left: 25px;
     top: 34%;
-  }
-  .nx-signal-radar {
-    right: 25px;
-    top: 36%;
   }
   .nx-sector-label strong {
     font-size: 40px;
   }
   .nx-sector-label > span {
     font-size: 7px;
-  }
-  .nx-signal-radar > div {
-    gap: 5px;
-  }
-  .nx-signal-radar > div > span {
-    width: 28px;
-    height: 28px;
-  }
-  .nx-signal-radar svg {
-    width: 15px;
   }
   .nx-hero-bottom {
     width: calc(100% - 50px);
@@ -1783,30 +1368,10 @@ html:has(.editions-gallery[data-comparing='true']) {
   .nx-world-selector > button {
     width: 31px;
   }
-  .nx-expedition-deck,
   .nx-directory,
   .nx-common-source,
   .nx-footer {
     width: calc(100% - 64px);
-  }
-  .nx-expedition-deck {
-    padding: 28px;
-    gap: 25px;
-  }
-  .nx-orbit-icon {
-    display: none;
-  }
-  .nx-quest-stats {
-    gap: 15px;
-  }
-  .nx-quest-stats > div {
-    padding-left: 14px;
-  }
-  .nx-quest-stats strong {
-    font-size: 32px;
-  }
-  .nx-quest-stats span {
-    font-size: 8px;
   }
   .nx-card-actions {
     gap: 7px;
@@ -1846,7 +1411,13 @@ html:has(.editions-gallery[data-comparing='true']) {
 }
 
 @media (max-width: 850px) {
-  .nx-header-signal {
+  .nx-benchmark {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nx-benchmark-intro > p:last-child {
+    max-width: 630px;
+  }
+  .nx-header-meta {
     display: none;
   }
   .nx-hero {
@@ -1856,7 +1427,7 @@ html:has(.editions-gallery[data-comparing='true']) {
     padding-top: 34px;
   }
   .nx-hero h1 {
-    font-size: 8.7vw;
+    font-size: 7vw;
   }
   .nx-hero-copy > p {
     font-size: 11px;
@@ -1866,15 +1437,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   }
   .nx-sector-label {
     top: 31%;
-  }
-  .nx-signal-radar {
-    top: 33%;
-  }
-  .nx-signal-radar > .nx-eyebrow {
-    font-size: 7px;
-  }
-  .nx-signal-radar > div {
-    margin-block: 10px;
   }
   .nx-world-selector {
     display: none;
@@ -1900,39 +1462,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   .nx-active-card .nx-card-info .nx-eyebrow {
     font-size: 7px;
     gap: 7px;
-  }
-  .nx-active-card .nx-scan-state {
-    display: none;
-  }
-  .nx-expedition-deck {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 30px;
-    gap: 27px;
-  }
-  .nx-expedition-heading {
-    gap: 20px;
-  }
-  .nx-orbit-icon {
-    display: grid;
-    width: 49px;
-    height: 49px;
-  }
-  .nx-quest-stats {
-    max-width: 550px;
-    width: 100%;
-  }
-  .nx-quest-stats strong {
-    font-size: 37px;
-  }
-  .nx-quest-stats > div:first-child {
-    border-left: 0;
-    padding-left: 0;
-  }
-  .nx-quest-stats span {
-    font-size: 9px;
-  }
-  .nx-expedition-actions {
-    gap: 18px;
   }
   .nx-directory {
     padding-top: 67px;
@@ -2011,6 +1540,31 @@ html:has(.editions-gallery[data-comparing='true']) {
 }
 
 @media (max-width: 600px) {
+  .nx-benchmark {
+    width: calc(100% - 40px);
+    margin-top: 28px;
+    padding: 26px 22px;
+    border-radius: 10px;
+  }
+  .nx-benchmark h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+  }
+  .nx-benchmark-intro > p:last-child {
+    font-size: 12px;
+  }
+  .nx-benchmark-method h3 {
+    font-size: 19px;
+  }
+  .nx-benchmark-method .nx-eyebrow {
+    font-size: 8px;
+  }
+  .nx-benchmark-note {
+    font-size: 10px;
+  }
+  .nx-about-detail {
+    display: none;
+  }
   .nx-header {
     min-height: 64px;
     padding-inline: 20px;
@@ -2021,7 +1575,7 @@ html:has(.editions-gallery[data-comparing='true']) {
     font-size: 6px;
   }
   .nx-brand > span:last-child > span {
-    font-size: 16px;
+    font-size: 12px;
   }
   .nx-brand-mark {
     width: 35px;
@@ -2032,18 +1586,14 @@ html:has(.editions-gallery[data-comparing='true']) {
     width: 25px;
     height: 25px;
   }
-  .nx-mission-trigger {
+  .nx-about-link {
     gap: 8px;
     min-height: 40px;
     padding-inline: 10px;
     font-size: 10px;
   }
-  .nx-mission-trigger > svg {
+  .nx-about-link > svg {
     width: 15px;
-  }
-  .nx-mission-trigger strong {
-    font-size: 8px;
-    padding-left: 8px;
   }
   .nx-hero {
     min-height: max(746px, calc(100svh - 64px));
@@ -2058,7 +1608,7 @@ html:has(.editions-gallery[data-comparing='true']) {
     margin-bottom: 19px;
   }
   .nx-hero h1 {
-    font-size: clamp(46px, 12.3vw, 73px);
+    font-size: clamp(36px, 10.5vw, 62px);
     line-height: 0.99;
     margin-bottom: 15px;
     letter-spacing: -0.065em;
@@ -2067,9 +1617,9 @@ html:has(.editions-gallery[data-comparing='true']) {
     display: block;
   }
   .nx-hero-copy > p {
-    max-width: 270px;
+    max-width: 390px;
     margin-inline: auto;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.7;
   }
   .nx-sector-label {
@@ -2084,27 +1634,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   }
   .nx-sector-label small {
     font-size: 7px;
-  }
-  .nx-signal-radar {
-    display: none;
-  }
-  .nx-signal-radar > .nx-eyebrow {
-    display: none;
-  }
-  .nx-signal-radar > div {
-    gap: 4px;
-    margin: 0 0 7px;
-  }
-  .nx-signal-radar > div > span {
-    width: 23px;
-    height: 23px;
-  }
-  .nx-signal-radar svg {
-    width: 12px;
-    height: 12px;
-  }
-  .nx-signal-radar > span:last-child {
-    font-size: 6px;
   }
   .nx-hero-bottom {
     width: calc(100% - 36px);
@@ -2192,71 +1721,10 @@ html:has(.editions-gallery[data-comparing='true']) {
     line-height: 1.65;
     margin-top: 10px;
   }
-  .nx-expedition-deck,
   .nx-directory,
   .nx-common-source,
   .nx-footer {
     width: calc(100% - 40px);
-  }
-  .nx-expedition-deck {
-    padding: 25px 22px;
-    margin-top: 24px;
-    border-radius: 10px;
-    gap: 24px;
-  }
-  .nx-orbit-icon {
-    display: none;
-  }
-  .nx-expedition-heading .nx-eyebrow {
-    font-size: 7px;
-  }
-  .nx-expedition-heading h2 {
-    font-size: 27px;
-  }
-  .nx-expedition-heading p:last-child {
-    font-size: 11px;
-  }
-  .nx-quest-stats {
-    gap: 10px;
-  }
-  .nx-quest-stats > div {
-    padding-left: 10px;
-  }
-  .nx-quest-stats strong {
-    font-size: 31px;
-  }
-  .nx-quest-stats small {
-    font-size: 8px;
-    margin-left: 3px;
-  }
-  .nx-quest-stats span {
-    font-size: 8px;
-    line-height: 1.6;
-    margin-top: 10px;
-  }
-  .nx-expedition-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-    padding-top: 22px;
-  }
-  .nx-launch-sequence {
-    justify-content: space-between;
-    gap: 9px;
-    font-size: 10px;
-    padding-inline: 12px;
-  }
-  .nx-launch-sequence > svg {
-    width: 16px;
-  }
-  .nx-quest-count {
-    padding-left: 10px;
-    font-size: 9px;
-  }
-  .nx-expedition-actions > span {
-    font-size: 9px;
-    text-align: center;
-    line-height: 1.7;
   }
   .nx-directory {
     padding-top: 59px;
@@ -2301,9 +1769,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   }
   .nx-card-info .nx-eyebrow {
     font-size: 7px;
-  }
-  .nx-scan-state {
-    font-size: 6px;
   }
   .nx-preview-enter {
     bottom: 19px;
@@ -2491,110 +1956,32 @@ html:has(.editions-gallery[data-comparing='true']) {
   .editions-gallery[data-comparing='true'] {
     padding-bottom: 230px;
   }
-  .editions-gallery .nx-mission-dialog {
-    padding: 25px 18px;
-  }
-  .nx-mission-dialog > .nx-eyebrow {
-    font-size: 7px;
-  }
-  .nx-mission-dialog > h2 {
-    font-size: 32px;
-    padding-right: 25px;
-  }
-  .nx-mission-intro {
-    font-size: 11px;
-  }
-  .nx-mission-progress {
-    font-size: 8px;
-    gap: 12px;
-  }
-  .nx-mission-progress > span {
-    text-align: right;
-  }
-  .nx-objectives article {
-    padding: 15px;
-    gap: 12px;
-  }
-  .nx-objective-icon {
-    width: 32px;
-    height: 32px;
-  }
-  .nx-objective-icon svg {
-    width: 17px;
-  }
-  .nx-objectives h3 {
-    font-size: 16px;
-  }
-  .nx-objectives p {
-    font-size: 10px;
-  }
-  .nx-objectives article > strong {
-    font-size: 9px;
-  }
-  .nx-signal-clues {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-  .nx-signal-clues > div {
-    display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
-    gap: 0 15px;
-    padding: 16px;
-  }
-  .nx-signal-symbol {
-    grid-row: 1 / 4;
-    margin: 4px 0 0;
-  }
-  .nx-signal-clues .nx-eyebrow {
-    font-size: 7px;
-  }
-  .nx-signal-clues h3 {
-    font-size: 16px;
-    margin: 4px 0;
-  }
-  .nx-signal-clues p {
-    font-size: 10px;
-  }
-  .nx-access-worlds,
-  .nx-access-signals {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .nx-accessible-controls summary {
-    font-size: 11px;
-  }
-  .nx-log-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .nx-log-footer p {
-    font-size: 9px;
-  }
 }
 
 @media (max-width: 360px) {
+  .nx-benchmark {
+    width: calc(100% - 32px);
+    padding-inline: 20px;
+  }
   .nx-header {
     padding-inline: 15px;
     gap: 12px;
   }
-  .nx-mission-trigger {
+  .nx-about-link {
     gap: 6px;
     padding-inline: 8px;
   }
-  .nx-mission-trigger > svg {
+  .nx-about-link > svg {
     display: none;
   }
   .nx-owner {
     font-size: 6px;
   }
   .nx-hero h1 {
-    font-size: 45px;
+    font-size: 35px;
   }
   .nx-sector-label {
     left: 15px;
-  }
-  .nx-signal-radar {
-    right: 15px;
   }
   .nx-hero-bottom {
     width: calc(100% - 28px);
@@ -2622,23 +2009,10 @@ html:has(.editions-gallery[data-comparing='true']) {
   .nx-active-card .nx-card-info h2 {
     font-size: 22px;
   }
-  .nx-expedition-deck,
   .nx-directory,
   .nx-common-source,
   .nx-footer {
     width: calc(100% - 32px);
-  }
-  .nx-expedition-deck {
-    padding: 22px 18px;
-  }
-  .nx-quest-stats {
-    gap: 8px;
-  }
-  .nx-quest-stats strong {
-    font-size: 29px;
-  }
-  .nx-quest-stats small {
-    font-size: 7px;
   }
   .nx-directory-heading h2 {
     font-size: 35px;
@@ -2651,9 +2025,6 @@ html:has(.editions-gallery[data-comparing='true']) {
   }
   .nx-common-source h2 {
     font-size: 30px;
-  }
-  .nx-mission-dialog > h2 {
-    font-size: 29px;
   }
 }
 

@@ -44,16 +44,13 @@ function page(route, title, description, image = profile.photo) {
 }
 
 const routes = ['/']
-page(
-  '/',
-  `${profile.name} - Editions`,
-  `Independent designs. One ${profile.name}.`,
-  versions[0].preview,
-)
+const galleryDescription =
+  'A hands-on AI model benchmark: every new model creates an independent interpretation of mithawala.com, with the same content and capabilities.'
+page('/', `${profile.name} - Editions`, galleryDescription, versions[0].preview)
 page(
   '/asif/',
   `${profile.name} - Editions`,
-  profile.about.headline,
+  galleryDescription,
   versions[0].preview,
 )
 for (const version of versions) {
