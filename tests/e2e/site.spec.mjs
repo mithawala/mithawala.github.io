@@ -27,11 +27,18 @@ test('gallery shows real previews, model labels, and correct version links', asy
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     profile.name,
   )
-  for (const version of versions) {
+  for (const [index, version] of versions.entries()) {
+    const occurrence = versions
+      .slice(0, index)
+      .filter((entry) => entry.model === version.model).length
     await expect(
-      page.getByRole('heading', { name: version.model, exact: true }),
+      page
+        .getByRole('heading', { name: version.model, exact: true })
+        .nth(occurrence),
     ).toBeVisible()
-    const image = page.getByAltText(`${version.model} personal-site preview`)
+    const image = page
+      .getByAltText(`${version.model} personal-site preview`)
+      .nth(occurrence)
     await expect(image).toBeVisible()
     await expect
       .poll(() => image.evaluate((element) => element.naturalWidth))
@@ -46,7 +53,9 @@ test('gallery shows real previews, model labels, and correct version links', asy
       .getByRole('button', { name: 'Desktop preview', exact: true })
       .click()
     await expect(
-      page.getByRole('link', { name: `Explore ${version.model}`, exact: true }),
+      page
+        .getByRole('link', { name: `Explore ${version.model}`, exact: true })
+        .and(page.locator(`a[href="${version.path}"]`)),
     ).toHaveAttribute('href', version.path)
   }
   expect(
@@ -68,6 +77,7 @@ test('gallery is accessible and keyboard navigation enters the edition', async (
   await page.keyboard.press('Enter')
   await page
     .getByRole('link', { name: `Explore ${versions[0].model}`, exact: true })
+    .and(page.locator(`a[href="${versions[0].path}"]`))
     .focus()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(new RegExp(`${versions[0].path}$`))
@@ -78,12 +88,16 @@ test('the first model and its preview are visible without scrolling', async ({
 }) => {
   await page.goto('/')
   await expect(
-    page.getByRole('heading', { name: versions[0].model, exact: true }),
+    page.getByRole('heading', { name: versions[0].model, exact: true }).first(),
   ).toBeInViewport()
-  const image = page.getByAltText(`${versions[0].model} personal-site preview`)
+  const image = page
+    .getByAltText(`${versions[0].model} personal-site preview`)
+    .first()
   await expect(image).toBeInViewport()
   await expect(
-    page.getByRole('link', { name: `Visit ${versions[0].model}`, exact: true }),
+    page
+      .getByRole('link', { name: `Visit ${versions[0].model}`, exact: true })
+      .and(page.locator(`a[href="${versions[0].path}"]`)),
   ).toBeInViewport()
   const top = await image.evaluate(
     (element) => element.getBoundingClientRect().top,
@@ -144,7 +158,7 @@ for (const width of [320, 768, 1920])
   })
 
 for (const version of versions)
-  test.describe(version.model, () => {
+  test.describe(`${version.model} [${version.id}]`, () => {
     test('all canonical content is present and all portfolio entries are reachable', async ({
       page,
     }) => {

@@ -13,6 +13,19 @@ desktop and mobile captures.
   - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5/
   - Claude Opus 5: https://mithawala.github.io/asif/claude-opus-5/
   - Claude Opus 5.5 Iteration 2: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
+  - GPT-6 Astra - The Curiosity Atlas: https://mithawala.github.io/asif/gpt-6-astra-iteration-2/
+
+### The Curiosity Atlas
+
+The second GPT-6 Astra entry is an independent build, not a replacement for the
+first. Its interactive sculpture supports dragging, arrow keys, three forms,
+pause, and an illustrated graphics-unavailable fallback. Reduced-motion
+preferences keep both the sculpture and role rotation still.
+
+Browse the complete project archive in gallery or index view, take a random
+project detour, or open search with Ctrl/Cmd+K. The listening room uses the shared
+live SoundCloud integration, with a custom turntable, complete playlist, and
+keyboard-accessible expanded player. All personal content remains canonical.
 
 ## Local Development
 
@@ -59,6 +72,11 @@ screenshots, and cross-edition tests are driven by that registry. Edition-specif
 tests are named after the edition ID (`tests/e2e/<id>.spec.mjs`, `tests/<id>.test.mjs`);
 the shared contract tests are `tests/e2e/site.spec.mjs`, `tests/content.test.mjs`,
 and `tests/tooling.test.mjs`.
+
+Registry IDs and paths identify entries uniquely; model labels retain the exact
+supplied model name and may repeat for independent iterations. Browser tests
+distinguish these entries by path and registry occurrence without dropping
+coverage of either version.
 
 ## Verification
 

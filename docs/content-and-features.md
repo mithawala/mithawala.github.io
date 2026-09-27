@@ -102,6 +102,11 @@ your edition scope. They are defaults, not a prescribed theme or layout.
 
 `src/versions.mjs` is the only edition registry. The gallery reads it, the router
 loads its designs, and screenshot/build/test scripts enumerate it automatically.
+IDs and paths are unique; model labels can repeat when the same model builds
+another independent iteration. Preserve the original entry and use a unique
+iteration-suffixed ID rather than renaming a real model or replacing its work.
+Gallery contract checks cover every occurrence of a label and match links by
+their registered path; browser suite names include the unique edition ID.
 
 ```text
 /                                         gallery

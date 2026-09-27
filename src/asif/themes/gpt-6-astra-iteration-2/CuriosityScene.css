@@ -1,0 +1,241 @@
+.ca-scene {
+  --ca-scene-paper: #f2f0e9;
+  --ca-scene-ink: #242720;
+  --ca-scene-muted: #676b60;
+  --ca-scene-line: rgb(36 39 32 / 19%);
+  --ca-scene-accent: #f4512b;
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 320px;
+  margin: 0;
+  color: var(--ca-scene-ink);
+}
+
+.ca-scene[data-scene-mode='dark'] {
+  --ca-scene-paper: #171b17;
+  --ca-scene-ink: #f2f0e9;
+  --ca-scene-muted: #a5ac9d;
+  --ca-scene-line: rgb(242 240 233 / 23%);
+}
+
+.ca-scene-stage {
+  position: absolute;
+  inset: 0 0 66px;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  outline: none;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ca-scene[data-scene-dragging='true'] .ca-scene-stage {
+  cursor: grabbing;
+}
+
+.ca-scene[data-scene-status='fallback'] .ca-scene-stage {
+  bottom: 94px;
+}
+
+.ca-scene-stage:focus-visible {
+  outline: 2px solid var(--ca-scene-accent);
+  outline-offset: -4px;
+}
+
+.ca-scene-canvas,
+.ca-scene-illustration,
+.ca-scene-orbits {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ca-scene-orbits {
+  z-index: 0;
+  color: var(--ca-scene-ink);
+  opacity: 0.19;
+}
+
+.ca-scene-shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 8%;
+  left: 50%;
+  width: 46%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgb(51 40 20 / 18%) 0,
+    rgb(51 40 20 / 7%) 37%,
+    transparent 72%
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.ca-scene[data-scene-mode='dark'] .ca-scene-shadow {
+  background: radial-gradient(
+    ellipse,
+    rgb(0 0 0 / 46%) 0,
+    rgb(0 0 0 / 17%) 37%,
+    transparent 72%
+  );
+}
+
+.ca-scene-canvas {
+  z-index: 2;
+  visibility: hidden;
+}
+
+.ca-scene[data-scene-status='ready'] .ca-scene-canvas {
+  visibility: visible;
+}
+
+.ca-scene-illustration {
+  z-index: 2;
+  filter: drop-shadow(0 9px 7px rgb(67 29 13 / 12%));
+}
+
+.ca-scene-index {
+  position: absolute;
+  z-index: 3;
+  top: 13%;
+  left: 8%;
+  display: grid;
+  gap: 4px;
+  color: var(--ca-scene-muted);
+  font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.ca-scene-index span {
+  font-size: 8px;
+  letter-spacing: 0.13em;
+}
+
+.ca-scene-controls {
+  position: absolute;
+  z-index: 4;
+  right: 8px;
+  bottom: 9px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ca-scene-hint {
+  margin-right: 10px;
+  color: var(--ca-scene-muted);
+  font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ca-scene-control {
+  display: inline-flex;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--ca-scene-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ca-scene-ink);
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ca-scene-control:hover {
+  border-color: var(--ca-scene-accent);
+  background: var(--ca-scene-accent);
+  color: #171b17;
+}
+
+.ca-scene-control:active {
+  background: var(--ca-scene-ink);
+  color: var(--ca-scene-paper);
+}
+
+.ca-scene-control:focus-visible {
+  outline: 2px solid var(--ca-scene-accent);
+  outline-offset: 3px;
+}
+
+.ca-scene-status {
+  position: absolute;
+  right: 14px;
+  bottom: 58px;
+  left: 14px;
+  margin: 0;
+  color: var(--ca-scene-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.ca-scene-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 380px) {
+  .ca-scene-index {
+    top: 9%;
+    left: 6%;
+  }
+
+  .ca-scene-hint {
+    margin-right: 5px;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (forced-colors: active) {
+  .ca-scene-control {
+    border-color: ButtonText;
+  }
+
+  .ca-scene-stage:focus-visible,
+  .ca-scene-control:focus-visible {
+    outline-color: Highlight;
+  }
+}

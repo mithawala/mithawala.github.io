@@ -39,6 +39,16 @@ export const versions = [
     color: '#ffcd00',
     load: () => import('./asif/themes/claude-opus-5-5-iteration-2/Theme.jsx'),
   },
+  {
+    id: 'gpt-6-astra-iteration-2',
+    model: 'GPT-6 Astra',
+    path: '/asif/gpt-6-astra-iteration-2/',
+    released: '2026-09-27',
+    preview: '/gallery/previews/gpt-6-astra-iteration-2.webp',
+    mobilePreview: '/gallery/previews/gpt-6-astra-iteration-2-mobile.webp',
+    color: '#f4512b',
+    load: () => import('./asif/themes/gpt-6-astra-iteration-2/Theme.jsx'),
+  },
 ]
 
 export const siteOrigin = 'https://mithawala.github.io'
