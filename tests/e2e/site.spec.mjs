@@ -674,6 +674,8 @@ test('gallery 3D pauses motion and responds to live reduced-motion changes', asy
 test('gallery automatically rotates editions on entry and stops when paused', async ({
   page,
 }) => {
+  // Two real rotation intervals plus traced software-GPU round trips exceed the default test budget.
+  test.setTimeout(90000)
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
   await readyGalleryScene(page)
