@@ -12,8 +12,20 @@ desktop and mobile captures.
   - GPT-6 Astra: https://mithawala.github.io/asif/gpt-6-astra/
   - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5/
   - Claude Opus 5: https://mithawala.github.io/asif/claude-opus-5/
-  - Claude Opus 5.5 Iteration 2: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
+  - Claude Opus 5.5: https://mithawala.github.io/asif/claude-opus-5-5-iteration-2/
   - GPT-6 Astra - The Curiosity Atlas: https://mithawala.github.io/asif/gpt-6-astra-iteration-2/
+
+### The Edition Room
+
+The landing page is a registry-driven exhibition with real desktop and mobile
+captures. Each entry keeps a unique edition number and release date, so repeated
+model labels remain distinguishable without changing existing URLs.
+
+Choose **Compare** on two cards, or use **Compare first & latest**. The comparison
+room supports side-by-side previews, a mouse/touch-draggable overlay, desktop/mobile
+switching, and replacing either selection. The overlay slider supports arrow
+keys; vertical touch gestures still scroll. Escape closes the dialog and restores focus. Previews are static captures;
+each entry links to the complete interactive website.
 
 ### The Curiosity Atlas
 
@@ -75,7 +87,7 @@ and `tests/tooling.test.mjs`.
 
 Registry IDs and paths identify entries uniquely; model labels retain the exact
 supplied model name and may repeat for independent iterations. Browser tests
-distinguish these entries by path and registry occurrence without dropping
+distinguish these entries by their stable card ID and path without dropping
 coverage of either version.
 
 ## Verification

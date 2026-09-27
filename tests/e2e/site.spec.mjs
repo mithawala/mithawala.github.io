@@ -27,18 +27,13 @@ test('gallery shows real previews, model labels, and correct version links', asy
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     profile.name,
   )
-  for (const [index, version] of versions.entries()) {
-    const occurrence = versions
-      .slice(0, index)
-      .filter((entry) => entry.model === version.model).length
+  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
+  for (const version of versions) {
+    const card = page.locator(`[data-edition-card="${version.id}"]`)
     await expect(
-      page
-        .getByRole('heading', { name: version.model, exact: true })
-        .nth(occurrence),
+      card.getByRole('heading', { name: version.model, exact: true }),
     ).toBeVisible()
-    const image = page
-      .getByAltText(`${version.model} personal-site preview`)
-      .nth(occurrence)
+    const image = card.getByAltText(`${version.model} personal-site preview`)
     await expect(image).toBeVisible()
     await expect
       .poll(() => image.evaluate((element) => element.naturalWidth))
@@ -53,9 +48,7 @@ test('gallery shows real previews, model labels, and correct version links', asy
       .getByRole('button', { name: 'Desktop preview', exact: true })
       .click()
     await expect(
-      page
-        .getByRole('link', { name: `Explore ${version.model}`, exact: true })
-        .and(page.locator(`a[href="${version.path}"]`)),
+      card.getByRole('link', { name: `Explore ${version.model}`, exact: true }),
     ).toHaveAttribute('href', version.path)
   }
   expect(
@@ -87,22 +80,255 @@ test('the first model and its preview are visible without scrolling', async ({
   page,
 }) => {
   await page.goto('/')
+  const card = page.locator(`[data-edition-card="${versions[0].id}"]`)
   await expect(
-    page.getByRole('heading', { name: versions[0].model, exact: true }).first(),
+    card.getByRole('heading', { name: versions[0].model, exact: true }),
   ).toBeInViewport()
-  const image = page
-    .getByAltText(`${versions[0].model} personal-site preview`)
-    .first()
+  const image = card.getByAltText(`${versions[0].model} personal-site preview`)
   await expect(image).toBeInViewport()
   await expect(
-    page
-      .getByRole('link', { name: `Visit ${versions[0].model}`, exact: true })
-      .and(page.locator(`a[href="${versions[0].path}"]`)),
+    card.getByRole('link', { name: `Visit ${versions[0].model}`, exact: true }),
   ).toBeInViewport()
   const top = await image.evaluate(
     (element) => element.getBoundingClientRect().top,
   )
   expect(top).toBeLessThan((await page.viewportSize()).height - 100)
+})
+
+test('gallery selects distinct editions for a keyboard-accessible comparison', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const [first, second] = [versions.at(-1), versions[0]]
+  const selectFirst = page.locator(`[data-compare-select="${first.id}"]`)
+  const selectSecond = page.locator(`[data-compare-select="${second.id}"]`)
+  await selectFirst.click()
+  const tray = page.getByRole('complementary', { name: 'Selected editions' })
+  await expect(tray.getByRole('status')).toContainText('1 of 2 selected')
+  await expect(
+    tray.getByRole('button', { name: 'Compare editions', exact: true }),
+  ).toBeDisabled()
+  await selectSecond.click()
+  await expect(selectFirst).toHaveAttribute('aria-pressed', 'true')
+  await expect(selectSecond).toHaveAttribute('aria-pressed', 'true')
+  for (const version of versions.filter(
+    (entry) => ![first.id, second.id].includes(entry.id),
+  ))
+    await expect(
+      page.locator(`[data-compare-select="${version.id}"]`),
+    ).toBeDisabled()
+  await tray
+    .getByRole('button', { name: 'Compare editions', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog', {
+    name: 'Compare editions',
+    exact: true,
+  })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByLabel('Left edition', { exact: true })).toHaveValue(
+    first.id,
+  )
+  await expect(dialog.getByLabel('Right edition', { exact: true })).toHaveValue(
+    second.id,
+  )
+  await expect(dialog.locator('[data-comparison-edition]')).toHaveCount(2)
+  for (const version of [first, second]) {
+    const image = dialog.locator(
+      `[data-comparison-edition="${version.id}"] img`,
+    )
+    await expect
+      .poll(() => image.evaluate((element) => element.naturalWidth))
+      .toBe(1440)
+    await expect(dialog.locator(`a[href="${version.path}"]`)).toBeVisible()
+  }
+  await dialog
+    .getByRole('button', { name: 'Comparison mobile preview', exact: true })
+    .click()
+  for (const image of await dialog
+    .locator('[data-comparison-edition] img')
+    .all())
+    await expect
+      .poll(() => image.evaluate((element) => element.naturalWidth))
+      .toBe(390)
+  const replacement = versions.find(
+    (entry) => ![first.id, second.id].includes(entry.id),
+  )
+  await dialog
+    .getByLabel('Left edition', { exact: true })
+    .selectOption(replacement.id)
+  await expect(
+    dialog.locator(`[data-comparison-edition="${replacement.id}"]`),
+  ).toBeVisible()
+  await expect(
+    dialog
+      .getByLabel('Right edition', { exact: true })
+      .locator(`option[value="${replacement.id}"]`),
+  ).toHaveJSProperty('disabled', true)
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(
+    tray.getByRole('button', { name: 'Compare editions', exact: true }),
+  ).toBeFocused()
+  await tray
+    .getByRole('button', { name: /^Remove / })
+    .first()
+    .click()
+  await expect(tray.getByRole('button', { name: /^Remove / })).toHaveCount(1)
+  await expect(tray.getByRole('button', { name: /^Remove / })).toBeFocused()
+  await tray.getByRole('button', { name: /^Remove / }).click()
+  await expect(tray).toHaveCount(0)
+  await expect(page.locator('#editions')).toBeFocused()
+  await selectFirst.click()
+  await selectSecond.click()
+  await tray
+    .getByRole('button', { name: 'Clear comparison selection', exact: true })
+    .click()
+  await expect(tray).toHaveCount(0)
+  await expect(page.locator('#editions')).toBeFocused()
+  await expect(page.locator('[data-compare-select]:disabled')).toHaveCount(0)
+})
+
+test('gallery overlay compares real captures at exact reveal positions', async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto('/')
+  await page
+    .getByRole('button', { name: 'Compare first & latest', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog', {
+    name: 'Compare editions',
+    exact: true,
+  })
+  await dialog
+    .getByRole('button', { name: 'Overlay comparison', exact: true })
+    .click()
+  const stage = dialog.locator('.gx-wipe-stage')
+  await expect(stage).toHaveAttribute('data-viewport', 'desktop')
+  await expect(stage.locator('img')).toHaveCount(2)
+  await expect(stage.locator('.gx-wipe-left img')).toHaveAttribute(
+    'src',
+    versions[0].preview,
+  )
+  await expect(stage.locator(':scope > img')).toHaveAttribute(
+    'src',
+    versions.at(-1).preview,
+  )
+  const slider = dialog.getByRole('slider', {
+    name: 'Reveal left edition',
+    exact: true,
+  })
+  await slider.fill('25')
+  await expect(stage.locator('.gx-wipe-left')).toHaveCSS(
+    'clip-path',
+    'inset(0px 75% 0px 0px)',
+  )
+  await slider.focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(slider).toHaveValue('26')
+  await expect(stage.locator('.gx-wipe-left')).toHaveCSS(
+    'clip-path',
+    'inset(0px 74% 0px 0px)',
+  )
+  await dialog
+    .getByRole('button', { name: 'Comparison mobile preview', exact: true })
+    .click()
+  await expect(stage).toHaveAttribute('data-viewport', 'mobile')
+  await expect(stage.locator('.gx-wipe-left img')).toHaveAttribute(
+    'src',
+    versions[0].mobilePreview,
+  )
+  for (const image of await stage.locator('img').all())
+    await expect
+      .poll(() => image.evaluate((element) => element.naturalWidth))
+      .toBe(390)
+  await slider.fill('0')
+  await expect(stage.locator('.gx-wipe-left')).toHaveCSS(
+    'clip-path',
+    'inset(0px 100% 0px 0px)',
+  )
+  await slider.fill('100')
+  await expect(stage.locator('.gx-wipe-left')).toHaveCSS(
+    'clip-path',
+    'inset(0px 0% 0px 0px)',
+  )
+  await stage.scrollIntoViewIfNeeded()
+  const box = await stage.boundingBox()
+  await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2, {
+    steps: 6,
+  })
+  await page.mouse.up()
+  await expect(slider).toHaveValue('80')
+  await page.keyboard.press('ArrowLeft')
+  await expect(slider).toHaveValue('79')
+  if (isMobile) {
+    const session = await page.context().newCDPSession(page)
+    const start = { x: box.x + box.width * 0.3, y: box.y + box.height / 2 }
+    const end = { x: box.x + box.width * 0.6, y: box.y + box.height / 2 }
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [start],
+    })
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [end],
+    })
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    })
+    await expect(slider).toHaveValue('60')
+    await session.detach()
+  }
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBeTruthy()
+})
+
+test('gallery comparison remains usable on a 320px screen', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 })
+  await page.goto('/')
+  await page
+    .getByRole('button', { name: 'Compare first & latest', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog', {
+    name: 'Compare editions',
+    exact: true,
+  })
+  for (const mode of ['Side by side', 'Overlay comparison']) {
+    await dialog.getByRole('button', { name: mode, exact: true }).click()
+    expect(
+      await dialog.evaluate(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    ).toBeTruthy()
+    await expect(
+      dialog.getByLabel('Left edition', { exact: true }),
+    ).toBeVisible()
+    await expect(
+      dialog.getByLabel('Right edition', { exact: true }),
+    ).toBeVisible()
+  }
+  await page.keyboard.press('Escape')
+  const tray = page.getByRole('complementary', { name: 'Selected editions' })
+  const box = await tray.boundingBox()
+  expect(box.x).toBeGreaterThanOrEqual(0)
+  expect(box.x + box.width).toBeLessThanOrEqual(320)
+  await tray
+    .getByRole('button', { name: 'Clear comparison selection', exact: true })
+    .click()
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBeTruthy()
 })
 
 test('responsive cover previews are much smaller and full-resolution originals remain available', async ({

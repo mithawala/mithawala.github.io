@@ -105,8 +105,8 @@ loads its designs, and screenshot/build/test scripts enumerate it automatically.
 IDs and paths are unique; model labels can repeat when the same model builds
 another independent iteration. Preserve the original entry and use a unique
 iteration-suffixed ID rather than renaming a real model or replacing its work.
-Gallery contract checks cover every occurrence of a label and match links by
-their registered path; browser suite names include the unique edition ID.
+Gallery contract checks scope each label to its stable edition card and match
+links by their registered path; browser suite names include the unique edition ID.
 
 ```text
 /                                         gallery
@@ -124,6 +124,27 @@ Future unrelated sites can live in separate GitHub Pages repositories and publis
 at `/<repository-name>/` without joining this personal-site build.
 
 ## Stable Test Hooks
+
+### Gallery
+
+- Every registered entry has one `data-edition-card='<id>'` containing its exact
+  model label, real preview, release date, and version-specific links. Display
+  labels may change without renaming IDs, preview files, or routes.
+- `Desktop preview` and `Mobile preview` switch the collection's captures. The
+  first registered model and its preview remain visible without scrolling.
+- `data-compare-select='<id>'` selects at most two distinct entries. A complementary
+  landmark named `Selected editions` exposes the selection status and `Compare editions`
+  action. Clearing selection returns focus to the collection.
+- `Compare editions` opens a native dialog. `Left edition` and `Right edition`
+  selectors retain unique IDs even when model names repeat.
+- `Side by side` and `Overlay comparison` switch the comparison layout. The
+  `Reveal left edition` slider reveals precisely 0-100% of the left capture.
+  Dragging the capture provides the same control with mouse or horizontal touch;
+  vertical touch gestures continue to scroll.
+  Both comparison viewport controls use the same real capture sources as the
+  collection, and Escape closes the dialog and restores focus.
+
+### Personal Editions
 
 - The six section IDs in `contract.json` must exist, and `main` holds exactly one
   `h1`.

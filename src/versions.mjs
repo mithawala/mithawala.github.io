@@ -31,7 +31,7 @@ export const versions = [
   },
   {
     id: 'claude-opus-5-5-iteration-2',
-    model: 'Claude Opus 5.5 Iteration 2',
+    model: 'Claude Opus 5.5',
     path: '/asif/claude-opus-5-5-iteration-2/',
     released: '2026-09-27',
     preview: '/gallery/previews/claude-opus-5-5-iteration-2.webp',
