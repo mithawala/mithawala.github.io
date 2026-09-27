@@ -41,8 +41,8 @@ async function clickScenePoint(page, kind, id) {
   await page.mouse.click(box.x + point.x, box.y + point.y)
 }
 
-test.beforeEach(async ({ page }) => {
-  await page.route('**/*', (route) =>
+test.beforeEach(async ({ context }) => {
+  await context.route('**/*', (route) =>
     ['127.0.0.1', 'localhost', 'mithawala.github.io'].includes(
       new URL(route.request().url()).hostname,
     )
@@ -81,6 +81,11 @@ test('gallery shows real previews, model labels, and correct version links', asy
     await expect(
       card.getByRole('link', { name: `Explore ${version.model}`, exact: true }),
     ).toHaveAttribute('href', version.path)
+    for (const link of await card.locator(`a[href="${version.path}"]`).all()) {
+      await expect(link).toHaveAttribute('target', '_blank')
+      await expect(link).toHaveAttribute('rel', /noopener/)
+      await expect(link).toHaveAttribute('rel', /noreferrer/)
+    }
   }
   expect(
     await page.evaluate(
@@ -89,7 +94,7 @@ test('gallery shows real previews, model labels, and correct version links', asy
   ).toBeTruthy()
 })
 
-test('gallery is accessible and keyboard navigation enters the edition', async ({
+test('gallery is accessible and keyboard navigation opens an isolated edition tab', async ({
   page,
 }) => {
   await page.goto('/')
@@ -103,8 +108,75 @@ test('gallery is accessible and keyboard navigation enters the edition', async (
     .getByRole('link', { name: `Explore ${versions[0].model}`, exact: true })
     .and(page.locator(`a[href="${versions[0].path}"]`))
     .focus()
+  const galleryUrl = page.url()
+  const popupPromise = page.waitForEvent('popup')
   await page.keyboard.press('Enter')
-  await expect(page).toHaveURL(new RegExp(`${versions[0].path}$`))
+  const popup = await popupPromise
+  await expect(popup).toHaveURL(new RegExp(`${versions[0].path}$`))
+  expect(await popup.evaluate(() => window.opener === null)).toBeTruthy()
+  await expect(page).toHaveURL(galleryUrl)
+  await popup.close()
+})
+
+test('gallery open-edition actions and comparison links use new tabs', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const version = versions[0]
+  const popupPromise = page.waitForEvent('popup')
+  await page
+    .locator('.nx-active-card')
+    .getByRole('link', { name: `Visit ${version.model}`, exact: true })
+    .click()
+  const popup = await popupPromise
+  await expect(popup).toHaveURL(new RegExp(`${version.path}$`))
+  expect(await popup.evaluate(() => window.opener === null)).toBeTruthy()
+  await popup.close()
+  await expect(page.locator('.nx-model-editions')).toBeVisible()
+  await page
+    .getByRole('button', { name: 'Compare first & latest', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog', {
+    name: 'Compare editions',
+    exact: true,
+  })
+  for (const layout of ['Side by side', 'Overlay comparison']) {
+    await dialog.getByRole('button', { name: layout, exact: true }).click()
+    for (const link of await dialog.locator('a[href^="/asif/"]').all()) {
+      await expect(link).toHaveAttribute('target', '_blank')
+      await expect(link).toHaveAttribute('rel', /noopener/)
+    }
+  }
+  const comparedPopupPromise = page.waitForEvent('popup')
+  await dialog.locator(`a[href="${versions.at(-1).path}"]`).click()
+  const comparedPopup = await comparedPopupPromise
+  await expect(comparedPopup).toHaveURL(new RegExp(`${versions.at(-1).path}$`))
+  expect(
+    await comparedPopup.evaluate(() => window.opener === null),
+  ).toBeTruthy()
+  await comparedPopup.close()
+  await expect(dialog).toBeVisible()
+})
+
+test('gallery uses orange accents without tinting edition previews', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await expect(page.locator('.nx-active-card .nx-enter-world')).toHaveCSS(
+    'background-color',
+    'rgb(255, 152, 0)',
+  )
+  await expect(
+    page.getByRole('button', { name: 'Desktop preview', exact: true }),
+  ).toHaveCSS('background-color', 'rgb(255, 152, 0)')
+  await expect(page.locator('.nx-hero-copy a')).toHaveCSS(
+    'color',
+    'rgb(255, 152, 0)',
+  )
+  await expect(page.locator('.nx-active-card .nx-card-preview img')).toHaveCSS(
+    'filter',
+    'none',
+  )
 })
 
 test('the first model and its preview are visible without scrolling', async ({
@@ -364,6 +436,7 @@ test('gallery comparison remains usable on a 320px screen', async ({
 
 test('gallery 3D selects every edition with keyboard and real raycast interaction', async ({
   page,
+  isMobile,
 }) => {
   await page.goto('/')
   await readyGalleryScene(page)
@@ -415,22 +488,12 @@ test('gallery 3D selects every edition with keyboard and real raycast interactio
     'data-edition-card',
     versions[2].id,
   )
-  const point = JSON.parse(await scene.getAttribute('data-portal-points')).find(
-    (entry) => entry.visible && entry.id !== versions[2].id,
+  const target = versions[isMobile ? 2 : 3]
+  await clickScenePoint(page, 'portal', target.id)
+  await expect(page.locator('.nx-active-card')).toHaveAttribute(
+    'data-edition-card',
+    target.id,
   )
-  if (point) {
-    await clickScenePoint(page, 'portal', point.id)
-    await expect(page.locator('.nx-active-card')).toHaveAttribute(
-      'data-edition-card',
-      point.id,
-    )
-  } else {
-    await clickScenePoint(page, 'portal', versions[2].id)
-    await expect(page.locator('.nx-active-card')).toHaveAttribute(
-      'data-edition-card',
-      versions[2].id,
-    )
-  }
   for (let index = 0; index < versions.length; index++) {
     await page
       .getByRole('button', { name: 'Next edition', exact: true })
@@ -597,11 +660,109 @@ test('gallery 3D pauses motion and responds to live reduced-motion changes', asy
   ).toBeDisabled()
   await page.waitForTimeout(150)
   const reduced = await canvas.screenshot()
+  const activeId = await page
+    .locator('.nx-hero')
+    .getAttribute('data-active-edition')
   await page.waitForTimeout(350)
   expect(reduced.equals(await canvas.screenshot())).toBeTruthy()
   await expect(page.locator('.nx-hero')).toHaveAttribute(
     'data-active-edition',
-    versions[0].id,
+    activeId,
+  )
+})
+
+test('gallery automatically rotates editions on entry and stops when paused', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  await readyGalleryScene(page)
+  await page.mouse.move(0, 0)
+  const scene = page.locator('.nx-portal-scene')
+  await expect(
+    page.getByRole('button', { name: 'Pause motion', exact: true }),
+  ).toBeEnabled()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'running')
+  const activeCard = await page.locator('.nx-active-card').elementHandle()
+  const first = await page
+    .locator('.nx-hero')
+    .getAttribute('data-active-edition')
+  await expect(page.locator('.nx-hero')).not.toHaveAttribute(
+    'data-active-edition',
+    first,
+    { timeout: 12000 },
+  )
+  expect(
+    await activeCard.evaluate((element) => element.isConnected),
+  ).toBeTruthy()
+  await page.getByRole('button', { name: 'Pause motion', exact: true }).click()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'paused')
+  const pausedId = await page
+    .locator('.nx-hero')
+    .getAttribute('data-active-edition')
+  const pausedOrbit = Number(await scene.getAttribute('data-orbit'))
+  await page.waitForTimeout(8500)
+  await expect(page.locator('.nx-hero')).toHaveAttribute(
+    'data-active-edition',
+    pausedId,
+  )
+  expect(Number(await scene.getAttribute('data-orbit'))).toBeCloseTo(
+    pausedOrbit,
+    3,
+  )
+  await page.getByRole('button', { name: 'Resume motion', exact: true }).click()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'running')
+  await expect(page.locator('.nx-hero')).not.toHaveAttribute(
+    'data-active-edition',
+    pausedId,
+    { timeout: 12000 },
+  )
+  await page.getByRole('button', { name: 'Next edition', exact: true }).click()
+  await expect(
+    page.getByRole('button', { name: 'Resume motion', exact: true }),
+  ).toBeEnabled()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'paused')
+})
+
+test('gallery rotation holds while an entry is being used and honors reduced motion', async ({
+  page,
+  isMobile,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  await readyGalleryScene(page)
+  await page.mouse.move(0, 0)
+  const scene = page.locator('.nx-portal-scene')
+  await page.locator('.nx-active-card .nx-enter-world').focus()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'paused')
+  const focusedId = await page
+    .locator('.nx-hero')
+    .getAttribute('data-active-edition')
+  await page.waitForTimeout(1000)
+  await expect(page.locator('.nx-hero')).toHaveAttribute(
+    'data-active-edition',
+    focusedId,
+  )
+  await page.locator('.nx-about-link').focus()
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'running')
+  if (!isMobile) {
+    await page.locator('.nx-active-card').hover()
+    await expect(scene).toHaveAttribute('data-auto-rotation', 'paused')
+    await page.mouse.move(0, 0)
+    await expect(scene).toHaveAttribute('data-auto-rotation', 'running')
+  }
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect(scene).toHaveAttribute('data-auto-rotation', 'reduced')
+  await expect(
+    page.getByRole('button', { name: 'Resume motion', exact: true }),
+  ).toBeDisabled()
+  const reducedId = await page
+    .locator('.nx-hero')
+    .getAttribute('data-active-edition')
+  await page.waitForTimeout(1000)
+  await expect(page.locator('.nx-hero')).toHaveAttribute(
+    'data-active-edition',
+    reducedId,
   )
 })
 
@@ -819,6 +980,30 @@ for (const width of [320, 768, 1920])
 
 for (const version of versions)
   test.describe(`${version.model} [${version.id}]`, () => {
+    test('the contact map uses the shared verified Stockholm location and local zoom', async ({
+      page,
+    }) => {
+      await page.goto(`${version.path}#contact`)
+      const map = page.locator('#contact iframe[src*="google.com/maps"]')
+      await expect(map).toHaveCount(1)
+      const disclosure = map.locator('xpath=ancestor::details[1]')
+      if (
+        (await disclosure.count()) &&
+        !(await disclosure.evaluate((element) => element.open))
+      )
+        await disclosure.locator(':scope > summary').click()
+      await map.scrollIntoViewIfNeeded()
+      await expect(map).toBeVisible()
+      await expect(map).toHaveAttribute('src', profile.contact.mapUrl)
+      const source = new URL(await map.getAttribute('src'))
+      expect(source.searchParams.get('cid')).toBe('13700515063166871057')
+      expect(source.searchParams.get('ll')).toBe('59.3310867,18.0596706')
+      expect(source.searchParams.get('z')).toBe('15')
+      const box = await map.boundingBox()
+      expect(box.width).toBeGreaterThan(150)
+      expect(box.height).toBeGreaterThan(150)
+    })
+
     test('all canonical content is present and all portfolio entries are reachable', async ({
       page,
     }) => {

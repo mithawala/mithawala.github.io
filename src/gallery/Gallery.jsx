@@ -51,6 +51,20 @@ const versionFor = (id) => {
   return version
 }
 
+function EditionLink({ version, children, ...props }) {
+  return (
+    <Link
+      {...props}
+      to={version.path}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-describedby="nx-new-tab-hint"
+    >
+      {children}
+    </Link>
+  )
+}
+
 function ViewportSwitch({ viewport, onChange, comparison = false }) {
   return (
     <div
@@ -255,12 +269,12 @@ function ComparisonDialog({
               </div>
               <figcaption>
                 <span>Edition {editionNumber(version)}</span>
-                <Link
-                  to={version.path}
+                <EditionLink
+                  version={version}
                   aria-label={`Open ${editionLabel(version)}`}
                 >
                   Enter edition <ArrowUpRight size={16} aria-hidden="true" />
-                </Link>
+                </EditionLink>
               </figcaption>
             </figure>
           ))}
@@ -323,15 +337,15 @@ function ComparisonDialog({
           </label>
           <div className="gx-wipe-links">
             {pair.map((version, side) => (
-              <Link
+              <EditionLink
                 key={side}
-                to={version.path}
+                version={version}
                 aria-label={`Open ${editionLabel(version)}`}
               >
                 {side === 0 ? 'A' : 'B'} / Enter edition{' '}
                 {editionNumber(version)}{' '}
                 <ArrowUpRight size={15} aria-hidden="true" />
-              </Link>
+              </EditionLink>
             ))}
           </div>
         </div>
@@ -399,9 +413,9 @@ function EditionCard({
       data-selected={chosen}
       style={{ '--world-color': version.color }}
     >
-      <Link
+      <EditionLink
         className="nx-card-preview"
-        to={version.path}
+        version={version}
         aria-label={`Explore ${version.model}`}
       >
         <PreviewImage
@@ -414,14 +428,14 @@ function EditionCard({
             Open this edition <ArrowUpRight size={18} aria-hidden="true" />
           </span>
         )}
-      </Link>
+      </EditionLink>
       <div className="nx-card-info">
         <p className="nx-eyebrow">
           <span className="nx-world-dot" />
           Edition {editionNumber(version)}
         </p>
         <h2>
-          <Link to={version.path}>{version.model}</Link>
+          <EditionLink version={version}>{version.model}</EditionLink>
         </h2>
         <time dateTime={version.released}>
           {formatDate(version.released, {
@@ -432,13 +446,13 @@ function EditionCard({
         </time>
       </div>
       <div className="nx-card-actions">
-        <Link
+        <EditionLink
           className="nx-enter-world"
-          to={version.path}
+          version={version}
           aria-label={`Visit ${version.model}`}
         >
           Open edition <ArrowUpRight size={17} aria-hidden="true" />
-        </Link>
+        </EditionLink>
         {!compact && (
           <button
             className="nx-locate-world"
@@ -480,6 +494,8 @@ export default function Gallery() {
   const [comparison, setComparison] = useState(null)
   const [activeId, setActiveId] = useState(versions[0].id)
   const [paused, setPaused] = useState(false)
+  const [controlsHovered, setControlsHovered] = useState(false)
+  const [controlsFocused, setControlsFocused] = useState(false)
   const [sceneStatus, setSceneStatus] = useState('loading')
   const reducedMotion = useReducedMotion()
   const activeVersion = versionFor(activeId)
@@ -487,15 +503,41 @@ export default function Gallery() {
   const collection = useRef(null)
   const hero = useRef(null)
   const editionControls = useRef(null)
+  const activeControls = useRef(null)
   const selectionTray = useRef(null)
   const comparisonOpener = useRef(null)
+  const interactionPaused =
+    controlsHovered ||
+    controlsFocused ||
+    selected.length > 0 ||
+    Boolean(comparison)
   useEffect(() => {
     if (!comparison && comparisonOpener.current) {
       comparisonOpener.current.focus()
       comparisonOpener.current = null
     }
   }, [comparison])
-  const selectEdition = useCallback((id) => setActiveId(versionFor(id).id), [])
+  useEffect(() => {
+    const updateFocus = () => {
+      const focused = document.activeElement
+      setControlsFocused(
+        Boolean(
+          activeControls.current?.contains(focused) &&
+          !focused.closest('.nx-motion-control'),
+        ),
+      )
+    }
+    document.addEventListener('focusin', updateFocus)
+    return () => document.removeEventListener('focusin', updateFocus)
+  }, [])
+  const selectEdition = useCallback((id) => {
+    setPaused(true)
+    setActiveId(versionFor(id).id)
+  }, [])
+  const updateActiveEdition = useCallback(
+    (id) => setActiveId(versionFor(id).id),
+    [],
+  )
   const graphicsUnavailable = useCallback(() => setSceneStatus('fallback'), [])
   const changeEdition = (direction) =>
     selectEdition(
@@ -542,9 +584,10 @@ export default function Gallery() {
         ?.focus(),
     )
   }
+  // Auto-advance must not discard the active card's focused controls.
   const renderEdition = (version, compact = false) => (
     <EditionCard
-      key={version.id}
+      key={compact ? 'active-edition' : version.id}
       version={version}
       viewport={viewport}
       compact={compact}
@@ -558,12 +601,21 @@ export default function Gallery() {
     <div
       className="editions-gallery nx-model-editions"
       data-comparing={selected.length > 0}
-      data-motion={reducedMotion ? 'reduced' : paused ? 'paused' : 'running'}
+      data-motion={
+        reducedMotion
+          ? 'reduced'
+          : paused || interactionPaused
+            ? 'paused'
+            : 'running'
+      }
     >
       <a href="#editions" className="skip-link">
         Skip to editions
       </a>
       <header className="nx-header">
+        <span id="nx-new-tab-hint" className="sr-only">
+          Opens in a new tab.
+        </span>
         <Link to="/" aria-label="Gallery home" className="gx-wordmark nx-brand">
           <span className="nx-brand-mark" aria-hidden="true">
             <Compass size={29} strokeWidth={1.2} />
@@ -615,8 +667,9 @@ export default function Gallery() {
                   versions={versions}
                   activeId={activeId}
                   viewport={viewport}
-                  paused={paused || reducedMotion || Boolean(comparison)}
+                  paused={paused || reducedMotion || interactionPaused}
                   onSelect={selectEdition}
+                  onActiveChange={updateActiveEdition}
                   onStatusChange={setSceneStatus}
                 />
               </Suspense>
@@ -646,12 +699,24 @@ export default function Gallery() {
               <small> / {String(versions.length).padStart(2, '0')}</small>
             </strong>
             <span>
-              Drag to browse
+              Rotates automatically
               <br />
-              Click a preview to select
+              Drag or select to pause
             </span>
           </div>
-          <div className="nx-hero-bottom">
+          <div
+            ref={activeControls}
+            className="nx-hero-bottom"
+            onPointerOver={(event) => {
+              if (event.pointerType === 'mouse')
+                setControlsHovered(!event.target.closest('.nx-motion-control'))
+            }}
+            onPointerLeave={() => setControlsHovered(false)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget))
+                setControlsFocused(false)
+            }}
+          >
             <div className="nx-flight-controls">
               <div
                 ref={editionControls}
@@ -711,8 +776,8 @@ export default function Gallery() {
                   reducedMotion
                     ? 'Your reduced-motion preference is respected'
                     : paused
-                      ? 'Resume motion'
-                      : 'Pause motion'
+                      ? 'Play automatic gallery rotation'
+                      : 'Pause automatic gallery rotation'
                 }
                 disabled={reducedMotion}
                 onClick={() => setPaused(!paused)}
@@ -725,7 +790,13 @@ export default function Gallery() {
               </button>
             </div>
             {renderEdition(activeVersion, true)}
-            <p className="nx-announcement" role="status">
+            <p
+              className="nx-announcement"
+              role="status"
+              aria-live={
+                paused || reducedMotion || interactionPaused ? 'polite' : 'off'
+              }
+            >
               {sceneStatus === 'fallback'
                 ? 'Preview mode. Use the edition arrows or browse the collection below.'
                 : `${activeVersion.model} / Edition ${editionNumber(activeVersion)}. Open the full site or compare it with another interpretation.`}

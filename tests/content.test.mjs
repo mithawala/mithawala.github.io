@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { validateContent } from '../scripts/validate-content.mjs'
 import {
+  profile,
   portfolio,
   blog,
   detailPath,
@@ -21,6 +22,17 @@ import {
 
 test('all canonical content, assets, and version records are valid', () => {
   assert.equal(validateContent().portfolio, portfolio.length)
+})
+
+test('the shared map uses the verified Stockholm place and an explicit local viewport', () => {
+  const url = new URL(profile.contact.mapUrl)
+  assert.equal(url.origin, 'https://www.google.com')
+  assert.equal(url.pathname, '/maps')
+  assert.equal(url.searchParams.get('cid'), '13700515063166871057')
+  assert.equal(url.searchParams.get('ll'), '59.3310867,18.0596706')
+  assert.equal(url.searchParams.get('z'), '15')
+  assert.equal(url.searchParams.get('output'), 'embed')
+  assert.equal(url.searchParams.has('q'), false)
 })
 
 test('every detail route resolves within each version namespace', () => {

@@ -8,6 +8,7 @@ export default function PortalScene({
   viewport = 'desktop',
   paused = false,
   onSelect,
+  onActiveChange,
   onStatusChange,
 }) {
   const hostRef = useRef(null)
@@ -30,6 +31,7 @@ export default function PortalScene({
     viewport,
     paused,
     onSelect,
+    onActiveChange,
     onStatusChange,
   }
 
@@ -57,7 +59,15 @@ export default function PortalScene({
 
   useEffect(() => {
     controllerRef.current?.update(optionsRef.current)
-  }, [versions, activeId, viewport, paused, onSelect, onStatusChange])
+  }, [
+    versions,
+    activeId,
+    viewport,
+    paused,
+    onSelect,
+    onActiveChange,
+    onStatusChange,
+  ])
 
   const active =
     versions.find((version) => version.id === activeId) || versions[0]
@@ -78,6 +88,8 @@ export default function PortalScene({
       data-active-portal={active?.id || ''}
       data-scene-motion="paused"
       data-render-scale="1.00"
+      data-auto-rotation="paused"
+      data-orbit="0.00000"
     >
       <canvas
         ref={canvasRef}
@@ -89,9 +101,10 @@ export default function PortalScene({
         aria-hidden={fallback ? true : undefined}
       />
       <p className="nx-scene-sr-only" id={instructionsId}>
-        Drag horizontally or use the left and right arrow keys to select an
-        edition. Preview and compare editions using the controls and links
-        outside the scene.
+        When motion is enabled, editions rotate automatically. Drag horizontally
+        or use the left and right arrow keys to select an edition. Keyboard
+        focus pauses rotation. Preview and compare editions using the controls
+        and links outside the scene.
       </p>
       <div
         ref={tooltipRef}

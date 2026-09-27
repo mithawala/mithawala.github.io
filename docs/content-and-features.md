@@ -132,6 +132,9 @@ at `/<repository-name>/` without joining this personal-site build.
   labels may change without renaming IDs, preview files, or routes.
   The active card is in the portal space; the other cards stay in the directory.
   Changing editions moves the selected entry without duplicating or omitting one.
+  Every gallery edition entry link opens a new tab with `noopener noreferrer`;
+  its accessible description announces the new tab. Gallery and comparison state
+  remain open in the original tab.
 - The hero explains that each new AI model is benchmarked by creating its own
   independent interpretation of mithawala.com. `About the benchmark` links to the
   consistent-brief, independent-design, and working-result explanation. This is a
@@ -158,6 +161,11 @@ at `/<repository-name>/` without joining this personal-site build.
   and `Next edition` provide equivalent DOM navigation. Vertical touch gestures scroll
   rather than being trapped by the scene. `Pause motion` and live reduced-motion
   preferences stop continuous rendering.
+  Automatic rotation is active on entry unless reduced motion is requested.
+  It advances the actual portal orbit and active edition, not only ambient motion.
+  `data-auto-rotation` and `data-orbit` expose that behavior for regression checks.
+  Manual selection pauses on the chosen edition; hover/focus of entry controls,
+  comparison, offscreen state, and hidden tabs suspend automatic movement.
 - The gallery is for explanation, browsing, and comparison only. It has no game
   objectives, collectible scene objects, rewards, or persisted progress.
   Browsing and comparison do not read or write browser storage; legacy saved
@@ -212,6 +220,14 @@ SoundCloud, Spotify, YouTube/Vimeo, Google Maps, FormSubmit, and embedded projec
 sites remain external dependencies. No server or private API key is required by
 this static repository. Provider outages or framing restrictions are outside
 GitHub Pages; retain graceful errors and external launch links.
+
+The canonical `profile.contact.mapUrl` uses Google's verified place identifier
+for T-Centralen (`13700515063166871057`), an explicit center
+(`59.3310867,18.0596706`), and zoom `15`. All editions consume this same URL,
+including maps revealed by disclosures. Keep those parameters together: the
+previous free-text search could resolve to a world-scale viewport. Local tests
+assert the iframe target and dimensions; live integration checks inspect Google's
+resolved map center and zoom.
 
 FormSubmit delivery may depend on the owner's existing provider activation. CI
 intercepts submissions and tests request shape and success/failure UI; it never

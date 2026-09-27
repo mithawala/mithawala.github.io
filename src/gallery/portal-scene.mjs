@@ -2,11 +2,12 @@ import * as THREE from 'three'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 
 const TAU = Math.PI * 2
+const AUTO_SECONDS_PER_EDITION = 8
 const FLOOR = -2.5
 const SCENE_OWNER = Symbol('modelEditionsScene')
 const FOCUS = new THREE.Vector3(0, 0.85, 1.1)
-const CYAN = new THREE.Color('#78efff')
-const DIM = new THREE.Color('#153643')
+const ACCENT = new THREE.Color('#ff9800')
+const DIM = new THREE.Color('#453016')
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 const smoothstep = (a, b, value) => {
   const t = clamp((value - a) / (b - a), 0, 1)
@@ -182,7 +183,7 @@ function glowMaterial(width, height) {
     uniforms: {
       uSize: { value: new THREE.Vector2(width + 1.4, height + 1.4) },
       uHalf: { value: new THREE.Vector2(width / 2, height / 2) },
-      uColor: { value: CYAN.clone() },
+      uColor: { value: ACCENT.clone() },
       uOpacity: { value: 0.4 },
     },
     vertexShader: planeVertex,
@@ -223,7 +224,7 @@ function reflectionMaterial(texture) {
         float edge = smoothstep(0.0, 0.08, vUv.x) *
           smoothstep(0.0, 0.08, 1.0 - vUv.x);
         float fade = pow(vUv.y, 2.6) * edge;
-        gl_FragColor = vec4(color.rgb * vec3(0.66, 0.85, 0.95), uOpacity * fade);
+        gl_FragColor = vec4(color.rgb * vec3(0.85), uOpacity * fade);
         #include <colorspace_fragment>
       }
     `,
@@ -236,7 +237,7 @@ function reflectionMaterial(texture) {
 function suspensionMaterial() {
   return new THREE.ShaderMaterial({
     uniforms: {
-      uColor: { value: CYAN.clone() },
+      uColor: { value: ACCENT.clone() },
       uOpacity: { value: 0.08 },
     },
     vertexShader: planeVertex,
@@ -277,6 +278,10 @@ export class PortalSceneController {
     this.clock = 0
     this.orbit = 0
     this.targetOrbit = 0
+    this.centering = false
+    this.keyboardFocused = false
+    this.pendingAutoIds = new Set()
+    this.lastAutoTime = null
     this.lastFrameTime = 0
     this.lastPointsTime = -Infinity
     this.raf = 0
@@ -320,7 +325,7 @@ export class PortalSceneController {
         canvasTexture(128, 128, (context) => {
           context.fillStyle = '#0b1c2a'
           context.fillRect(0, 0, 128, 128)
-          context.strokeStyle = '#153c4b'
+          context.strokeStyle = '#49351c'
           context.lineWidth = 1
           for (let x = 0; x < 128; x += 16) {
             context.beginPath()
@@ -367,6 +372,14 @@ export class PortalSceneController {
     this.listen(this.canvas, 'lostpointercapture', () => this.cancelGesture())
     this.listen(this.canvas, 'pointerleave', () => this.hideTooltip())
     this.listen(this.canvas, 'keydown', (event) => this.keyDown(event))
+    this.listen(this.canvas, 'focus', () => {
+      this.keyboardFocused = this.canvas.matches(':focus-visible')
+      this.syncMotion()
+    })
+    this.listen(this.canvas, 'blur', () => {
+      this.keyboardFocused = false
+      this.syncMotion()
+    })
 
     const checkVisibility = () => {
       const rect = this.host.getBoundingClientRect()
@@ -415,14 +428,14 @@ export class PortalSceneController {
       pmrem.dispose()
     }
 
-    this.scene.add(new THREE.HemisphereLight('#b8e2ff', '#030a12', 1.45))
-    const key = new THREE.DirectionalLight('#e2f6ff', 3.5)
+    this.scene.add(new THREE.HemisphereLight('#ffe1b0', '#030a12', 1.45))
+    const key = new THREE.DirectionalLight('#fff0d8', 3.5)
     key.position.set(-5, 9, 8)
     this.scene.add(key)
-    const fill = new THREE.PointLight('#78efff', 36, 24, 2)
+    const fill = new THREE.PointLight(ACCENT, 36, 24, 2)
     fill.position.set(0, 4.4, 4)
     this.scene.add(fill)
-    const amberLight = new THREE.PointLight('#ffc88e', 18, 26, 2)
+    const amberLight = new THREE.PointLight('#ffd190', 18, 26, 2)
     amberLight.position.set(9, 3, -5)
     this.scene.add(amberLight)
 
@@ -478,7 +491,7 @@ export class PortalSceneController {
 
     const circuitMaterial = own(
       new THREE.MeshBasicMaterial({
-        color: CYAN,
+        color: ACCENT,
         transparent: true,
         opacity: 0.3,
         blending: THREE.AdditiveBlending,
@@ -528,7 +541,7 @@ export class PortalSceneController {
         tickGeometry,
         own(
           new THREE.LineBasicMaterial({
-            color: '#36677d',
+            color: '#8b622e',
             transparent: true,
             opacity: 0.4,
           }),
@@ -546,7 +559,7 @@ export class PortalSceneController {
     this.skyGate.add(spine)
     const archMaterial = own(
       new THREE.MeshBasicMaterial({
-        color: '#6ab9db',
+        color: '#ffb64d',
         transparent: true,
         opacity: 0.25,
         toneMapped: false,
@@ -569,7 +582,7 @@ export class PortalSceneController {
       own(new THREE.BoxGeometry(0.035, 0.3, 0.07)),
       own(
         new THREE.MeshBasicMaterial({
-          color: '#8ec6e2',
+          color: '#ffd190',
           transparent: true,
           opacity: 0.38,
         }),
@@ -601,7 +614,7 @@ export class PortalSceneController {
       starGeometry,
       own(
         new THREE.PointsMaterial({
-          color: '#afcddd',
+          color: '#d8cbbb',
           size: 0.06,
           transparent: true,
           opacity: 0.68,
@@ -613,9 +626,9 @@ export class PortalSceneController {
     this.scene.add(this.stars)
 
     for (const [x, y, z, size, color, opacity] of [
-      [-14, 7, -31, 42, '#164065', 0.5],
-      [13, 2, -29, 33, '#194b60', 0.36],
-      [0, -1, -18, 24, '#3b739a', 0.18],
+      [-14, 7, -31, 42, '#493116', 0.5],
+      [13, 2, -29, 33, '#553715', 0.36],
+      [0, -1, -18, 24, '#8b5c2d', 0.18],
     ]) {
       const haze = new THREE.Sprite(
         own(
@@ -778,7 +791,7 @@ export class PortalSceneController {
           envMapIntensity: 0.3,
           clearcoat: 0.42,
           clearcoatRoughness: 0.12,
-          emissive: '#08212d',
+          emissive: '#2b1806',
           emissiveIntensity: 0.04,
         }),
       )
@@ -799,7 +812,7 @@ export class PortalSceneController {
         rimGeometry,
         own(
           new THREE.LineBasicMaterial({
-            color: CYAN,
+            color: ACCENT,
             transparent: true,
             opacity: 0.65,
             toneMapped: false,
@@ -811,7 +824,7 @@ export class PortalSceneController {
         glassEdgeGeometry,
         own(
           new THREE.LineBasicMaterial({
-            color: '#86c6d6',
+            color: '#ffc777',
             transparent: true,
             opacity: 0.3,
             toneMapped: false,
@@ -834,7 +847,7 @@ export class PortalSceneController {
       const label = own(
         canvasTexture(768, 48, (context) => {
           context.clearRect(0, 0, 768, 48)
-          context.fillStyle = '#bcecf4'
+          context.fillStyle = '#ffe0ab'
           context.font = '500 25px ui-monospace, Consolas, monospace'
           context.textBaseline = 'middle'
           const text = `${String(index + 1).padStart(2, '0')}  /  ${version.model.toUpperCase()}`
@@ -899,7 +912,7 @@ export class PortalSceneController {
         markerGeometry,
         own(
           new THREE.MeshBasicMaterial({
-            color: CYAN,
+            color: ACCENT,
             transparent: true,
             opacity: 0.2,
             side: THREE.DoubleSide,
@@ -989,6 +1002,13 @@ export class PortalSceneController {
         mobilePreview,
       ]),
     ])
+    const orderKey = JSON.stringify(options.versions.map(({ id }) => id))
+    const index = Math.max(
+      0,
+      options.versions.findIndex(({ id }) => id === options.activeId),
+    )
+    const requestedId = options.versions[index].id
+    const autoEcho = this.pendingAutoIds.has(requestedId)
     let rebuilt = false
     if (signature !== this.portalSignature) {
       this.portalSignature = signature
@@ -997,19 +1017,22 @@ export class PortalSceneController {
       if (this.failed) return
       rebuilt = true
     }
-    const index = Math.max(
-      0,
-      options.versions.findIndex(({ id }) => id === options.activeId),
-    )
-    this.activeId = options.versions[index].id
+    if (orderKey !== this.orderKey) {
+      this.orderKey = orderKey
+      this.orbit = index
+      this.targetOrbit = index
+      this.centering = false
+      this.activeId = requestedId
+      this.pendingAutoIds.clear()
+      this.lastAutoTime = null
+    } else if (requestedId !== this.lastPropActiveId && !autoEcho) {
+      this.centerOn(index)
+    }
+    // A parent echo acknowledges automatic selection without restarting its orbit.
+    if (autoEcho) this.pendingAutoIds.delete(requestedId)
+    this.lastPropActiveId = requestedId
     this.host.dataset.activePortal = this.activeId
-    this.targetOrbit = nearestOrbitTarget(
-      this.orbit,
-      index,
-      options.versions.length,
-    )
-    if (rebuilt || this.reduced || options.paused) this.orbit = this.targetOrbit
-    this.measure()
+    if (rebuilt || !this.framing) this.measure()
     this.syncMotion()
     this.pointsDirty = true
     this.requestFrame()
@@ -1188,19 +1211,45 @@ export class PortalSceneController {
     )
   }
 
+  canAutoRotate() {
+    return (
+      this.canAnimate() &&
+      this.firstFrame &&
+      this.status === 'ready' &&
+      this.pendingCount === 0 &&
+      this.portals.length > 1 &&
+      !this.gesture &&
+      !this.keyboardFocused &&
+      !this.centering
+    )
+  }
+
+  syncAutoRotation() {
+    const running = this.canAutoRotate()
+    if (!running) this.lastAutoTime = null
+    this.host.dataset.autoRotation = this.reduced
+      ? 'reduced'
+      : running
+        ? 'running'
+        : 'paused'
+    return running
+  }
+
   syncMotion() {
     this.host.dataset.sceneMotion = this.reduced
       ? 'reduced'
       : this.canAnimate()
         ? 'running'
         : 'paused'
-    if (this.options.paused || this.reduced) {
+    if (this.centering && (this.options.paused || this.reduced)) {
       this.orbit = this.targetOrbit
+      this.centering = false
     }
     if (!this.canAnimate()) {
       this.cancelFrame()
       this.hideTooltip()
     }
+    this.syncAutoRotation()
     this.requestFrame()
   }
 
@@ -1223,6 +1272,7 @@ export class PortalSceneController {
     if (this.raf) cancelAnimationFrame(this.raf)
     this.raf = 0
     this.lastFrameTime = 0
+    this.lastAutoTime = null
   }
 
   renderFrame(time) {
@@ -1252,14 +1302,35 @@ export class PortalSceneController {
       }
     }
     this.clock += delta
-    if (!this.gesture?.dragging) {
+    let automaticId = null
+    if (this.syncAutoRotation()) {
+      const elapsedAuto =
+        this.lastAutoTime === null
+          ? 0
+          : Math.max(0, (time - this.lastAutoTime) / 1000)
+      this.lastAutoTime = time
+      this.orbit += elapsedAuto / AUTO_SECONDS_PER_EDITION
+      this.targetOrbit = this.orbit
+      const index = wrapIndex(Math.round(this.orbit), this.portals.length)
+      const id = this.portals[index].version.id
+      if (id !== this.activeId) {
+        this.activeId = id
+        this.host.dataset.activePortal = id
+        automaticId = id
+        this.hideTooltip()
+        this.pointsDirty = true
+      }
+    } else if (this.centering && !this.gesture) {
       this.orbit = moving
         ? this.orbit +
           (this.targetOrbit - this.orbit) * (1 - Math.exp(-delta * 8))
         : this.targetOrbit
-      if (Math.abs(this.targetOrbit - this.orbit) < 0.0005)
+      if (Math.abs(this.targetOrbit - this.orbit) < 0.0005) {
         this.orbit = this.targetOrbit
+        this.centering = false
+      }
     }
+    this.host.dataset.orbit = this.orbit.toFixed(5)
     const phase = this.reduced ? 0 : this.clock
     try {
       this.applyCamera(phase)
@@ -1284,6 +1355,12 @@ export class PortalSceneController {
     } catch (error) {
       this.fail('The 3D renderer could not complete a frame.', error)
       return
+    }
+    if (this.syncAutoRotation() && this.lastAutoTime === null)
+      this.lastAutoTime = time
+    if (automaticId && this.options.onActiveChange) {
+      this.pendingAutoIds.add(automaticId)
+      this.options.onActiveChange(automaticId)
     }
     if (this.canAnimate()) this.requestFrame()
   }
@@ -1398,6 +1475,9 @@ export class PortalSceneController {
   pointerDown(event) {
     if (this.failed || !this.camera || event.button !== 0 || !event.isPrimary)
       return
+    this.keyboardFocused = false
+    this.centering = false
+    this.targetOrbit = this.orbit
     this.gesture = {
       pointerId: event.pointerId,
       x: event.clientX,
@@ -1405,6 +1485,7 @@ export class PortalSceneController {
       orbit: this.orbit,
       dragging: false,
     }
+    this.syncAutoRotation()
   }
 
   pointerMove(event) {
@@ -1416,6 +1497,7 @@ export class PortalSceneController {
       if (!gesture.dragging) {
         if (Math.abs(dy) > 9 && Math.abs(dy) > Math.abs(dx)) {
           this.gesture = null
+          this.syncAutoRotation()
           return
         }
         if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.25) return
@@ -1455,6 +1537,7 @@ export class PortalSceneController {
       this.select(this.portals[index].version.id)
       return
     }
+    this.syncAutoRotation()
     if (Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 9)
       return
     const { x, y } = this.localPointer(event)
@@ -1469,8 +1552,31 @@ export class PortalSceneController {
     if (gesture && this.canvas.hasPointerCapture(gesture.pointerId)) {
       this.canvas.releasePointerCapture(gesture.pointerId)
     }
+    if (gesture) {
+      this.centering = false
+      this.targetOrbit = this.orbit
+    }
     this.hideTooltip()
+    this.syncAutoRotation()
     this.requestFrame()
+  }
+
+  centerOn(index) {
+    this.activeId = this.options.versions[index].id
+    this.host.dataset.activePortal = this.activeId
+    this.targetOrbit = nearestOrbitTarget(
+      this.orbit,
+      index,
+      this.portals.length,
+    )
+    this.centering = true
+    this.pendingAutoIds.clear()
+    this.lastAutoTime = null
+    this.pointsDirty = true
+    if (this.reduced || this.options.paused) {
+      this.orbit = this.targetOrbit
+      this.centering = false
+    }
   }
 
   select(id) {
@@ -1478,13 +1584,9 @@ export class PortalSceneController {
       (version) => version.id === id,
     )
     if (index < 0) return
-    this.targetOrbit = nearestOrbitTarget(
-      this.orbit,
-      index,
-      this.portals.length,
-    )
-    if (this.reduced || this.options.paused) this.orbit = this.targetOrbit
+    this.centerOn(index)
     this.hideTooltip()
+    this.syncMotion()
     this.options.onSelect?.(id)
     this.requestFrame()
   }
@@ -1498,6 +1600,8 @@ export class PortalSceneController {
       event.metaKey
     )
       return
+    this.keyboardFocused = true
+    this.syncMotion()
     const count = this.portals.length
     let index = wrapIndex(Math.round(this.targetOrbit), count)
     if (event.key === 'ArrowLeft') index = wrapIndex(index - 1, count)
@@ -1533,12 +1637,14 @@ export class PortalSceneController {
     this.cancelImages()
     this.hideTooltip()
     this.host.dataset.sceneMotion = this.reduced ? 'reduced' : 'paused'
+    this.syncAutoRotation()
     this.host.dataset.portalPoints = '[]'
     this.setStatus('fallback', message)
     this.releaseGraphics()
   }
 
   releaseGraphics() {
+    this.pendingAutoIds.clear()
     this.portalResources.dispose()
     for (const texture of this.previewTextures) texture.dispose()
     this.previewTextures.clear()

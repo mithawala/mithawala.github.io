@@ -28,9 +28,15 @@ contract, without seeing earlier editions. The benchmark is qualitative, not a
 numerical leaderboard. New completed interpretations are added to the registry.
 
 The landing page keeps its real-time Three.js gallery and actual desktop/mobile
-captures. Click a preview, drag horizontally, or use **Previous edition**,
-**Next edition**, and arrow keys to browse. The active entry and the remaining
-collection always link directly to the websites. The gallery has no missions,
+captures, with warm orange accents. Editions rotate automatically on entry;
+**Pause motion** stops the rotation and **Resume motion** restarts it. Selecting
+a 3D preview or using **Previous edition**, **Next edition**, or arrow keys pauses
+automatic browsing on that edition. Rotation also holds while entry controls
+are hovered/focused, during comparisons, offscreen, and in hidden tabs, and
+respects reduced-motion preferences.
+
+Edition entry links open the websites in new tabs, keeping the gallery available.
+The gallery has no missions,
 collectibles, rewards, progress tracking, or browser-storage dependency.
 
 Choose **Compare** on two cards, or use **Compare first & latest**. Side-by-side
@@ -44,6 +50,11 @@ before the first draw rather than repeatedly recompiling incomplete previews.
 Sustained slow frames lower the drawing resolution rather than
 blocking interaction. The scene is visual navigation, not a replacement for
 accessible DOM content. Preview windows are captures, not live site embeds.
+
+All editions use the same contact map URL. It pins the T-Centralen location in
+Stockholm by a verified Google Maps location identifier, explicit center coordinates, and
+zoom level 15, rather than depending on a free-text search that can fall back
+to the world map.
 
 ### The Curiosity Atlas
 
