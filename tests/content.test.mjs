@@ -159,6 +159,17 @@ test('the mithawala.com reader maps shared paths to their home here', () => {
     content['profile.json'].heroPhoto,
     '/asif/assets/images/main/sp_photo.jpg',
   )
+  // The map comes from MAP_URL; revisions from before it fall back.
+  assert.match(content['profile.json'].contact.mapUrl, /q=T-Centralen/)
+  const withMap = readContent((file) =>
+    file === 'src/pages/Contact.jsx'
+      ? `${source[file]}; const MAP_URL = "https://www.google.com/maps?ll=1,2&z=14&output=embed"`
+      : source[file],
+  )
+  assert.equal(
+    withMap['profile.json'].contact.mapUrl,
+    'https://www.google.com/maps?ll=1,2&z=14&output=embed',
+  )
   assert.throws(
     () =>
       readContent((file) =>
@@ -174,15 +185,16 @@ test('all canonical content, assets, and version records are valid', () => {
   assert.equal(validateContent().portfolio, portfolio.length)
 })
 
-test('the shared map uses the verified Stockholm place and an explicit local viewport', () => {
+test('the shared map shows the Kungsholmen area without a pin or address', () => {
   const url = new URL(profile.contact.mapUrl)
   assert.equal(url.origin, 'https://www.google.com')
   assert.equal(url.pathname, '/maps')
-  assert.equal(url.searchParams.get('cid'), '13700515063166871057')
-  assert.equal(url.searchParams.get('ll'), '59.3310867,18.0596706')
-  assert.equal(url.searchParams.get('z'), '15')
+  assert.equal(url.searchParams.get('ll'), '59.3381,18.0308')
+  assert.equal(url.searchParams.get('z'), '14')
   assert.equal(url.searchParams.get('output'), 'embed')
-  assert.equal(url.searchParams.has('q'), false)
+  // A search or place ID would drop a pin on a specific spot.
+  for (const pin of ['q', 'cid', 'place_id', 'daddr'])
+    assert.equal(url.searchParams.has(pin), false, `map must not use ${pin}`)
 })
 
 test('every detail route resolves within each version namespace', () => {

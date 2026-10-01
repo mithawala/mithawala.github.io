@@ -15,10 +15,10 @@
     "blog.json": "748525d0f236607619620e8f71f6a29553c91673107c0e2f2df3e8e291792321"
   },
   "sync": {
-    "commit": "827118d4f3b5a3e711a0617e385e4c8c176828fa",
-    "syncedAt": "2026-10-01T22:42:39.124Z",
+    "commit": "09b22dc37af953b50f0cf04d2b8f7781d1c38a55",
+    "syncedAt": "2026-10-01T23:32:20.258Z",
     "contentHashes": {
-      "profile.json": "75978a2213085a89a298f047ee16824012d67e0f789b9d3c0926dae65f8a29dd",
+      "profile.json": "3e4cc59150ced6486d947f62344524037dbe63b6953b79a9bdd116f0a938904b",
       "portfolio.json": "986512a9a0c8eced3ed9e161a02a5c280298f84df55539cd9a21a06a1b943ac5",
       "blog.json": "ace504a230887d50ee7ff9729d62ec91e4e174ad74fb407f6cb5924ceeb5b3a2"
     }

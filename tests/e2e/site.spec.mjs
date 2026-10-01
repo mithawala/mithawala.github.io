@@ -1011,7 +1011,7 @@ for (const width of [320, 768, 1920])
 
 for (const version of versions)
   test.describe(`${version.model} [${version.id}]`, () => {
-    test('the contact map uses the shared verified Stockholm location and local zoom', async ({
+    test('the contact map shows the shared Stockholm area without a pin', async ({
       page,
     }) => {
       await page.goto(`${version.path}#contact`)
@@ -1027,9 +1027,10 @@ for (const version of versions)
       await expect(map).toBeVisible()
       await expect(map).toHaveAttribute('src', profile.contact.mapUrl)
       const source = new URL(await map.getAttribute('src'))
-      expect(source.searchParams.get('cid')).toBe('13700515063166871057')
-      expect(source.searchParams.get('ll')).toBe('59.3310867,18.0596706')
-      expect(source.searchParams.get('z')).toBe('15')
+      expect(source.searchParams.get('ll')).toBe('59.3381,18.0308')
+      expect(source.searchParams.get('z')).toBe('14')
+      expect(source.searchParams.has('q')).toBe(false)
+      expect(source.searchParams.has('cid')).toBe(false)
       const box = await map.boundingBox()
       expect(box.width).toBeGreaterThan(150)
       expect(box.height).toBeGreaterThan(150)

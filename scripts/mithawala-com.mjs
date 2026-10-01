@@ -119,6 +119,14 @@ export function readContent(read) {
     'pages/Contact.jsx',
     ['contactInfo', 'FORMSUBMIT_ENDPOINT'],
   )
+  // Older revisions of mithawala.com had the map address inline.
+  let mapUrl =
+    'https://www.google.com/maps?q=T-Centralen,Stockholm,Sweden&z=15&output=embed'
+  try {
+    mapUrl = extract(read, 'pages/Contact.jsx', ['MAP_URL']).MAP_URL
+  } catch (error) {
+    if (!/Missing MAP_URL/.test(error.message)) throw error
+  }
   const { soundcloudProfileUrl } = extract(read, 'pages/Music.jsx', [
     'soundcloudProfileUrl',
   ])
@@ -132,8 +140,7 @@ export function readContent(read) {
       contact: {
         info: contactInfo,
         endpoint: FORMSUBMIT_ENDPOINT,
-        mapUrl:
-          'https://www.google.com/maps?q=T-Centralen,Stockholm,Sweden&z=15&output=embed',
+        mapUrl,
       },
       music: {
         playlistUrl: soundcloudProfileUrl,

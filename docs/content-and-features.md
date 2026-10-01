@@ -223,13 +223,13 @@ sites remain external dependencies. No server or private API key is required by
 this static repository. Provider outages or framing restrictions are outside
 GitHub Pages; retain graceful errors and external launch links.
 
-The canonical `profile.contact.mapUrl` uses Google's verified place identifier
-for T-Centralen (`13700515063166871057`), an explicit center
-(`59.3310867,18.0596706`), and zoom `15`. All editions consume this same URL,
-including maps revealed by disclosures. Keep those parameters together: the
-previous free-text search could resolve to a world-scale viewport. Local tests
-assert the iframe target and dimensions; live integration checks inspect Google's
-resolved map center and zoom.
+The canonical `profile.contact.mapUrl` shows an area of Stockholm, around
+Kungsholmen and Vasastan, by its center (`59.3381,18.0308`) and zoom `14`
+alone. It deliberately has no search query or place identifier, so the map shows
+no pin or address. All editions consume this same URL, including maps revealed by
+disclosures; mithawala.com defines it as `MAP_URL` and the content sync brings it
+across. Local tests assert the iframe target, the absence of a pin, and the
+dimensions.
 
 FormSubmit delivery may depend on the owner's existing provider activation. CI
 intercepts submissions and tests request shape and success/failure UI; it never

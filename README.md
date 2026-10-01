@@ -53,10 +53,9 @@ Sustained slow frames lower the drawing resolution rather than
 blocking interaction. The scene is visual navigation, not a replacement for
 accessible DOM content. Preview windows are captures, not live site embeds.
 
-All editions use the same contact map URL. It pins the T-Centralen location in
-Stockholm by a verified Google Maps location identifier, explicit center coordinates, and
-zoom level 15, rather than depending on a free-text search that can fall back
-to the world map.
+All editions use the same contact map URL. It shows the Kungsholmen–Vasastan
+area of Stockholm by its center and zoom level 14 only, with no pin or address,
+so it never depends on a free-text search that can fall back to the world map.
 
 ### The Curiosity Atlas
 
