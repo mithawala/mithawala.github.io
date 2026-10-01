@@ -41,6 +41,32 @@ async function clickScenePoint(page, kind, id) {
   await page.mouse.click(box.x + point.x, box.y + point.y)
 }
 
+// The collection lists every edition exactly once, whichever one the hero
+// shows, and marks the edition currently in view above.
+async function expectCompleteCollection(page) {
+  const directory = page.locator('.nx-directory-grid')
+  await expect(directory.locator('[data-edition-card]')).toHaveCount(
+    versions.length,
+  )
+  for (const version of versions)
+    await expect(
+      directory.locator(`[data-edition-card="${version.id}"]`),
+    ).toHaveCount(1)
+  await expect(page.locator('.nx-active-card')).toHaveCount(1)
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const shown =
+          document.querySelector('.nx-active-card')?.dataset.editionCard
+        const marked = document.querySelector(
+          '.nx-directory-grid [aria-current="true"]',
+        )?.dataset.editionCard
+        return Boolean(shown) && shown === marked
+      }),
+    )
+    .toBeTruthy()
+}
+
 test.beforeEach(async ({ context }) => {
   await context.route('**/*', (route) =>
     ['127.0.0.1', 'localhost', 'mithawala.github.io'].includes(
@@ -58,9 +84,12 @@ test('gallery shows real previews, model labels, and correct version links', asy
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     profile.name,
   )
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
+  await expectCompleteCollection(page)
+  const directory = page.locator('.nx-directory-grid')
   for (const version of versions) {
-    const card = page.locator(`[data-edition-card="${version.id}"]`)
+    const card = directory.locator(`[data-edition-card="${version.id}"]`)
+    // Directory previews load lazily, as they would for a visitor scrolling.
+    await card.scrollIntoViewIfNeeded()
     await expect(
       card.getByRole('heading', { name: version.model, exact: true }),
     ).toBeVisible()
@@ -105,6 +134,7 @@ test('gallery is accessible and keyboard navigation opens an isolated edition ta
   ).toBeFocused()
   await page.keyboard.press('Enter')
   await page
+    .locator('.nx-directory-grid')
     .getByRole('link', { name: `Explore ${versions[0].model}`, exact: true })
     .and(page.locator(`a[href="${versions[0].path}"]`))
     .focus()
@@ -183,7 +213,8 @@ test('the first model and its preview are visible without scrolling', async ({
   page,
 }) => {
   await page.goto('/')
-  const card = page.locator(`[data-edition-card="${versions[0].id}"]`)
+  const card = page.locator('.nx-active-card')
+  await expect(card).toHaveAttribute('data-edition-card', versions[0].id)
   await expect(
     card.getByRole('heading', { name: versions[0].model, exact: true }),
   ).toBeInViewport()
@@ -203,8 +234,9 @@ test('gallery selects distinct editions for a keyboard-accessible comparison', a
 }) => {
   await page.goto('/')
   const [first, second] = [versions.at(-1), versions[0]]
-  const selectFirst = page.locator(`[data-compare-select="${first.id}"]`)
-  const selectSecond = page.locator(`[data-compare-select="${second.id}"]`)
+  const directory = page.locator('.nx-directory-grid')
+  const selectFirst = directory.locator(`[data-compare-select="${first.id}"]`)
+  const selectSecond = directory.locator(`[data-compare-select="${second.id}"]`)
   await selectFirst.click()
   const tray = page.getByRole('complementary', { name: 'Selected editions' })
   await expect(tray.getByRole('status')).toContainText('1 of 2 selected')
@@ -218,7 +250,7 @@ test('gallery selects distinct editions for a keyboard-accessible comparison', a
     (entry) => ![first.id, second.id].includes(entry.id),
   ))
     await expect(
-      page.locator(`[data-compare-select="${version.id}"]`),
+      directory.locator(`[data-compare-select="${version.id}"]`),
     ).toBeDisabled()
   await tray
     .getByRole('button', { name: 'Compare editions', exact: true })
@@ -498,11 +530,8 @@ test('gallery 3D selects every edition with keyboard and real raycast interactio
     await page
       .getByRole('button', { name: 'Next edition', exact: true })
       .click()
-    await expect(page.locator('[data-edition-card]')).toHaveCount(
-      versions.length,
-    )
+    await expectCompleteCollection(page)
   }
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
 })
 
 test('gallery explains the recurring model benchmark without gameplay or saved progress', async ({
@@ -626,7 +655,7 @@ test('gallery remains usable without WebGL or access to browser storage', async 
         .getByRole('link', { name: `Visit ${version.model}`, exact: true }),
     ).toHaveAttribute('href', version.path)
   }
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
+  await expectCompleteCollection(page)
   expect(
     (
       await new AxeBuilder({ page })
@@ -791,7 +820,7 @@ test('gallery 3D reduces rendering cost after sustained slow frames', async ({
   const scale = Number(await scene.getAttribute('data-render-scale'))
   expect(scale).toBeGreaterThanOrEqual(0.5)
   await expect(scene).toHaveAttribute('data-scene-status', 'ready')
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
+  await expectCompleteCollection(page)
 })
 
 test('gallery 3D switches real preview textures and recovers from a lost graphics context', async ({
@@ -867,7 +896,7 @@ test('gallery 3D switches real preview textures and recovers from a lost graphic
     'data-edition-card',
     versions[1].id,
   )
-  await expect(page.locator('[data-edition-card]')).toHaveCount(versions.length)
+  await expectCompleteCollection(page)
 })
 
 test('gallery 3D touch travel leaves vertical page scrolling available', async ({

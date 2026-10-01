@@ -401,6 +401,7 @@ function EditionCard({
   version,
   viewport,
   compact = false,
+  inView = false,
   chosen,
   selectionFull,
   onCompare,
@@ -411,6 +412,7 @@ function EditionCard({
       className={`nx-edition-card ${compact ? 'nx-active-card' : ''}`}
       data-edition-card={version.id}
       data-selected={chosen}
+      aria-current={inView ? 'true' : undefined}
       style={{ '--world-color': version.color }}
     >
       <EditionLink
@@ -433,6 +435,7 @@ function EditionCard({
         <p className="nx-eyebrow">
           <span className="nx-world-dot" />
           Edition {editionNumber(version)}
+          {inView && <span className="nx-in-view">Shown above</span>}
         </p>
         <h2>
           <EditionLink version={version}>{version.model}</EditionLink>
@@ -585,12 +588,13 @@ export default function Gallery() {
     )
   }
   // Auto-advance must not discard the active card's focused controls.
-  const renderEdition = (version, compact = false) => (
+  const renderEdition = (version, compact = false, inView = false) => (
     <EditionCard
       key={compact ? 'active-edition' : version.id}
       version={version}
       viewport={viewport}
       compact={compact}
+      inView={inView}
       chosen={selected.includes(version.id)}
       selectionFull={selected.length === 2}
       onCompare={toggleSelection}
@@ -865,8 +869,8 @@ export default function Gallery() {
               <p className="nx-eyebrow">The collection</p>
               <h2 id="nx-directory-title">Compare the interpretations.</h2>
               <p>
-                Your selected edition is above. Explore the other{' '}
-                {versions.length - 1} interpretations below.
+                All {versions.length} interpretations, in the order they were
+                built. Open one, or pick two to compare side by side.
               </p>
             </div>
             <button
@@ -883,10 +887,11 @@ export default function Gallery() {
               Compare first & latest <Columns2 size={17} aria-hidden="true" />
             </button>
           </div>
+          {/* Every edition stays listed; the hero's rotation only marks one. */}
           <div className="nx-directory-grid">
-            {versions
-              .filter((version) => version.id !== activeId)
-              .map((version) => renderEdition(version))}
+            {versions.map((version) =>
+              renderEdition(version, false, version.id === activeId),
+            )}
           </div>
         </section>
         <section className="nx-common-source" aria-label="About the collection">

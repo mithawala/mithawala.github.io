@@ -41,7 +41,9 @@ collectibles, rewards, progress tracking, or browser-storage dependency.
 
 Choose **Compare** on two cards, or use **Compare first & latest**. Side-by-side
 and draggable-overlay comparison retain desktop/mobile switching and native
-keyboard controls. Escape closes each dialog and restores focus.
+keyboard controls. Escape closes each dialog and restores focus. The collection
+below the scene always lists every edition in the order they were built; the one
+currently shown in the scene is marked **Shown above**.
 
 Three.js is loaded only for the gallery's scene. Graphics-unavailable fallback,
 pause, live reduced-motion preferences, and offscreen/hidden-tab suspension are

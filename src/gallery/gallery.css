@@ -522,6 +522,20 @@ html:has(.editions-gallery[data-comparing='true']) {
     0 0 28px #e1aa6310;
 }
 
+.nx-edition-card[aria-current='true']:not([data-selected='true']) {
+  border-color: #7e6647;
+}
+
+.nx-in-view {
+  margin-left: auto;
+  margin-block: -4px;
+  padding: 3px 8px;
+  border: 1px solid #7e6647;
+  border-radius: 999px;
+  color: var(--nx-accent);
+  letter-spacing: 0.08em;
+}
+
 .nx-card-preview {
   position: relative;
   display: block;
