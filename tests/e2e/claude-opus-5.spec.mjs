@@ -62,6 +62,8 @@ test.describe('Claude Opus 5 latent map', () => {
     const before = await readout.evaluate((element) => element.style.transform)
 
     const area = page.locator('[data-window="works"] .o5-window-area')
+    // The map sits below the catalogue on phones; drag it where it is seen.
+    await area.scrollIntoViewIfNeeded()
     const box = await area.boundingBox()
     const centre = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
     await page.mouse.move(centre.x, centre.y)
