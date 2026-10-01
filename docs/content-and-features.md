@@ -2,9 +2,11 @@
 
 ## Ownership
 
-The content in this repository is independent from the original mithawala.com
-deployment. It was imported once from the reference repository, without importing
-its theme. Editing this repository does not change the original domain.
+The content in this repository comes from the original mithawala.com repository.
+It was imported once without that site's theme, and `npm run sync:content` brings
+later content changes across with a three-way merge that keeps edits made here.
+The sync only reads from mithawala.com; editing this repository never changes
+the original domain.
 
 Canonical content is managed only in `content/asif/`:
 
@@ -14,7 +16,7 @@ Canonical content is managed only in `content/asif/`:
 | `portfolio.json`       | Every portfolio record, including full rich descriptions and all media/configuration fields                      |
 | `blog.json`            | Every article with its complete HTML body                                                                        |
 | `contract.json`        | Required sections, categories, and capabilities                                                                  |
-| `import-manifest.json` | Original source revision, migration date/counts, and historical import hashes                                    |
+| `import-manifest.json` | Original source revision, migration date/counts, historical import hashes, and the last synced revision          |
 
 The initial migration contains 52 portfolio entries, 2 articles, 10 jobs, 3 education
 entries, 4 services, and 12 measured skills. These are historical counts, not limits.

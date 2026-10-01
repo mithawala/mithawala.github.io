@@ -86,13 +86,31 @@ canonical originals automatically. No extra content maintenance is required.
 
 ## Edit Content Once
 
-Edit `content/asif/profile.json`, `portfolio.json`, or `blog.json`. Add shared
-images and downloads under `public/asif/assets/`. Every edition imports these
-same records. A successful push to `main` rebuilds and publishes every edition
-and refreshes the gallery screenshots.
+The content starts in mithawala.com. Add or change a project, article, or profile
+detail there and commit it, then bring it here with one command:
 
-The original mithawala.com deployment is deliberately independent. The reference
-checkout is not needed to develop, build, test, or add future editions.
+```sh
+npm run sync:content -- --dry-run   # see what would change
+npm run sync:content                # apply it
+```
+
+The sync reads the committed content of a `mithawala.com` checkout next to this
+repository (`../mithawala.com`, or pass `--source=<path>`) and does a three-way
+merge against the commit it last synced. New and changed records, removals, and
+their images under `public/asif/assets/` come across; edits made directly in
+`content/asif/` are kept. If the same value changed in both places, it stops
+without writing anything and lists the conflicts. It records the synced commit
+in `content/asif/import-manifest.json`. Review the diff, run the tests, and
+commit; every edition picks the content up on the next push.
+
+You can still edit `content/asif/profile.json`, `portfolio.json`, or `blog.json`
+here directly, for example for content that only belongs to these editions. Every
+edition imports these same records. A successful push to `main` rebuilds and
+publishes every edition and refreshes the gallery screenshots.
+
+The original mithawala.com deployment stays independent: the sync only reads
+from it. The checkout is needed for syncing, not to develop, build, test, or add
+future editions.
 
 See [the content and feature contract](docs/content-and-features.md) for field
 definitions, routing, external integrations, and the completeness requirements.
@@ -159,8 +177,8 @@ publish under `https://mithawala.github.io/<repository-name>/`.
 
 ## Source Provenance
 
-The initial import was taken from the owner's `mithawala/mithawala.com` source.
-`content/asif/import-manifest.json` records the exact revision and historical
-counts. The importer refuses to overwrite existing canonical data. During the
-initial migration, `npm run import:reference -- --verify` compares the imported
-records to the local reference; it is not part of normal builds or CI.
+The content was first imported from the owner's `mithawala/mithawala.com` source
+and is kept up to date with `npm run sync:content`. `content/asif/import-manifest.json`
+records the original import revision and counts, and under `sync` the last
+synced revision with hashes of the content it produced. The sync uses those
+hashes to confirm it reads the same baseline before merging.

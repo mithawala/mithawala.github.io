@@ -19,6 +19,156 @@ import {
   previewSources,
   previewWidths,
 } from '../src/asif/images.mjs'
+import { canonical, mergeContent } from '../scripts/content-merge.mjs'
+import { assetPath, normalize, readContent } from '../scripts/mithawala-com.mjs'
+
+const project = (slug, fields = {}) => ({
+  id: slug.length,
+  slug,
+  title: slug,
+  categories: ['all', 'project'],
+  ...fields,
+})
+
+test('content sync takes new records from mithawala.com and keeps edits made here', () => {
+  const base = [project('older'), project('oldest')]
+  const theirs = [
+    project('newest'),
+    project('newer'),
+    project('older'),
+    project('oldest'),
+  ]
+  const ours = [
+    project('older', { title: 'older, corrected here' }),
+    project('local-only'),
+    project('oldest'),
+  ]
+  const { merged, report } = mergeContent(base, theirs, ours, 'portfolio')
+  assert.deepEqual(
+    merged.map((record) => record.slug),
+    ['newest', 'newer', 'older', 'local-only', 'oldest'],
+  )
+  assert.equal(merged[2].title, 'older, corrected here')
+  assert.deepEqual(report.added, ['portfolio[newest]', 'portfolio[newer]'])
+  assert.deepEqual(report.kept, [
+    'portfolio[older].title',
+    'portfolio[local-only]',
+  ])
+  assert.deepEqual(report.conflicts, [])
+})
+
+test('content sync applies changes and removals made only in mithawala.com', () => {
+  const base = [project('kept', { title: 'Old' }), project('dropped')]
+  const theirs = [project('kept', { title: 'New', links: ['x'] })]
+  const { merged, report } = mergeContent(
+    base,
+    theirs,
+    structuredClone(base),
+    'portfolio',
+  )
+  assert.deepEqual(merged, theirs)
+  assert.deepEqual(report.removed, ['portfolio[dropped]'])
+  assert.deepEqual(report.changed.sort(), [
+    'portfolio[kept].links',
+    'portfolio[kept].title',
+  ])
+})
+
+test('content sync ignores key order and still reports conflicting edits', () => {
+  const profileBase = {
+    name: 'A',
+    resume: { experience: [{ company: 'X', period: '2020', title: 'Old' }] },
+  }
+  const reordered = {
+    resume: { experience: [{ title: 'Old', period: '2020', company: 'X' }] },
+    name: 'A',
+  }
+  assert.deepEqual(
+    mergeContent(profileBase, reordered, profileBase, '').report,
+    { added: [], removed: [], changed: [], kept: [], conflicts: [] },
+  )
+  assert.deepEqual(
+    JSON.stringify(canonical(reordered)),
+    JSON.stringify(canonical(profileBase)),
+  )
+  const theirs = structuredClone(profileBase)
+  theirs.resume.experience[0].title = 'Theirs'
+  const ours = structuredClone(profileBase)
+  ours.resume.experience[0].title = 'Ours'
+  ours.name = 'B'
+  const { merged, report } = mergeContent(profileBase, theirs, ours, '')
+  assert.deepEqual(
+    report.conflicts.map((conflict) => conflict.path),
+    ['resume.experience[X / 2020].title'],
+  )
+  assert.equal(merged.name, 'B')
+  const removed = mergeContent(
+    [project('edited')],
+    [],
+    [project('edited', { title: 'changed here' })],
+    'portfolio',
+  )
+  assert.deepEqual(
+    removed.report.conflicts.map((conflict) => conflict.path),
+    ['portfolio[edited]'],
+  )
+  assert.equal(removed.merged[0].title, 'changed here')
+})
+
+test('the mithawala.com reader maps shared paths to their home here', () => {
+  assert.equal(
+    assetPath('public/images/portfolio/x/cover.png'),
+    'public/asif/assets/images/portfolio/x/cover.png',
+  )
+  assert.equal(assetPath('public/cv.pdf'), 'public/asif/assets/cv.pdf')
+  assert.deepEqual(
+    normalize({
+      image: '/images/a.png',
+      html: '<img src="/images/b.png"> https://mithawala.com/images/c.png',
+      cv: '/cv.pdf',
+    }),
+    {
+      image: '/asif/assets/images/a.png',
+      html: '<img src="/asif/assets/images/b.png"> /asif/assets/images/c.png',
+      cv: '/asif/assets/cv.pdf',
+    },
+  )
+  const source = {
+    'src/App.jsx': 'const siteData = { name: "Asif" }',
+    'src/pages/AboutMe.jsx': 'const aboutData = {}; const services = []',
+    'src/pages/Resume.jsx':
+      'const education = []; const experience = []; const functionalSkills = []; const codingSkills = []',
+    'src/pages/Portfolio.jsx':
+      'export const portfolioItems = [{ slug: "a", image: "/images/a.png", descriptionHtml: `<p>One</p>` }]',
+    'src/pages/Blog.jsx': 'export const blogPosts = []',
+    'src/pages/Contact.jsx':
+      'const contactInfo = []; const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/x"',
+    'src/pages/Music.jsx':
+      'const soundcloudProfileUrl = "https://soundcloud.com/x"',
+  }
+  const content = readContent((file) => source[file])
+  assert.deepEqual(content['portfolio.json'], [
+    {
+      slug: 'a',
+      image: '/asif/assets/images/a.png',
+      descriptionHtml: '<p>One</p>',
+    },
+  ])
+  assert.equal(content['profile.json'].name, 'Asif')
+  assert.equal(
+    content['profile.json'].heroPhoto,
+    '/asif/assets/images/main/sp_photo.jpg',
+  )
+  assert.throws(
+    () =>
+      readContent((file) =>
+        file === 'src/pages/Blog.jsx'
+          ? 'export const blogPosts = [makePost()]'
+          : source[file],
+      ),
+    /Nonliteral source content/,
+  )
+})
 
 test('all canonical content, assets, and version records are valid', () => {
   assert.equal(validateContent().portfolio, portfolio.length)

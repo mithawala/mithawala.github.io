@@ -15,7 +15,7 @@
     "test": "node --test --test-reporter=dot tests/*.test.mjs",
     "test:e2e": "node scripts/screenshots.mjs && playwright test",
     "screenshots": "node scripts/screenshots.mjs",
-    "import:reference": "node scripts/import-reference.mjs",
+    "sync:content": "node scripts/sync-mithawala-com.mjs",
     "format": "prettier --write --single-quote --no-semi src scripts tests docs .github README.md AGENTS.md *.mjs package.json",
     "format:check": "prettier --check --single-quote --no-semi src scripts tests docs .github README.md AGENTS.md *.mjs package.json"
   },
