@@ -1,5 +1,86 @@
 [
   {
+    "id": 53,
+    "slug": "pocket-pilot",
+    "title": "📱 Pocket Pilot: Control Your GitHub Copilot Agents From Your Phone",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/pocket-pilot/thumbnail.png",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/0ymaw0RmAu8",
+    "descriptionHtml": "<p>You know the moment. You give your Copilot agent a big job, go make a coffee, and come back twenty minutes later to find it has been sitting at <strong>Run in terminal? Allow / Skip</strong> for nineteen of them.</p>\n<p>So I built <strong>Pocket Pilot</strong>: every GitHub Copilot agent session on my PC, live on my phone. The same history, replies streaming in as they're written, and the same buttons I'd press at my desk. It works with VS Code and with the GitHub Copilot app and CLI, it's free, and there is no server in the middle.</p>\n<p><strong>What it does:</strong></p>\n<ul>\n<li>📋 Every session, sorted by what needs you: anything waiting for your approval or your answer comes first</li>\n<li>💬 The whole conversation, streaming token by token: thinking, tool calls, code and screenshots</li>\n<li>🕹️ Reply, steer a running agent, approve or skip tool calls, answer questions, switch models, or start a new session on your PC</li>\n<li>🔔 Push notifications when an agent needs you, finishes or fails</li>\n</ul>\n<p><strong>How it's built:</strong></p>\n<ul>\n<li>🔌 Speaks VS Code's Agent Host Protocol, so the phone sees exactly what VS Code sees</li>\n<li>🖥️ Your PC is the server: a static web app on GitHub Pages and a free Cloudflare tunnel. $0 a month</li>\n<li>🔐 End-to-end encrypted and paired with a QR code, protected by a device key plus a passkey or an authenticator code</li>\n<li>📦 Zero npm dependencies, down to a home-made WebSocket, and 132 tests</li>\n</ul>\n<p>Want the whole story: the protocol, the crypto, push notifications without Firebase, and one nasty iOS bug? <a href=\"https://mithawala.medium.com/how-i-put-my-copilot-agents-in-my-pocket-zero-servers-end-to-end-encryption-and-one-nasty-ios-bug-701a7cfd3b1f\" target=\"_blank\" rel=\"noopener noreferrer\">Read it on Medium</a>.</p>",
+    "technologies": [
+      "GitHubCopilot",
+      "AgenticAI",
+      "VSCode",
+      "AgentHostProtocol",
+      "EndToEndEncryption",
+      "WebCrypto",
+      "Passkeys",
+      "WebPush",
+      "PWA",
+      "CloudflareTunnel"
+    ],
+    "links": [
+      {
+        "label": "Read the Full Story",
+        "url": "https://mithawala.medium.com/how-i-put-my-copilot-agents-in-my-pocket-zero-servers-end-to-end-encryption-and-one-nasty-ios-bug-701a7cfd3b1f"
+      },
+      {
+        "label": "Pocket Pilot Website",
+        "url": "https://mithawala.github.io/pocket-pilot/"
+      },
+      {
+        "label": "Live Demo",
+        "url": "https://mithawala.github.io/pocket-pilot/app/?demo"
+      },
+      {
+        "label": "GitHub Repository",
+        "url": "https://github.com/mithawala/pocket-pilot"
+      }
+    ],
+    "date": "2026-10-01"
+  },
+  {
+    "id": 54,
+    "slug": "ai-model-editions",
+    "title": "🎨 AI Model Editions: One Site, Every Model",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project"
+    ],
+    "image": "/asif/assets/images/portfolio/model-editions/cover.png",
+    "type": "project",
+    "descriptionHtml": "<p>How do you compare AI models at design and development? Not with a leaderboard, but with something you can click.</p>\n<p>So I started a hands-on benchmark. Whenever a new frontier model comes out, I give it the same challenge: build its own interpretation of this website. Same biography, same projects, same articles, same features. A blank canvas for the design.</p>\n<p>The results live side by side in one gallery: real, working websites you can open and compare.</p>\n<p><strong>How it works:</strong></p>\n<ul>\n<li>📚 All content lives in one place, so a change to a project shows up in every edition at once</li>\n<li>🙈 Every edition is a blind entry: models build without seeing the others, and peeking counts as cheating</li>\n<li>✅ Every edition must keep every feature: search, filtering, articles, the music player and the contact form, checked by automated tests on desktop and mobile</li>\n<li>🚀 Every push to GitHub rebuilds, tests and publishes the whole gallery with GitHub Actions, including fresh screenshots of each edition</li>\n</ul>\n<p>The editions so far include a WebGL room where sunlight falls through a lattice onto my portrait, and a live 3D map that places every project by what it has in common with the others. Each one tells you something about the model that made it.</p>\n<p>The gallery grows as new models are put to the test.</p>",
+    "technologies": [
+      "AI",
+      "GenerativeAI",
+      "AIBenchmark",
+      "React",
+      "WebGL",
+      "Vite",
+      "Playwright",
+      "GitHubActions",
+      "GitHubPages"
+    ],
+    "links": [
+      {
+        "label": "Explore the Gallery",
+        "url": "https://mithawala.github.io/"
+      },
+      {
+        "label": "GitHub Repository",
+        "url": "https://github.com/mithawala/mithawala.github.io"
+      }
+    ],
+    "date": "2026-09-27"
+  },
+  {
     "id": 52,
     "slug": "voicecom",
     "title": "📞 VoiceCom: I Vibe-Coded a Forgotten Wall Panel into a Home Intercom",
