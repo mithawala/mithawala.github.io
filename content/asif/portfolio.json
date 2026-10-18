@@ -1,5 +1,49 @@
 [
   {
+    "id": 55,
+    "slug": "cojam",
+    "title": "🎸 CoJam: From a Sentence to a Shipped App, Together",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/cojam/cover.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/R643tRoy9kA",
+    "descriptionHtml": "<p>Once a year, Microsoft invites the whole company to stop talking about ideas and start building them.</p>\n<p>That's the <strong>Microsoft Global Hackathon</strong>, the largest private hackathon on the planet. People from every role and corner of the company make time alongside their day job to team up, learn, experiment and turn ideas into working prototypes. MVPs and Regional Directors join in too.</p>\n<p>Hackathon 2026 is now a wrap and the winners have been announced. So many great contributions this year, and so much to learn from all of them.</p>\n<p>My contribution was <strong>CoJam</strong>.</p>\n<p>CoJam is a browser-based vibe coding tool built for teams. You describe an app in plain words, a GitHub Copilot agent builds it live while everyone in the room watches, prompts and shapes it together, and one click ships it to Azure and Microsoft Fabric. <strong>From a sentence to a shipped app, together.</strong></p>\n<p>🏆 It was named a <strong>Judge's Favorite in the 2026 Ambient Agent Challenge</strong>. The judges' feedback called it <em>\"a highly compelling entry with quantified business value and a complete, demonstrable workflow.\"</em> That made my week.</p>\n<p><strong>What it does:</strong></p>\n<ul>\n<li>💬 Describe an app, pick a template or import a GitHub repository, and watch Copilot write the code with a live preview right in the browser</li>\n<li>👥 Share a room: everyone sees the same code and the same AI chat, prompts the agent together, and talks over peer chat, voice and screen sharing</li>\n<li>↩️ Review every change with Keep/Undo and checkpoints, and keep the source: export a ZIP or push it to GitHub</li>\n<li>🚀 Publish a runnable app with a stable link, or deploy it to Microsoft Fabric or Azure App Service</li>\n</ul>\n<p><strong>Three things I'm taking with me:</strong></p>\n<ul>\n<li>🤝 <strong>Building is a team sport now.</strong> With Copilot writing the code, the hard part is agreeing on what to build. So get everyone in the same room.</li>\n<li>🎬 <strong>Prototypes are the new pitch.</strong> A working app settles a debate faster than any slide deck. If you can show it, don't describe it.</li>\n<li>🌱 <strong>Anyone can be a builder.</strong> You don't need to write code to bring an idea to life anymore, just the curiosity to try. Some of the best ideas in any company sit with people who never saw themselves as builders.</li>\n</ul>\n<p>Watch the demo video to see it in action, or <a href=\"https://aka.ms/cojam\" target=\"_blank\" rel=\"noopener noreferrer\">try CoJam yourself</a>.</p>",
+    "technologies": [
+      "MicrosoftHackathon",
+      "VibeCoding",
+      "GitHubCopilot",
+      "AgenticAI",
+      "Azure",
+      "MicrosoftFabric",
+      "React",
+      "TypeScript",
+      "CodeMirror",
+      "Yjs",
+      "WebRTC"
+    ],
+    "links": [
+      {
+        "label": "Try CoJam",
+        "url": "https://aka.ms/cojam"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/cojam/describe.jpg",
+      "/asif/assets/images/portfolio/cojam/build.jpg",
+      "/asif/assets/images/portfolio/cojam/run.jpg",
+      "/asif/assets/images/portfolio/cojam/review.jpg",
+      "/asif/assets/images/portfolio/cojam/jam.jpg",
+      "/asif/assets/images/portfolio/cojam/deploy.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-10-18"
+  },
+  {
     "id": 53,
     "slug": "pocket-pilot",
     "title": "📱 Pocket Pilot: Control Your GitHub Copilot Agents From Your Phone",

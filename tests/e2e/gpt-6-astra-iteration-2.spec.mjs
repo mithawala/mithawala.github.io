@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { portfolio, profile } from '../../src/asif/content.mjs'
+import { filterPortfolio, portfolio, profile } from '../../src/asif/content.mjs'
 
 const path = '/asif/gpt-6-astra-iteration-2/'
 
@@ -103,12 +103,18 @@ test('Astra atlas index, filtering, biography and keyboard search stay complete'
     .locator('[data-project] a')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')))
   expect(urls.every((url) => url.startsWith(`${path}project/`))).toBeTruthy()
-  await page.getByRole('textbox', { name: 'Filter projects' }).fill('WebRTC')
-  await expect(page.locator('[data-project]')).toHaveCount(1)
-  await expect(page.locator('[data-project]')).toHaveAttribute(
-    'data-project',
-    'voicecom',
+  const matches = filterPortfolio(portfolio, 'all', 'WebRTC').map(
+    (item) => item.slug,
   )
+  expect(matches).toContain('voicecom')
+  expect(matches.length).toBeLessThan(portfolio.length)
+  await page.getByRole('textbox', { name: 'Filter projects' }).fill('WebRTC')
+  await expect(page.locator('[data-project]')).toHaveCount(matches.length)
+  expect(
+    await page
+      .locator('[data-project]')
+      .evaluateAll((items) => items.map((item) => item.dataset.project)),
+  ).toEqual(matches)
   await page.getByRole('textbox', { name: 'Filter projects' }).fill('')
   await page.locator('.ca-biography-more > summary').click()
   await expect(page.locator('.ca-biography-more')).toHaveAttribute('open', '')
