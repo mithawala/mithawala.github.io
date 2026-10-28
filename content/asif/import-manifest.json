@@ -15,11 +15,11 @@
     "blog.json": "748525d0f236607619620e8f71f6a29553c91673107c0e2f2df3e8e291792321"
   },
   "sync": {
-    "commit": "d7d994950bdbc3642f0f5693e70063502ed451bc",
-    "syncedAt": "2026-10-18T19:44:43.894Z",
+    "commit": "212ae241eb4fa2cd23eeb63a2b8644176c84aaf0",
+    "syncedAt": "2026-10-28T22:18:19.083Z",
     "contentHashes": {
       "profile.json": "3e4cc59150ced6486d947f62344524037dbe63b6953b79a9bdd116f0a938904b",
-      "portfolio.json": "e7738efce0d27b3490b410913a4f556e3a0013c35f7cab089c5a921e8a17744d",
+      "portfolio.json": "a0346155ac9ec1a75ef28222a9ee3014b4e57f147cafe13a06067a649e1300c2",
       "blog.json": "ace504a230887d50ee7ff9729d62ec91e4e174ad74fb407f6cb5924ceeb5b3a2"
     }
   }

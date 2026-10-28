@@ -1,5 +1,94 @@
 [
   {
+    "id": 57,
+    "slug": "voice-ai-assistant",
+    "title": "🎙️ Voice AI Assistant: Talk to ChatGPT and Copilot, Hands-Free",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/voice-ai-assistant/cover.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/sltR310Ym44",
+    "descriptionHtml": "<p>Sometimes the keyboard is the slowest part of talking to an AI assistant.</p>\n<p>You're deep in a chat, planning a trip, redecorating a room or writing something, and you just want to say the next thing. And for some people typing is tiring or even painful, because of wrist pain, RSI or arthritis.</p>\n<p>That's why I built <strong>Voice AI Assistant</strong>, a free Chrome extension. Say a wake word, like <strong>\"Jarvis\"</strong> for ChatGPT or <strong>\"Hey Copilot\"</strong> for Microsoft Copilot, and your assistant starts listening, right in the chat you already have open. Say <strong>\"Bye\"</strong> when you're done.</p>\n<p>At work, you can hand over a whole task: <em>\"Hey Cowork, prepare today's team meeting presentation, with a proposed agenda based on the last two weeks.\"</em> It's typed into Copilot Cowork and sent, and Cowork does the work while you get on with your day.</p>\n<p>Version 2.0 was a full rebuild around the chat you're already in: the assistant keeps the whole conversation, and you keep your flow. Version 2.1 added Microsoft Copilot as a second assistant, voice search on Bing and a fresh, light and colourful look. Version 2.2 adds Copilot Cowork.</p>\n<p><strong>What it does:</strong></p>\n<ul>\n<li>🎙️ One wake word per assistant, all listening at once: \"Jarvis\" for ChatGPT, \"Hey Copilot\" for Copilot and \"Hey Cowork\" for Cowork. Or pick a word or name of your own, like \"Adam\", and test it in Settings</li>\n<li>💬 Talk in the chat you have open, in a saved ChatGPT project, or in a new chat. Copilot works with a personal account or with Microsoft 365 Copilot at work or school</li>\n<li>🔊 <strong>Voice chat</strong> starts the assistant's own voice chat for a spoken back-and-forth. \"Bye\" on its own ends it, and your chat stays right where it was</li>\n<li>⌨️ <strong>Type it for me:</strong> \"Jarvis, add a day trip to the archipelago\" is typed into the chat and sent, and the answer can be read aloud</li>\n<li>📋 <strong>Hand tasks to Cowork:</strong> each request starts a new task or adds to the one you have open. Cowork reads your Teams, mail and files to do the work, and asks before it sends an email or posts for you</li>\n<li>🔍 Search by voice: \"Hey Bing, weather in Stockholm\" or \"Hey Google, …\" opens the results</li>\n<li>🎨 A light, colourful new look, or choose Dark or Match my computer in Settings</li>\n<li>🤫 Listens quietly in the background, with no pinned tab, a microphone picker, a level meter and gentle sounds</li>\n<li>⚡ A toolbar popup to switch assistants, Alt+W to talk now and Alt+M to turn listening on or off</li>\n<li>🔧 Picks up fixes automatically when ChatGPT or Copilot changes its page</li>\n</ul>\n<p><strong>Three things I'm taking with me:</strong></p>\n<ul>\n<li>🧭 <strong>Meet people where they already are.</strong> The biggest change in 2.0 isn't a feature, it's a place: the chat you're already in, with all its context. Nobody wants to start over.</li>\n<li>♿ <strong>Accessibility makes things better for everyone.</strong> A tool for people who find typing painful turns out to be just as handy when your hands are full of coffee.</li>\n<li>🔌 <strong>Build for a moving target.</strong> When you depend on someone else's page, keep the fragile parts in a small public file you can patch without a new release, and test against the real thing.</li>\n</ul>\n<p>Watch the film to see it in action, or try it yourself: <a href=\"https://chromewebstore.google.com/detail/voice-ai-assistant/johkmflniodnhfahiipibjlgdkemnbhd\" target=\"_blank\" rel=\"noopener noreferrer\">Voice AI Assistant on the Chrome Web Store</a>. It's free. Voice chats need you to be signed in to the assistant (a free ChatGPT account works), and Cowork needs a Microsoft 365 work or school account.</p>",
+    "technologies": [
+      "ChromeExtension",
+      "ManifestV3",
+      "ChatGPT",
+      "MicrosoftCopilot",
+      "CopilotCowork",
+      "VoiceAI",
+      "WebSpeechAPI",
+      "Accessibility",
+      "JavaScript",
+      "Vite"
+    ],
+    "links": [
+      {
+        "label": "Chrome Web Store",
+        "url": "https://chromewebstore.google.com/detail/voice-ai-assistant/johkmflniodnhfahiipibjlgdkemnbhd"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/voice-ai-assistant/assistants.jpg",
+      "/asif/assets/images/portfolio/voice-ai-assistant/copilot-voice.jpg",
+      "/asif/assets/images/portfolio/voice-ai-assistant/type-it.jpg",
+      "/asif/assets/images/portfolio/voice-ai-assistant/cowork.jpg",
+      "/asif/assets/images/portfolio/voice-ai-assistant/wake-words.jpg",
+      "/asif/assets/images/portfolio/voice-ai-assistant/voice-search.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-10-28"
+  },
+  {
+    "id": 56,
+    "slug": "biteshot",
+    "title": "📸 Biteshot: Snap It. Done.",
+    "category": "Project",
+    "categories": [
+      "all",
+      "project",
+      "app"
+    ],
+    "image": "/asif/assets/images/portfolio/biteshot/cover.jpg",
+    "type": "project",
+    "embedVideo": "https://www.youtube.com/embed/l1dOkUuwlQ4",
+    "descriptionHtml": "<p>Most people give up on calorie tracking within a few weeks.</p>\n<p>Not because they lose interest, but because every meal costs a minute of searching a database, weighing food and picking portions. Apps like Lifesum are powerful, but there is just too much to fill in. So the logging stops, and so does the progress.</p>\n<p>I wanted the opposite. An app where I take a photo of my plate and the AI does the rest.</p>\n<p>That's <strong>Biteshot</strong>, the calorie tracker that tracks itself. You snap your meal, and Biteshot names every item (chicken, rice, broccoli, the sauce, even the cooking oil), estimates the grams, calories, protein, carbs and fat, files it under the right meal and shows what's left of your day. <strong>Snap it. Done.</strong></p>\n<p>It runs on your own <strong>GitHub Copilot</strong>: you sign in with GitHub, pick the model you like, and the chat is the front door to everything.</p>\n<p><strong>What it does:</strong></p>\n<ul>\n<li>📸 Snap a meal, pick a photo from your album or paste one, and get every item with grams, calories, macros and how sure the AI is</li>\n<li>👀 <strong>Just check:</strong> see the calories before you eat, and only log it when you do</li>\n<li>🛒 Scan a barcode, or just say \"1 glass of Pepsi Max\", and get the real product from Open Food Facts with exact values and its own picture</li>\n<li>💬 Say it: \"weight training 1.5 hours, chest day\" becomes a workout with calories burned, \"a big bottle of water\" fills your water goal</li>\n<li>🕐 Breakfast, lunch, dinner, a late snack or a protein shake after training, worked out from the time of day in your own time zone</li>\n<li>🎯 A daily target from your profile and goal, which you can always adjust, and a real daily burn that it learns from your own data</li>\n<li>📊 Today, week, month and weight trend, progress photos and measurements, and PDF reports with an executive summary or every meal of the month</li>\n<li>🔔 Push reminders, English and Swedish, and it installs like an app on your phone</li>\n</ul>\n<p><strong>Three things I'm taking with me:</strong></p>\n<ul>\n<li>⚡ <strong>The best input is no input.</strong> Every field you ask a person to fill in is a reason to quit. One photo beats ten taps.</li>\n<li>🤝 <strong>Let the AI guess, let people correct.</strong> Logging right away and making every entry one tap to fix works far better than asking for confirmation every time.</li>\n<li>🧮 <strong>AI for understanding, code for the maths.</strong> The model reads the photo and the words; tested, rule-based code does the totals, targets and trends, so the numbers always add up.</li>\n</ul>\n<p>Watch the film to see it in action, or <a href=\"https://biteshot.mithawala.com\" target=\"_blank\" rel=\"noopener noreferrer\">try Biteshot yourself</a> with your GitHub account.</p>",
+    "technologies": [
+      "GitHubCopilot",
+      "AgenticAI",
+      "VisionAI",
+      "PWA",
+      "React",
+      "TypeScript",
+      "Hono",
+      "Azure",
+      "AzureContainerApps",
+      "CosmosDB",
+      "OpenFoodFacts"
+    ],
+    "links": [
+      {
+        "label": "Try Biteshot",
+        "url": "https://biteshot.mithawala.com"
+      }
+    ],
+    "images": [
+      "/asif/assets/images/portfolio/biteshot/snap.jpg",
+      "/asif/assets/images/portfolio/biteshot/check.jpg",
+      "/asif/assets/images/portfolio/biteshot/products.jpg",
+      "/asif/assets/images/portfolio/biteshot/say.jpg",
+      "/asif/assets/images/portfolio/biteshot/today.jpg",
+      "/asif/assets/images/portfolio/biteshot/trends.jpg",
+      "/asif/assets/images/portfolio/biteshot/body.jpg",
+      "/asif/assets/images/portfolio/biteshot/desktop.jpg"
+    ],
+    "galleryMasonry": true,
+    "date": "2026-10-25"
+  },
+  {
     "id": 55,
     "slug": "cojam",
     "title": "🎸 CoJam: From a Sentence to a Shipped App, Together",
